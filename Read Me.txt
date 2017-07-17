@@ -1,0 +1,84 @@
+KUKA Sunrise Toolbox for Matlab
+--------------------------------------------------------------------------
+A Toolbox used to control KUKA iiwa 7 R 800 robot from an external computer using Matlab.
+Such that no knowledge about programming the industerial manipulator is required.
+A knowledge of using Matlab is required.
+--------------------------------------------------------------------------
+Hardware required:
+1- The kuka iiwa 7 R 800 robot.
+2- External PC
+3- An Ethernet network between PC and the robot shall be established.
+--------------------------------------------------------------------------
+Software required:
+A- on the PC side, you need the following:
+	1- Matlab.
+	2- The KST Toolbox, provided in the folder ((Matlab_client)) of github.
+B- on the controller side, you need:
+	1- KUKA sunrise project ((KST_1.0.zip)), provided in the root folder of github.
+--------------------------------------------------------------------------
+To utilize the Toolbox:
+A- You have to configure the robot controller:
+	1- Unzip the file KST_1.0.rar, a SunriseWorkbench project.
+	2- Open the project ((KST_1.0)) using the SunriseWorkbench, if you have no experience about how to do this
+	   refer to the guide-file ((Import KST to SunriseWorkbench.pdf)), this guide-file is provided in the KST 
+	   github repository.
+	3- Synchronise the project ((KST_1.0)) to the robot.
+	4- After Synchronising, run the ((MatlabToolboxServer)) application from the smart pad, 
+	once run the utilizer can connect to the robot from a remote PC using Matlab.
+B- To use the Toolbox from Matlab:
+	5- Open Matlab
+	6- From the Command window of Matlab , Navigate to the Toolbox folder, 
+	folder ((Matlab_client)).
+	7- Run the file, ((kuka0_move_lin.m)), for testing:
+Once executed, the robot will go to an initial configuration,
+then the end-effector shall move 50 mm in the X direction, starting from the initial configuration
+, then it shall return back to the initial configuration
+then it will move 50mm up in the Z direction, then it returns back to its initial configuration.
+-----------------------------------------------------------------------
+The toolbox was used successfully for real time control of collaborative robotic cell
+with collision avoidance capacity, video in links:
+Collision avoidance with dynamic objects:
+	https://www.youtube.com/watch?v=s0uUsSoDoxM
+Case study, collision avoidance in automobile industry:
+	https://www.youtube.com/watch?v=mHhYHzWPqCc
+-----------------------------------------------------------------------
+Note: After running the server ((MatlabToolboxServer)) on the controller,
+the utilizer has 60 seconds to connect using Matlab, otherwise
+the server will turn-off automatically. 
+-----------------------------------------------------------------------
+Other example files are also provided, example scripts are:
+kuka0_circles: in this example the manipulator perform circular motions
+kuka0_directServo: real-time control of the robot joints from remote PC.
+kuka0_do_some_stuff: demonstrates how to use the some of the Toolbox functionalities
+kuka0_getters: how to acquire data from robot
+kuka0_longTest: long test.
+kuka0_move_lin: move robot in linear motions, using remote PC
+kuka0_move_lin_relative: move robot in linear motion 
+kuka0_move_ptp: perform point to point motions using remote PC
+kuka0_move_sequare: move along a sequare
+-----------------------------------------------------------------------
+
+Important: be sure that the robot is well fixed to the table.
+Make sure that there is no one around the robot, and make sure that there is enough space around the robot
+And be sure that no collision will occur.
+
+Important: The Toolbox is provided as is, the utilizer can use it under his/her own and total responsibility.
+No guarantee is provided.
+
+Note: The Toolbox was tested  extensively using KUKA iiwa 7 R 800 manipulator, the Sunrise software version 
+used is Sunrise.OS 1.11.0.7.
+On the PC-MATLAB side, the toolbox was tested successfuly on wide range of MATLAB-versions and PCs.
+For more infomrations about the tests perfomed, please refer to the document ((Validity of toolbox.pdf)),
+this deocument is provided in the root folder of the github repository of the KST toolbox.
+-----------------------------------------------------------------------
+Important: When the functions ((sendJointsPositions.p and sendJointsPositionsf.p))
+of the direct servo are used, for real time motion servoing,
+the utilizer shall take care of proper motion planning generation. 
+Otherwise, and according to the manufacturer, a high-frequency oscillations 
+of the robot (whistling, buzzing) may occur this can cause damage to the robot.
+-------------------------------------------------------------------------
+Important:
+The toolbox was tested extensively in the robotics Lab at University of Coimbra.
+Even though be careful when using the toolbox functionalities, We can not be held 
+liable for any collision or for any property damage.
+--------------------------------------------------------------------------------
