@@ -42,6 +42,26 @@ Collision avoidance with dynamic objects:
 Case study, collision avoidance in automobile industry:
 	https://www.youtube.com/watch?v=mHhYHzWPqCc
 -----------------------------------------------------------------------
+In case you got trouble using the realtime control, do the following:
+1- Open the KST1.0 project
+2- Go to the class: MatlabToolboxServer.java
+3- Change the body of the function
+
+    double getTheDisplacment(double dj)
+    {
+	return dj;
+    }
+
+to
+
+    double getTheDisplacment(double dj)
+    {
+    	double   a=0.07; 
+    	double b=a*0.75; 
+	double exponenet=-Math.pow(dj/b, 2);
+	return Math.signum(dj)*a*(1-Math.exp(exponenet));
+    }
+-----------------------------------------------------------------------
 Note: After running the server ((MatlabToolboxServer)) on the controller,
 the utilizer has 60 seconds to connect using Matlab, otherwise
 the server will turn-off automatically. 
