@@ -1,13 +1,18 @@
 %% This function is used for moving the endeffector on a line, for the KUKA iiwa 7 R 800.
 
-% function [ state ] = movePTPLineEefRelBase( t , Pos, relVel)
+%% Syntax:
+% [ state ] = movePTPLineEefRelBase( t , Pos, vel)
 
+%% About:
 % This function is used to perform linear relative movetion of the end-effector on a line,
 % this performs only a linear motion, the orientation of end effector will not be changed.
-% t: is the TCP/IP connection
-% Pos: is the relative displacement, described in base frame, it is 1x3 cell array.
-% relVel: is a double, the over-ride relative velocity.
+% For more information refer to the example file (kuka0_move_lin_relative.m).
 
-% refer to example (kuka0_move_lin_relative.m) for more information
+%% Arreguments:
+% t: is the TCP/IP connection
+% Pos: is the relative displacement, described in base frame, it is 1x3
+% cell array, (unit millimeters)
+% vel: is a double, represents the linear velocity of the motion (unit
+% mm/sec). 
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017

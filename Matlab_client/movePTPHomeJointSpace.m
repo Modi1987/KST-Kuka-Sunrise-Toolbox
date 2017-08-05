@@ -1,8 +1,14 @@
-%% This function is used for performing point to point motion in joint space to the home position of the robot, for the KUKA iiwa 7 R 800.
+%% This function is used for performing point to point motion
+%  in joint space to the home position of the robot, for the KUKA iiwa 7 R 800.
 
-% function [ state ] = movePTPHomeJointSpace( t , relVel)
+%% Syntax:
+% [ state ] = movePTPHomeJointSpace( t , relVel)
 
-% This function is used to move the robot point to point in joint space.
+%% About:
+% This function is used to move the robot to home position, the motion is
+% performed in joint space. 
+
+%% Arreguments:
 % t: is the TCP/IP connection
 % relVel: is a double, the over-ride relative velocity.
 
