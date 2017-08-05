@@ -4,8 +4,8 @@
 % [ torque ] = getMeasuredTorqueAtJoint( t,k )
 
 %% About:
-% This function is used to torque acting on some joint of the robot due to
-% external force/moment acting on the robot.
+% This function is used to get torque measurment form the torque sensor of
+% some joint of the robot.
 
 %% Arreguments:
 % t: is the TCP/IP connection
