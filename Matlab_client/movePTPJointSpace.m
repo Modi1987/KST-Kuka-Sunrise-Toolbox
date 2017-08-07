@@ -11,7 +11,8 @@
 % t: is the TCP/IP connection
 % jPos: is the destanation position in joint space, it is 1x7 cell array,
 % joint angles are in radians.
-% relVel: is a double, the over-ride relative velocity.
+% relVel: is a double, from zero to one, specifies the over-ride relative
+% velocity. 
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017
 

@@ -4,8 +4,8 @@
 
 % Mohammad SAFEEA, 9th of June 2017
 
-
-fprintf('Connecting to server')
+%% Connecting to server
+fprintf('Connecting to server....')
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
@@ -16,17 +16,14 @@ if ~exist('t','var') || isempty(t)
   return;
 else
 
-   
+%% Start handguiding functionality   
 startHandGuiding( t )
-
-
-      
            
  
-      %% turn off the server
-       net_turnOffServer( t );
+%% turn off the server
+net_turnOffServer( t );
 
 
-       fclose(t);
+fclose(t);
 end
 
