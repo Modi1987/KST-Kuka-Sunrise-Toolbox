@@ -12,6 +12,8 @@ A basic knowledge of using Matlab is required.
 
 Please cite the following paper in your publications if it helps your research 
 
+Paper in the link: https://arxiv.org/abs/1709.01438
+
 @inproceedings{safeea2017,
 
   author = {Mohammad Safeea and Pedro Neto},
