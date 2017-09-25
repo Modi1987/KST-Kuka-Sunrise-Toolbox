@@ -5,39 +5,25 @@ clc;
 instrreset;
 ID=1;
 joy=vrjoystick(ID);
-%% Start the KST
-cDir = pwd;
-cDir=getTheKSTDirectory(cDir);
-addpath(cDir);
-
-warning('off');
-ip='172.31.1.147'; % The IP of the controller
-% start a connection with the server
-global tKuka;
-tKuka=net_establishConnection( ip );
-
-if ~exist('tKuka','var') || isempty(tKuka)
-  warning('Connection could not be establised, script aborted');
-  return;
+%% Start the KST, move robot to home position, start directServo function
+[tKuka,flag]=startDaDirectServo( );
+if flag==false
+    fprintf('Can not connect to KST \n');
+    fprintf('Program terminated \n');
+    return;
 end
- %% Move robot to home position   
-      jPos={0,0,0,0,0,0,0};
-    
-      setBlueOff(tKuka); % turn Off blue light
-    
-      relVel=0.15;
-      movePTPJointSpace( tKuka , jPos, relVel); % move to initial configuration
- 
-%% Start direct servo in joint space       
-       realTime_startDirectServoJoints(tKuka);
-        
-%% Draw the interface
+jPos={0,0,0,0,0,0,0};
 
+%% Draw the interface
+[figureHandle,anglesTextHandlesCellArray,labelTextHandlesCellArray]=constructInterface();
 %% max angular velocity
 w=5*pi/180; % rad/sec
 %% Joint space control
 firstExecution=0;
 jointIndex=1; % the index of the selcted joint for realtime control.
+
+setBackGroundColor(labelTextHandlesCellArray, 1 );
+
 while true
     joyStatus=read(joy);
     %% Remove the bias in the analog signal
@@ -71,12 +57,12 @@ while true
         a=datevec(now);
         timeNow=a(6)+a(5)*60+a(4)*60*60; % calculate time at this instant
         dt=0; % elapsed is zero at first excution
-        time0=timenow;
+        time0=timeNow;
     else
         a=datevec(now);
         timeNow=a(6)+a(5)*60+a(4)*60*60; % calculate time at this instant
         dt=timeNow-time0; % calculate elapsed time interval
-        time0=timenow;
+        time0=timeNow;
     end
 %% Change index  of controlled axes, 
 % This happens when the left joiystic of the gamepad is moved in up/down
@@ -85,6 +71,7 @@ while true
     if(abs(joyStatus(2))>0.9)
         step=sign(joyStatus(2))*1;
         jointIndex=jointIndex+step
+        setBackGroundColor(labelTextHandlesCellArray, jointIndex );
         pause(0.5);
         continue;
     end
@@ -96,16 +83,20 @@ while true
         %% Chekc for joint limit avoidance
         dq=dq*jointLimitAvoidance(jointIndex,jPos,dq);
         jPos{jointIndex}=jPos{jointIndex}+dq;
-        sendJointsPositions( tKuka ,jPos);
+        setJointAngleToText(anglesTextHandlesCellArray, jointIndex,jPos{jointIndex} )
+        %sendJointsPositions( tKuka ,jPos);
      end
     
      %% TO be done
      % Add a condition to break the loop, when x button of the gamepad is
-     % pressed for example
+     b=button(joy,1);
+     if(b==1)
+         break;
+     end
        
     pause(0.1)
 end
-
+close(figureHandle);
     %% turn off the server
     net_turnOffServer( tKuka );
     fclose(tKuka);
