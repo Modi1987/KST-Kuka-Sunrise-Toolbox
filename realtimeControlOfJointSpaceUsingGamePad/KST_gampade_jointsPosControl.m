@@ -70,7 +70,16 @@ while true
 %
     if(abs(joyStatus(2))>0.9)
         step=sign(joyStatus(2))*1;
-        jointIndex=jointIndex+step
+        jointIndex=jointIndex+step;
+        
+        if(jointIndex==0)
+            jointIndex=7;
+        end
+        
+        if(jointIndex==8)
+            jointIndex=1;
+        end
+        
         setBackGroundColor(labelTextHandlesCellArray, jointIndex );
         pause(0.5);
         continue;
