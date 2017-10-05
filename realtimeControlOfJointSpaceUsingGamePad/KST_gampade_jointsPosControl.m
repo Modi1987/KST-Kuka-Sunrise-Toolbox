@@ -17,13 +17,15 @@ jPos={0,0,0,0,0,0,0};
 %% Draw the interface
 [figureHandle,anglesTextHandlesCellArray,labelTextHandlesCellArray]=constructInterface();
 %% max angular velocity
-w=5*pi/180; % rad/sec
+w=10*pi/180; % rad/sec
 %% Joint space control
 firstExecution=0;
 jointIndex=1; % the index of the selcted joint for realtime control.
 
 setBackGroundColor(labelTextHandlesCellArray, 1 );
-
+pause(0.1);
+frameUpdateCount=0;
+maxDisp=1*pi/180;
 while true
     joyStatus=read(joy);
     %% Remove the bias in the analog signal
@@ -84,16 +86,24 @@ while true
         pause(0.5);
         continue;
     end
- %% Control axes
+ %% Control axes motion
      if(joyStatus(2)==0) 
         % move the axes only if the analog signal corresponding to change
         % axes command is zero. 
         dq=w*dt*joyStatus(3);
-        %% Chekc for joint limit avoidance
+        %% Check for joint limit avoidance
         dq=dq*jointLimitAvoidance(jointIndex,jPos,dq);
+        if dq>maxDisp
+            dq=maxDisp;
+        end
         jPos{jointIndex}=jPos{jointIndex}+dq;
-        setJointAngleToText(anglesTextHandlesCellArray, jointIndex,jPos{jointIndex} )
-        %sendJointsPositions( tKuka ,jPos);
+        frameUpdateCount=frameUpdateCount+1;
+        if(frameUpdateCount==50)
+            setJointAngleToText(anglesTextHandlesCellArray, jointIndex,jPos{jointIndex} )
+            frameUpdateCount=0;
+            pause(0.001);
+        end
+        sendJointsPositions( tKuka ,jPos);
      end
     
      %% TO be done
@@ -103,7 +113,7 @@ while true
          break;
      end
        
-    pause(0.1)
+    % pause(0.1)
 end
 close(figureHandle);
     %% turn off the server
