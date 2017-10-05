@@ -25,3 +25,19 @@ MATLAB},
   year = {2017}
   
   }
+
+# Videos pertaining to the toolbox:
+
+1- Real time conotrol of KUKA iiwa using a game controller:
+https://youtu.be/8Tp4HIdlK00
+
+2- Real time conotrol of collision avoidance cell:
+https://www.youtube.com/watch?v=s0uUsSoDoxM&t=42s
+
+https://www.youtube.com/watch?v=mHhYHzWPqCc
+
+https://www.youtube.com/watch?v=eh5s8PTe5VM
+
+3- Video demonstrator of paper examples:
+https://www.youtube.com/watch?v=nCIBYZ42uJw&t=2s
+
