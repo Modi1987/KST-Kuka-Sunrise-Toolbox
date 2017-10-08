@@ -26,7 +26,7 @@ MATLAB},
   
   }
 
-# Videos pertaining to the toolbox:
+# Videos demonstrators for the toolbox:
 
 1- Real time conotrol of KUKA iiwa using a game controller:
 https://youtu.be/8Tp4HIdlK00
