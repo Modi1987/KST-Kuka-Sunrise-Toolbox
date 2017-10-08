@@ -26,7 +26,7 @@ MATLAB},
   
   }
 
-# Videos demonstrators for the toolbox:
+# Videos demos:
 
 1- Real time conotrol of KUKA iiwa using a game controller:
 https://youtu.be/8Tp4HIdlK00
@@ -38,6 +38,7 @@ https://www.youtube.com/watch?v=mHhYHzWPqCc
 
 https://www.youtube.com/watch?v=eh5s8PTe5VM
 
-3- Video demonstrator of paper examples:
+3- Video demo for the examples in the article (KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
+MATLAB):
 https://www.youtube.com/watch?v=nCIBYZ42uJw&t=2s
 
