@@ -35,6 +35,7 @@ https://youtu.be/8Tp4HIdlK00
 https://www.youtube.com/watch?v=e3TOJo15qSg
 
 2- Real time conotrol of collision avoidance cell:
+
 https://www.youtube.com/watch?v=s0uUsSoDoxM&t=42s
 
 https://www.youtube.com/watch?v=mHhYHzWPqCc
@@ -43,5 +44,6 @@ https://www.youtube.com/watch?v=eh5s8PTe5VM
 
 3- Video demo for the examples in the article (KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
 MATLAB):
+
 https://www.youtube.com/watch?v=nCIBYZ42uJw&t=2s
 
