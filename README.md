@@ -8,23 +8,6 @@ Using the KST the utilizer can control the iiwa robot from his/her computer with
 
 A basic knowledge of using Matlab is required.
 
-# Citations
-
-Please cite the following paper in your publications if it helps your research 
-
-Paper in the link: https://arxiv.org/abs/1709.01438
-
-@inproceedings{safeea2017,
-
-  author = {Mohammad Safeea and Pedro Neto},
-  
-  title = {KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
-  
-MATLAB},
-
-  year = {2017}
-  
-  }
 
 # Videos demos:
 
@@ -46,4 +29,24 @@ https://www.youtube.com/watch?v=eh5s8PTe5VM
 MATLAB):
 
 https://www.youtube.com/watch?v=nCIBYZ42uJw&t=2s
+
+
+# Citations
+
+Please cite the following paper in your publications if it helps your research 
+
+Paper in the link: https://arxiv.org/abs/1709.01438
+
+@inproceedings{safeea2017,
+
+  author = {Mohammad Safeea and Pedro Neto},
+  
+  title = {KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
+  
+MATLAB},
+
+  year = {2017}
+  
+  }
+
 
