@@ -29,7 +29,10 @@ MATLAB},
 # Videos demos:
 
 1- Real time conotrol of KUKA iiwa using a game controller:
+
 https://youtu.be/8Tp4HIdlK00
+
+https://www.youtube.com/watch?v=e3TOJo15qSg
 
 2- Real time conotrol of collision avoidance cell:
 https://www.youtube.com/watch?v=s0uUsSoDoxM&t=42s

@@ -76,12 +76,22 @@ kuka0_move_lin: move robot in linear motions, using remote PC
 kuka0_move_lin_relative: move robot in linear motion 
 kuka0_move_ptp: perform point to point motions using remote PC
 kuka0_move_sequare: move along a sequare
+kuka0_gampade_EEFPosControl:	example of integrating external hardware (gamepad)
+				with the KST for realtime control of the manipulator.
+				In this example the iiwa robot is controlled in realtime
+				using a gamepad controller, the example is in the folder
+				(realtimeControlOfEEFGamePad) of the github
+				repository.
+				For this example the robot is controlled at end-effector 
+				level.
 kuka0_gampade_jointsPosControl: example of integrating external hardware (gamepad)
 				with the KST for realtime control of the manipulator.
 				In this example the iiwa robot is controlled in realtime
 				using a gamepad controller, the example is in the folder
 				(realtimeControlOfJointSpaceUsingGamePad) of the github
 				repository.
+				For this example the robot is controlled in joint space.
+
 -----------------------------------------------------------------------
 
 Important: be sure that the robot is well fixed to the table.
