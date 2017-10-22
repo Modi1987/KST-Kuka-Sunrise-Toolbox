@@ -1,3 +1,5 @@
+# Mohammad SAFEEA 22nd Oct 2017
+-------------------------------
 KUKA Sunrise Toolbox for Matlab
 --------------------------------------------------------------------------
 A Toolbox used to control KUKA iiwa 7 R 800 robot from an external computer using Matlab.
@@ -91,6 +93,12 @@ kuka0_gampade_jointsPosControl: example of integrating external hardware (gamepa
 				(realtimeControlOfJointSpaceUsingGamePad) of the github
 				repository.
 				For this example the robot is controlled in joint space.
+kuka0_handGuidingExample:	example on the use of the hand guiding functionality of 
+				the toolbox.
+kuka0_preciseHandGuidingExample:an example on using the precise handguiding functionality, 
+				this is not the same as KUKA handguiding. The precise hand guiding
+				is a dedecated functionality (controller) that was establised to 
+				achieve precise hand guiding at end-effector level.
 
 -----------------------------------------------------------------------
 

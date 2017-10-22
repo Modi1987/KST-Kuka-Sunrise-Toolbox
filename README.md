@@ -30,6 +30,16 @@ MATLAB):
 
 https://www.youtube.com/watch?v=nCIBYZ42uJw&t=2s
 
+4- Precise hand guiding:
+
+https://www.youtube.com/watch?v=IAADH99DN8M
+
+https://www.youtube.com/watch?v=Rvqq-OOtUkA
+
+https://www.youtube.com/watch?v=0aWt0aIKg2E
+
+
+
 
 # Citations
 
@@ -48,5 +58,6 @@ MATLAB},
   year = {2017}
   
   }
+
 
 
