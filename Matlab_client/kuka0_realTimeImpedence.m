@@ -29,17 +29,15 @@ if ~exist('t','var') || isempty(t)
 else
     
       %% Get position roientation of end effector
-      
-%      jPos={0,pi/6,0,-pi/2,0,pi/2-pi/6,0};
    
-        jPos={0,0,0,-pi/2,0,pi/2,0};
-      %jPos={0,0,0,0,0,0,0};
-      setBlueOff(t); % turn Off blue light
+         jPos={0,0,0,-pi/2,0,pi/2,0};
+
+        setBlueOff(t); % turn Off blue light
     
-      relVel=0.15;
-      movePTPJointSpace( t , jPos, relVel); % move to initial configuration
-     %% Pause for 3 seocnds
-     pause(3); 
+        relVel=0.15;
+        movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+        %% Pause for 3 seocnds
+        pause(3); 
         %% Start direct servo in joint space    
         massOfTool=0.5; % the mass of the tool attached to flange in Kg
         cOMx=0; % X coordinate of the center of mass of the tool in (mm)
@@ -65,7 +63,7 @@ else
      tstart=t0;
      counter=0;
      duration=1*60; %1 minutes
-     time_stamps=zeros(1,1000*duration);
+
        while(dt<duration)
          %% ferform trajectory calculation here
           a=datevec(now);
@@ -80,7 +78,6 @@ else
           %% Send joint positions to robot
           %sendJointsPositions( t ,jPos);
           sendJointsPositionsf( t ,jPosCommand);
-          time_stamps(counter)=dt;
            
        end
        tend=time;
@@ -101,9 +98,6 @@ else
 
 
        fclose(t);
-       
-       %% save time stamps
-       save('timingdata.mat','time_stamps');
-      
+             
 end
  warning('on')
