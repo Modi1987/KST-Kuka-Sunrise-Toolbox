@@ -87,7 +87,7 @@ class BackgroundTask implements Runnable {
 		        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 		        		if(tempBool==false)
 		        		{
-		        			MatlabToolboxServer.directServoMotionFlag=false;
+		        			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 		        		}
 		        		// this.sendCommand(ack); no acknowledgement in fast execution mode
 		        	}
@@ -100,7 +100,7 @@ class BackgroundTask implements Runnable {
 						 * 		a- The while loop in run, using the flag: MatlabToolboxServer.terminateFlag.
 						 * 		b- The direct servo loop, using the flag: MatlabToolboxServer.directServoMotionFlag.
 						*/
-						MatlabToolboxServer.directServoMotionFlag=false;
+						MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 						MatlabToolboxServer.terminateFlag=true;
 						break;						
 					}
@@ -111,7 +111,7 @@ class BackgroundTask implements Runnable {
 		        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 		        		if(tempBool==false)
 		        		{
-		        			MatlabToolboxServer.directServoMotionFlag=false;
+		        			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 		        		}
 		        		this.sendCommand(ack);
 		        		MatlabToolboxServer.daCommand="";
@@ -156,7 +156,7 @@ class BackgroundTask implements Runnable {
 					// This insturction is used to turn_off the direct_servo controller
 		        	else if(MatlabToolboxServer.daCommand.startsWith("stopDirectServoJoints"))
 		        	{
-		        		MatlabToolboxServer.directServoMotionFlag=false;
+		        		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 		        		this.sendCommand(ack);
 		        		MatlabToolboxServer.daCommand="";
 		        	}

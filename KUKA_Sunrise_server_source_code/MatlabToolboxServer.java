@@ -52,7 +52,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
     public static double EEFposCirc1[];
     public static double EEFposCirc2[];
     public static boolean terminateFlag=false;
-    public static boolean directServoMotionFlag=false;
+    public static boolean directSmart_ServoMotionFlag=false;
     //---------------------------------------------------
     int _port;
     //private static final String stopCharacter="\n"+Character.toString((char)(10));
@@ -146,10 +146,58 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         {
         	if(daCommand.startsWith("startDirectServoJoints"))
         	{
-        		directServoMotionFlag=true;
+        		directSmart_ServoMotionFlag=true;
         		dabak.sendCommand(ack);
         		daCommand="";
+        		getLogger().info("realtime control initiated");
         		directServoStartJoints();
+        		getLogger().info("realtime control terminated");
+        		
+        	}
+        	else if(daCommand.startsWith(
+        			"startSmartImpedneceJoints"))
+        	{
+        		// pre-processing step
+        		directSmart_ServoMotionFlag=true;
+        		double[] variables=
+        				SmartServoWithImpedence.
+        				getControlParameters(daCommand);
+        		if(variables.length>6)
+        		{
+	        		double massOfTool=variables[0];
+	    			double[] toolsCOMCoordiantes=
+	    				{variables[1],variables[2],variables[3]};
+	    			double cStifness=variables[4];
+	    			double rStifness=variables[5];
+	    			double nStifness=variables[6];
+	    			getLogger().info("Mass: "+Double.toString(massOfTool));
+	    			getLogger().info("COM X : "+Double.toString(toolsCOMCoordiantes[0]));
+	    			getLogger().info("COM Y : "+Double.toString(toolsCOMCoordiantes[1]));
+	    			getLogger().info("COM Z : "+Double.toString(toolsCOMCoordiantes[2]));
+	    			getLogger().info("Stiffness C: "+Double.toString(cStifness));
+	    			getLogger().info("Stiffness R: "+Double.toString(rStifness));
+	    			getLogger().info("Stiffness N: "+Double.toString(nStifness));
+	    			dabak.sendCommand(ack);
+	        		daCommand="";
+	        		
+	    			try
+	        		{
+	    				getLogger().info("realtime control initiated");
+		    			SmartServoWithImpedence.
+		    			startRealTimeWithImpedence
+		    			( _lbr,kuka_Sunrise_Cabinet_1
+		    				,  massOfTool,
+		    				toolsCOMCoordiantes, 
+		    				cStifness, rStifness,nStifness) ;
+	        		}
+	        		catch (Exception e) {
+	        			// TODO: handle exception
+	        			getLogger().error(e.toString());
+	        		}
+	    			getLogger().info("realtime control terminated");
+	        		dabak.sendCommand(ack);
+	        		daCommand="";
+        		}
         		
         	}
         	// Start the hand guiding mode
@@ -159,7 +207,42 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         		dabak.sendCommand(ack);
         		daCommand="";
         	}
-
+        	// Start the precise hand guiding mode
+        	else if(daCommand.startsWith("preciseHandGuiding"))
+        	{
+        		
+    			double weightOfTool;
+    			double[] toolsCOMCoordiantes=
+    					new double[3];
+        		try
+        		{
+        			// pre-processing step
+        			String tempstring=daCommand;
+        			double[] toolData=new double[4];
+        			toolData=PreciseHandGuidingForUpload2.
+        			getWightAndCoordiantesOfCOMofTool
+        			(daCommand);
+        			tempstring=PreciseHandGuidingForUpload2.LBRiiwa7R800;
+        			// separate data of tool to weight+COM
+        			weightOfTool=toolData[0];
+        			for(int kj=0;kj<3;kj++)
+        			{
+        				toolsCOMCoordiantes[kj]=
+        						toolData[kj+1];	
+        			}
+        			// start the precise hand guiding
+        			PreciseHandGuidingForUpload2.
+        			HandGuiding(_lbr, kuka_Sunrise_Cabinet_1
+        			,tempstring,weightOfTool,toolsCOMCoordiantes);
+        		
+        		}
+        		catch (Exception e) {
+        			// TODO: handle exception
+        			getLogger().error(e.toString());
+        		}
+        		dabak.sendCommand(ack);
+        		daCommand="";
+        	} 
         	// Inquiring data from server
         	else if(daCommand.startsWith("getJointsPositions"))
         	{
@@ -393,7 +476,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
             // Do some timing...
             // in nanosec
 
-			while(directServoMotionFlag==true)
+			while(directSmart_ServoMotionFlag==true)
 			{
 
                 // ///////////////////////////////////////////////////////
