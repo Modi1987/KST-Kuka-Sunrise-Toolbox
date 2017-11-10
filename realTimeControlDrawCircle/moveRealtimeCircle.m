@@ -7,7 +7,8 @@
 clear all;
 close all;
 clc;
-
+% add the path of the KST to the working folder of Matlab
+addpath getTheKSTDirectory(pwd)
 % Initial configuration
 jPos={0., pi / 180 * 30, 0, -pi / 180 * 60, 0,...
                         pi / 180 * 90, 0};
