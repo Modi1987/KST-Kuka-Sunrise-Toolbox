@@ -38,6 +38,14 @@ https://www.youtube.com/watch?v=Rvqq-OOtUkA
 
 https://www.youtube.com/watch?v=0aWt0aIKg2E
 
+5- Realtime control using KST while impdeance is activated
+
+https://youtu.be/scwlmsq-B9Q
+
+6- Drawing ellipses using the KST, never been easier:
+
+https://youtu.be/Z-dR95r_dMk
+
 
 
 
