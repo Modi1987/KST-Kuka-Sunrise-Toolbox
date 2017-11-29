@@ -43,6 +43,7 @@ Collision avoidance with dynamic objects:
 	https://www.youtube.com/watch?v=s0uUsSoDoxM
 Case study, collision avoidance in automobile industry:
 	https://www.youtube.com/watch?v=mHhYHzWPqCc
+	https://www.youtube.com/watch?v=xrr78QzLHaU
 -----------------------------------------------------------------------
 In case you got trouble using the realtime control, do the following:
 1- Open the KST1.0 project

@@ -25,6 +25,9 @@ https://www.youtube.com/watch?v=mHhYHzWPqCc
 
 https://www.youtube.com/watch?v=eh5s8PTe5VM
 
+https://www.youtube.com/watch?v=xrr78QzLHaU
+
+
 3- Video demo for the examples in the article (KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
 MATLAB):
 
