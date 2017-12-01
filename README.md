@@ -10,7 +10,7 @@ A basic knowledge of using Matlab is required.
 
 
 # Videos demos:
-*- Real time control of KUKA iiwa using space mouse:
+* Real time control of KUKA iiwa using space mouse:
 
 https://youtu.be/-KjZGUkJzZM
 
