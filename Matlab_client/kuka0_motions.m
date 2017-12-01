@@ -61,10 +61,10 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
 
 %% Flash the blue light of the robot
     
-    setBlueOff(t);
-    setBlueOn(t);
+    %setBlueOff(t);
+    %setBlueOn(t);
     pause(3);
-    setBlueOff(t);
+    %setBlueOff(t);
 
 
       %% Play the motion again, from the previously generated trajectory

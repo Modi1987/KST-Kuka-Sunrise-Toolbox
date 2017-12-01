@@ -67,9 +67,9 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
        % x=400mm, y=0mm, z=580 mm.
        % the rotation angles are:
        % alpha=-180 degrees, beta=0 degrees, gama=-165 degrees, 
-       setBlueOn(t);
+       %setBlueOn(t);
        movePTPLineEEF( t , Pos, vel)
-       setBlueOff(t);
+       %setBlueOff(t);
 %% turn off the server
        net_turnOffServer( t );
 

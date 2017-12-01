@@ -33,7 +33,7 @@ else
       Pos=getEEFPos( t )
       z_1=Pos{3}; % save initial hight level
     
-      setBlueOn(t); % turn on blue light
+      %setBlueOn(t); % turn on blue light
     
       z0=448+3; % go to writing position
       
@@ -72,7 +72,7 @@ else
        Pos{3}=z_1;
        movePTPLineEEF( t , Pos, relVel) 
        
-       setBlueOff(t); 
+       %setBlueOff(t); 
       %% turn off the server
        net_turnOffServer( t );
 

@@ -79,10 +79,10 @@ else
      
 %% Flash the blue light for 3 seconds
     
-    setBlueOff(t);
-    setBlueOn(t);
+    %setBlueOff(t);
+    %setBlueOn(t);
     pause(3);
-    setBlueOff(t);
+    %setBlueOff(t);
 
 
 %% Play the motion again from the trajectory array

@@ -20,7 +20,7 @@ else
     
 %% Turn on blue light
     
-      setBlueOn(t); % turn on blue light
+      %setBlueOn(t); % turn on blue light
     
       
  %% Move to some initial configuration
@@ -51,7 +51,7 @@ else
     Pos{3}=-deltaZ;
     movePTPLineEefRelEef( t , Pos, vel);
 
-    setBlueOff(t); % turn off blue light
+    %setBlueOff(t); % turn off blue light
 
 %% turn off the server
     net_turnOffServer( t );

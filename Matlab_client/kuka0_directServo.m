@@ -31,7 +31,7 @@ else
       
       jPos={0,0,0,0,0,0,0};
     
-      setBlueOn(t); % turn on blue light
+      %setBlueOn(t); % turn on blue light
     
       relVel=0.15;
       movePTPJointSpace( t , jPos, relVel); % move to initial configuration
@@ -70,7 +70,7 @@ else
        fprintf('\n')
        pause(2);
        %% turn off light
-       setBlueOff(t); 
+       %setBlueOff(t); 
        
       %% turn off the server
        net_turnOffServer( t );
