@@ -39,7 +39,7 @@ else
         %% Start direct servo in joint space       
         realTime_startDirectServoJoints(t);
         
-       w=0.8; % motion constants, frequency rad/sec
+       w=0.4; % motion constants, frequency rad/sec
        A=pi/6; % motion constants, amplitude of motion
        
        a=datevec(now);
