@@ -127,3 +127,5 @@ The toolbox was tested extensively in the robotics Lab at University of Coimbra.
 Even though be careful when using the toolbox functionalities, We can not be held 
 liable for any collision or for any property damage.
 --------------------------------------------------------------------------------
+THE SOFTWARE IS PROVIDED AS IS FREE OF CHARGE, THE AUTHOR DOES NOT TAKE ANY LIABILITY WHAT SO EVER 
+IN CASE OF DAMAGE OR INJURY.
