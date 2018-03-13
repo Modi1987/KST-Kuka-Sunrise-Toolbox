@@ -107,14 +107,7 @@ class BackgroundTask implements Runnable {
 					// Put the direct_servo joint angles command in the joint variable
 					else if(MatlabToolboxServer.daCommand.startsWith("jp"))
 		        	{
-		        		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		        		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		        		if(tempBool==false)
-		        		{
-		        			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-		        		}
-		        		this.sendCommand(ack);
-		        		MatlabToolboxServer.daCommand="";
+		        		updateJointsPositionArray();
 		        	}
 					else if(MatlabToolboxServer.daCommand.startsWith("cArtixanPosition"))
 		        	{
@@ -160,6 +153,11 @@ class BackgroundTask implements Runnable {
 		        		this.sendCommand(ack);
 		        		MatlabToolboxServer.daCommand="";
 		        	}
+		        	else
+		        	{
+		        		// inquiring data from server
+		        		dataAqcuisitionRequest();
+		        	}
 					
 				}				
 			}
@@ -178,6 +176,178 @@ class BackgroundTask implements Runnable {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	private void updateJointsPositionArray()
+	{
+		//////////////////////////////////////////////////
+		//Start of server update functions
+		/////////////////////////////////////////////////////						
+		
+		if(MatlabToolboxServer.daCommand.startsWith("jp_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		this.sendCommand(ack);
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("jpExT_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("jpMT_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("jpEEfP_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendEEFforcesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("jpJP_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsPositionsToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		
+		//////////////////////////////////////////////////
+		//End of Servo joints update functions
+		//////////////////////////////////////////////////////
+	}
+	
+	// respond to a data Acquisition Request
+	private void dataAqcuisitionRequest()
+	{
+		// Inquiring data from server
+    	if(MatlabToolboxServer.daCommand.startsWith("getJointsPositions"))
+    	{
+    		MatlabToolboxServer.svr.sendJointsPositionsToClient();
+    		MatlabToolboxServer.daCommand="";
+    	}        	
+    	// Write output of Mediaflange
+    	else if(MatlabToolboxServer.daCommand.startsWith("blueOn"))
+    	{
+    		MatlabToolboxServer.mff.blueOn();
+    		sendCommand(ack);
+    		MatlabToolboxServer.daCommand="";
+    	}
+    	else if(MatlabToolboxServer.daCommand.startsWith("blueOff"))
+    	{
+    		MatlabToolboxServer.mff.blueOff();
+    		sendCommand(ack);
+    		MatlabToolboxServer.daCommand="";
+    	}
+    	else if(MatlabToolboxServer.daCommand.startsWith("pin"))
+    	{
+        	if(MatlabToolboxServer.daCommand.startsWith("pin1on"))
+			{
+        		MatlabToolboxServer.mff.pin1On();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin1off"))
+			{
+				MatlabToolboxServer.mff.pin1Off();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin11on"))
+			{
+				MatlabToolboxServer.mff.pin11On();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin11off"))
+			{
+				MatlabToolboxServer.mff.pin11Off();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin2on"))
+			{
+				MatlabToolboxServer.mff.pin2On();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin2off"))
+			{
+				MatlabToolboxServer.mff.pin2Off();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin12on"))
+			{
+				MatlabToolboxServer.mff.pin12On();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("pin12off"))
+			{
+				MatlabToolboxServer.mff.pin12Off();
+				sendCommand(ack);
+				MatlabToolboxServer.daCommand="";
+			}
+    	}
+    	// Read input of Mediaflange
+    	if(MatlabToolboxServer.daCommand.startsWith("getPin"))
+    	{
+			if(MatlabToolboxServer.daCommand.startsWith("getPin10"))
+			{
+				MatlabToolboxServer.mff.getPin10();
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("getPin16"))
+			{
+				MatlabToolboxServer.mff.getPin16();
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("getPin13"))
+			{
+				MatlabToolboxServer.mff.getPin13();
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("getPin3"))
+			{
+				MatlabToolboxServer.mff.getPin3();
+				MatlabToolboxServer.daCommand="";
+			}
+			else if(MatlabToolboxServer.daCommand.startsWith("getPin4"))
+			{
+				MatlabToolboxServer.mff.getPin4();
+				MatlabToolboxServer.daCommand="";
+			}
+    	}
 	}
 	
     

@@ -1,8 +1,13 @@
 package lbrExampleApplications;
-/* By Mohammad SAFEEA 07-May-2017
+/* By Mohammad SAFEEA: 13th-Marhc-2017
  * 
- * This is a server that is meant to be used with KUKA iiwa 7 R 800
- * robot, the server listens on the port 30005.
+ * KST 1.2
+ * 
+ * First upload 07-May-2017
+ * 
+ * This is a multi-threaded server program that is meant to be used with KUKA iiwa 7 R 800
+ * robot with pneumatic flange, the server listens on the port 30005.
+ * 
  * */
 
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
@@ -31,9 +36,10 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 	private Controller kuka_Sunrise_Cabinet_1;
 	
 	// Utility classes
-	private MediaFlangeFunctions mff; // utility functions to read Write mediaflange ports 
+	public static MediaFlangeFunctions mff; // utility functions to read Write mediaflange ports 
+    public static StateVariablesOfRobot svr; // state variables publisher
     private BackgroundTask dabak; // server function.
-    private StateVariablesOfRobot svr; // state variables publisher
+    
     private PTPmotionClass ptpm;
     //-----------------------------
     
@@ -87,15 +93,15 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         daCommand="";
         
 
-		
-		// Call instructors of utility classes
+        // Start the server
         _port=30001;
 		int timeout=60*1000;  // milli seconds
 		dabak=new BackgroundTask(_port,timeout,kuka_Sunrise_Cabinet_1,_lbr);
+		// Call instructors of utility classes
 		mff= new MediaFlangeFunctions(kuka_Sunrise_Cabinet_1,_lbr,  dabak);
 		svr=new StateVariablesOfRobot( _lbr, dabak);
 		ptpm=new PTPmotionClass(_lbr,dabak,kuka_Sunrise_Cabinet_1);
-		
+			
 		
 		
     }
@@ -243,105 +249,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         		dabak.sendCommand(ack);
         		daCommand="";
         	} 
-        	// Inquiring data from server
-        	else if(daCommand.startsWith("getJointsPositions"))
-        	{
-        		svr.sendJointsPositionsToClient();
-        		daCommand="";
-        	}        	
-        	// Write output of Mediaflange
-        	else if(daCommand.startsWith("blueOn"))
-        	{
-        		mff.blueOn();
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        	}
-        	else if(daCommand.startsWith("blueOff"))
-        	{
-        		mff.blueOff();
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        	}
-        	else if(daCommand.startsWith("pin"))
-        	{
-	        	if(daCommand.startsWith("pin1on"))
-				{
-					mff.pin1On();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin1off"))
-				{
-					mff.pin1Off();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin11on"))
-				{
-					mff.pin11On();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin11off"))
-				{
-					mff.pin11Off();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin2on"))
-				{
-					mff.pin2On();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin2off"))
-				{
-					mff.pin2Off();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin12on"))
-				{
-					mff.pin12On();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-				else if(daCommand.startsWith("pin12off"))
-				{
-					mff.pin12Off();
-					dabak.sendCommand(ack);
-					daCommand="";
-				}
-        	}
-        	// Read input of Mediaflange
-        	if(daCommand.startsWith("getPin"))
-        	{
-				if(daCommand.startsWith("getPin10"))
-				{
-					mff.getPin10();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("getPin16"))
-				{
-					mff.getPin16();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("getPin13"))
-				{
-					mff.getPin13();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("getPin3"))
-				{
-					mff.getPin3();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("getPin4"))
-				{
-					mff.getPin4();
-					daCommand="";
-				}
-        	}
+        	
         	// PTP instructions
         	if(daCommand.startsWith("doPTPin"))
         	{
