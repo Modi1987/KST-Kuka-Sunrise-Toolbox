@@ -76,8 +76,8 @@ else
             end
           counter=counter+1;
           %% Send joint positions to robot
-          %sendJointsPositions( t ,jPos);
-          sendJointsPositionsf( t ,jPosCommand);
+          sendJointsPositions( t ,jPosCommand);
+%           sendJointsPositionsf( t ,jPosCommand);
            
        end
        tend=time;
