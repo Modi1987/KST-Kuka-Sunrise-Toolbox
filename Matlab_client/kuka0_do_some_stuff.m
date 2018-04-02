@@ -1,6 +1,6 @@
 %% Example
 % An example script, it is used to show how to use the different
-% functions of the KUKA Sunrise matlab toolbox
+% functions of the KUKA iiwa matlab toolbox
 % First start the server on the KUKA iiwa controller
 % Then run the following script using Matlab
 
@@ -9,9 +9,9 @@
 % Important: Be careful when runnning the script, be sure that no human, nor obstacles
 % are around the robot
 
-close all,clear all;clc
+close all,clear all,clc
 warning('off');
-ip='172.31.1.147'; % The IP of the robot controller
+ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
 t=net_establishConnection( ip );
 
@@ -19,33 +19,26 @@ if ~exist('t','var') || isempty(t)
   warning('Connection could not be establised, script aborted');
   return;
 else
-%% move to some initial configuration
-    pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % joints angles of initial confuguration
-    relVel=0.15; % over-ride relative velocity of joints
-    movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
+    %% move to initial position
+pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
+relVel=0.15; % relative velocity
+movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
 
-%% Get the joints positions
-     fprintf('\nJoints positions of robot are \n')
+    %% Get the joints positions
      [ jPos ] = getJointsPos( t )
-%% Start the real time motion control loop on the server
+    %% Start the direct servo
      realTime_startDirectServoJoints(t);
      scale=4;
      n=60*scale;
      step=pi/(n*12);
      tempoDaEspera=0.001/scale;
-     
-     jointAnglesArray=zeros(7,2*n); % Array used to store the trajectory in joint space
+     % the following array is the trajectory
+     jointAnglesArray=zeros(7,2*n);
      counter=0;
      jVec=zeros(7,1);
-
-     accel_range=20; % acceleration range
      for i=1:n
-        if(i<accel_range)
-                 stepVal=step*i/accel_range; % motion step increments
-        else
-                stepVal=step;
-        end
-         jPos{1}=jPos{1}+stepVal;
+         jPos{1}=jPos{1}+step;
+         %jPos{2}=jPos{2}-step;
          sendJointsPositions( t ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
@@ -57,12 +50,8 @@ else
      end
      
       for i=1:n
-        if((n-i)<accel_range) % deceleration range
-                 stepVal=step*(n-i)/accel_range; % motion step increments
-        else
-                stepVal=step;
-        end
-         jPos{1}=jPos{1}-stepVal;
+         jPos{1}=jPos{1}-step;
+        % jPos{2}=jPos{2}+step;
          sendJointsPositions( t ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
@@ -74,44 +63,50 @@ else
       end
       pause(1);
       realTime_stopDirectServoJoints( t );
+%% error in here, check for reason
+      for tttt=1:10
+          getJointsPos( t )
+      end
 
       
      
-%% Flash the blue light for 3 seconds
+    %[ linearPos,angularPos ] = kuka3_getEEFPos( t )
+
+    % move along a trajectory using the direct servo function
     
-    %setBlueOff(t);
-    %setBlueOn(t);
+    setBlueOff(t);
+    setBlueOn(t);
     pause(3);
-    %setBlueOff(t);
+    setBlueOff(t);
 
 
-%% Play the motion again from the trajectory array
+      %% Play the motion again, from the trajectory
       trajectory=jointAnglesArray;
       delayTime=tempoDaEspera;
       realTime_moveOnPathInJointSpace( t , trajectory,delayTime);
       
      
-%% Get position orientation of end effector
+      %% Get position roientation of end effector
       fprintf('Cartesian position')
       getEEFPos( t )
       
-%% Get position of end effector
-      fprintf('\nCartesian position/orientation of end-effector is \n')
+      %% Get position of end effector
+      fprintf('Cartesian position')
       getEEFCartesianPosition( t )
       
-%% Get orientation of end effector
-      fprintf('\nCartesian orientation of end effector \n')
+      %% Get orientation of end effector
+      fprintf('Cartesian orientation')
       getEEFCartesianOrientation( t )
       
-%% Get force at end effector
-      fprintf('\nCartesian force \n')
+      %% Get force at end effector
+      fprintf('Cartesian force')
       getEEF_Force(t)
       
-%% Get moment at end effector
-      fprintf('\nmoment at eef \n')
+      %% Get moment at end effector
+      fprintf('moment at eef')
       getEEF_Moment(t)
       
-%% Point to point motion in joint space
+      %% PTP motion
       
      [ jPos ] = getJointsPos( t ); % get current joints position
 
@@ -121,11 +116,11 @@ else
           homePos{ttt}=0;
       end
       
-      relVel=0.15; % relative over-ride velocity of joints
+      relVel=0.15;
       movePTPJointSpace( t , homePos, relVel); % go to home position
-      movePTPJointSpace( t , jPos, relVel); % return back to initial position
+      movePTPJointSpace( t , jPos, relVel); % return back to original position
       
-%% turn off the server
+      %% turn off the server
        net_turnOffServer( t );
 
 

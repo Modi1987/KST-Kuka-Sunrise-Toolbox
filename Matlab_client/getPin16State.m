@@ -1,3 +1,4 @@
+function [ state ] = getPin16State( t )
 %% This function is used to get the state of the input pin 16
 %     on the media flange, of the KUKA iiwa 7 R 800.
 
@@ -16,5 +17,11 @@
 % value is empty.
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017
+
+theCommand='getPin16';
+fprintf(t, theCommand);
+message=fgets(t);
+state=str2num(message);
+end
 
 

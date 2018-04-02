@@ -1,6 +1,22 @@
 function rMat= getEEFOrientationR(t)
 %% This function is used to get the orientation of the 
 % media flange of the KUKA iiwa 7 R 800 robot.
+
+%% Syntax:
+% [R]= getEEFOrientationR(t)
+
+%% About:
+% This function is used to get the orientation of the 
+% media flange of the KUKA iiwa 7 R 800 robot. The orientation is described
+% by a 3x3 rotation matrix
+
+%% Arreguments:
+% R: is the rotation matrix descriping the orientation of the end-effector
+% of the media flange of the robot.
+% t : is the TCP/IP comunication object.
+
+%% Copy right, Mohammad SAFEEA 7th of August 2017.
+
 alfa={0,-pi/2,pi/2,pi/2,-pi/2,-pi/2,pi/2};
 d={0.34,0.0,0.4,0.0,0.4,0.0,0.28}; 
 a={0,0,0,0,0,0,0};

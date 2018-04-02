@@ -1,12 +1,12 @@
 %% Example
 % An example script, it is used to show how to use the different
-% functions of the KUKA Sunrise matlab toolbox
+% functions of the KUKA iiwa matlab toolbox
 % First start the server on the KUKA iiwa controller
 % Then run the following script in Matlab
 
 % Copy right: Mohammad SAFEEA, 3rd of May 2017
 
-close all,clear all;clc
+close all,clear all,clc
 warning('off')
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server

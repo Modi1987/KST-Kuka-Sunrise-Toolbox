@@ -2,7 +2,7 @@
 % Drawing a sequare with a pen using the KUKA iiwa robot
 
 % An example script, it is used to show how to use the different
-% functions of the KUKA Sunrise matlab toolbox
+% functions of the KUKA iiwa matlab toolbox
 
 % First start the server on the KUKA iiwa controller
 % Then run the following script in Matlab
@@ -12,7 +12,7 @@
 % be careful when runnning the script, be sure that no human, nor obstacles
 % are around the robot
 
-close all,clear all;clc
+close all,clear all,clc
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
@@ -23,17 +23,17 @@ if ~exist('t','var') || isempty(t)
   return;
 else
     
-%% move to some initial position
-    pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
-    relVel=0.15; % relative velocity
-    movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
+    %% move to initial position
+pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
+relVel=0.15; % relative velocity
+movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
 
-%% Get position roientation of end effector
-      fprintf('\nCartesian position/orientaion of end-effector \n')
+      %% Get position roientation of end effector
+      disp('Cartesian position')
       Pos=getEEFPos( t )
       z_1=Pos{3}; % save initial hight level
     
-      %setBlueOn(t); % turn on blue light
+      setBlueOn(t); % turn on blue light
     
       z0=448+3; % go to writing position
       
@@ -72,7 +72,7 @@ else
        Pos{3}=z_1;
        movePTPLineEEF( t , Pos, relVel) 
        
-       %setBlueOff(t); 
+       setBlueOff(t); 
       %% turn off the server
        net_turnOffServer( t );
 

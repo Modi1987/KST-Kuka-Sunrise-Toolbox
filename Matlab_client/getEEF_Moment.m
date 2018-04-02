@@ -1,3 +1,4 @@
+function [ f ] = getEEF_Moment( t )
 %% This function is used to get the endeffector moment of the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -15,3 +16,32 @@
 % (Newton.meter)
 
 % Copy right, Mohammad SAFEEA, 3rd of May 2017
+
+
+theCommand='Eef_moment';
+fprintf(t, theCommand);
+message=fgets(t);
+%disp(message)
+[P1,N]=getDoubleFromString(message);
+
+for i=1:3
+    f{i}=P1{i};
+end
+
+end
+
+function [jPos,j]=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+end
+

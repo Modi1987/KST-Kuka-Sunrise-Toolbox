@@ -1,31 +1,23 @@
 function kuka0_motions(t)
 %% move to initial position
 pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
-relVel=0.15; % over-riderelative velocity of joints
+relVel=0.15; % relative velocity
 movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
     %% Get the joints positions
-      jPos  = getJointsPos( t );
-      fprintf('\n joints positions of the robot are: \n')
-      jPos
-    %% Start the direct servo, and move the first joint of the robot in realtime.
+      jPos  = getJointsPos( t )
+    %% Start the direct servo
      realTime_startDirectServoJoints(t);
      scale=4;
      n=100*scale;
      step=pi/(n*12);
      tempoDaEspera=0.001/scale;
-     % The array ((jointAnglesArray)): is an array of the motion trajectory in joint space
+     % the following array is the trajectory
      jointAnglesArray=zeros(7,2*n);
      counter=0;
      jVec=zeros(7,1);
-
-     accel_range=20; % acceleration range
      for i=1:n
-        if(i<accel_range)
-                 stepVal=step*i/accel_range; % motion step increments
-        else
-                stepVal=step;
-        end
-         jPos{1}=jPos{1}+stepVal;
+         jPos{1}=jPos{1}+step;
+         %jPos{2}=jPos{2}-step;
          sendJointsPositions( t ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
@@ -36,13 +28,10 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
          jointAnglesArray(:,counter)=jVec;
      end
      
+
       for i=1:n
-        if((n-i)<accel_range) % deceleration range
-                 stepVal=step*(n-i)/accel_range; % motion step increments
-        else
-                stepVal=step;
-        end
-         jPos{1}=jPos{1}-stepVal;
+         jPos{1}=jPos{1}-step;
+         %jPos{2}=jPos{2}+step;
          sendJointsPositions( t ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
@@ -52,22 +41,25 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
          end
          jointAnglesArray(:,counter)=jVec;
       end
-      pause(1);
       realTime_stopDirectServoJoints( t );
-%% Read joints positions
+%% error in here, check for reason
       for tttt=1:10
           getJointsPos( t )
       end
 
-%% Flash the blue light of the robot
+      
+     
+    %[ linearPos,angularPos ] = kuka3_getEEFPos( t )
+
+    % move along a trajectory using the direct servo function
     
-    %setBlueOff(t);
-    %setBlueOn(t);
+    setBlueOff(t);
+    setBlueOn(t);
     pause(3);
-    %setBlueOff(t);
+    setBlueOff(t);
 
 
-      %% Play the motion again, from the previously generated trajectory
+      %% Play the motion again, from the trajectory
       trajectory=jointAnglesArray;
       delayTime=tempoDaEspera;
       realTime_moveOnPathInJointSpace( t , trajectory,delayTime);
@@ -75,24 +67,24 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
       
 
       
-      %% Get position/orientation of end effector
-      fprintf('\nCartesian position and orientation \n');
+      %% Get position roientation of end effector
+      fprintf('Cartesian position and orientation');
       getEEFPos( t )
       
       %% Get position of end effector
-      fprintf('\nCartesian position \n');
+      fprintf('Cartesian position');
       getEEFCartesianPosition( t )
       
       %% Get orientation of end effector
-      fprintf('\nCartesian orientation \n');
+      fprintf('Cartesian orientation');
       getEEFCartesianOrientation( t )
       
       %% Get force at end effector
-      fprintf('\nCartesian force \n');
+      fprintf('Cartesian force');
       getEEF_Force(t)
       
       %% Get moment at end effector
-      fprintf('\nmoment at EEF \n');
+      fprintf('moment at eef');
       getEEF_Moment(t)
       
       %% PTP motion
@@ -105,33 +97,35 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
           homePos{ttt}=0;
       end
       
-      relVel=0.15; % over-ride relative velocity of joints
+      relVel=0.15;
       movePTPJointSpace( t , homePos, relVel); % go to home position
       movePTPJointSpace( t , jPos, relVel); % return back to original position
       
       
-%% Get position orientation of end effector
+            %% Get position roientation of end effector
       fprintf('Cartesian position');
       Pos=getEEFPos( t )
-
-%% Move the endeffector in the X direction
-      disp=50; % displacement mm
+      
+      relVel=150; % velocity of the end effector, mm/sec
+      
+      disp=50;
+      %% Move the endeffector in the X direction
       index=1;
       Pos{index}=Pos{index}+disp;
-      relVel=150; % velocity of the end effector, mm/sec      
-      movePTPLineEEF( t , Pos, relVel)
-      pause(0.1)
+      
+       movePTPLineEEF( t , Pos, relVel)
+pause(0.1)
       Pos{index}=Pos{index}-disp;
       
       movePTPLineEEF( t , Pos, relVel)
       
-%% Move the endeffector in the z direction
+      %% Move the endeffector in the z direction
  
-      index=3;
+       index=3;
       Pos{index}=Pos{index}+disp;
       
-      movePTPLineEEF( t , Pos, relVel)
-      pause(0.1)
+       movePTPLineEEF( t , Pos, relVel)
+pause(0.1)
       Pos{index}=Pos{index}-disp;
       
       movePTPLineEEF( t , Pos, relVel)

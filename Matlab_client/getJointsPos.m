@@ -1,3 +1,4 @@
+function [ jPos ] = getJointsPos( t )
 %% This function is used to get the joints positions of the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -13,4 +14,26 @@
 
 % Copy right, Mohammad SAFEEA, 3rd of May 2017
 
+theCommand='getJointsPositions';
+fprintf(t, theCommand);
+message=fgets(t);
+
+
+jPos=getDoubleFromString(message);
+end
+
+function jPos=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+end
 

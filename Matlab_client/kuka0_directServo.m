@@ -25,59 +25,67 @@ t=net_establishConnection( ip );
 if ~exist('t','var') || isempty(t)
   warning('Connection could not be establised, script aborted');
   return;
-else
-    
-      %% Get position roientation of end effector
-      
-      jPos={0,0,0,0,0,0,0};
-    
-      %setBlueOn(t); % turn on blue light
-    
-      relVel=0.15;
-      movePTPJointSpace( t , jPos, relVel); % move to initial configuration
- 
-        %% Start direct servo in joint space       
-        realTime_startDirectServoJoints(t);
-        
-       w=0.4; % motion constants, frequency rad/sec
-       A=pi/6; % motion constants, amplitude of motion
-       
-       a=datevec(now);
-       t0=a(6)+a(5)*60+a(4)*60*60; % calculate initial time
-       
-       dt=0;
-
-     tstart=t0;
-     counter=0;
-       while(dt<(8*pi/w))
-         %% ferform trajectory calculation here
-          a=datevec(now);
-          time=a(6)+a(5)*60+a(4)*60*60;
-          dt=time-t0;
-          jPos{1}=A*(1-cos(w*dt));
-          counter=counter+1;
-          %% Send joint positions to robot
-          sendJointsPositions( t ,jPos);
-           
-       end
-       tend=time;
-       rate=counter/(tend-tstart);
-       %% Stop the direct servo motion
-       realTime_stopDirectServoJoints( t );
-
-       fprintf('\nThe rate of joint nagles update per second is: \n');
-       disp(rate);
-       fprintf('\n')
-       pause(2);
-       %% turn off light
-       %setBlueOff(t); 
-       
-      %% turn off the server
-       net_turnOffServer( t );
-
-
-       fclose(t);
-       
-      
 end
- warning('on')
+    
+%% Go to initial position
+
+jPos={0,0,0,0,0,0,0};
+
+setBlueOn(t); % turn on blue light
+
+relVel=0.5;
+movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+
+%% Start direct servo in joint space       
+realTime_startDirectServoJoints(t);
+
+w=1.5; % motion constants, frequency rad/sec
+A=pi/6; % motion constants, amplitude of motion
+
+a=datevec(now);
+t0=now*86400; % calculate initial time
+
+dt=0;
+
+tstart=t0;
+counter=0;
+t_0=now*24*60*60;
+%% Control loop
+try    
+    while(dt<(80*pi/w))
+     %% ferform trajectory calculation here
+      time=now*86400;
+      dt=time-t0;
+      jPos{1}=A*(1-cos(w*dt));
+      counter=counter+1;
+      %% Send joint positions to robot
+      daTime=now*86400;
+      if((daTime-t_0)>0.003)
+        t_0=daTime;
+        sendJointsPositions( t ,jPos);
+      end
+
+    end
+    tend=time;
+    rate=counter/(tend-tstart);
+    %% Stop the direct servo motion
+    realTime_stopDirectServoJoints( t );
+    fprintf('\nTotal execution time is %f: \n',tend-t0 );
+    fprintf('\nThe rate of joint nagles update per second is: \n');
+    disp(rate);
+    fprintf('\n')
+    pause(2);
+    %% turn off light
+    setBlueOff(t);
+    net_turnOffServer( t )
+    disp('Direct servo motion completed successfully')
+    warning('on')
+    return;
+catch
+    % in case of error turn off the server
+    net_turnOffServer( t );
+    disp('Error during execution the direct servo motion')
+    fclose(t);  
+    warning('on')
+end
+

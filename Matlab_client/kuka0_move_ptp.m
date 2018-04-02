@@ -1,12 +1,12 @@
 %% Example
 % An example script, it is used to show how to use the different
-% functions of the KUKA Sunrise matlab toolbox
+% functions of the KUKA iiwa matlab toolbox
 % First start the server on the KUKA iiwa controller
 % Then run the following script in Matlab
 
 % Mohammad SAFEEA, 3rd of May 2017
 
-close all;clear all;clc
+close all,clear all,clc
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
@@ -17,18 +17,16 @@ if ~exist('t','var') || isempty(t)
   return;
 else
    
-%% Move to some initial position
-    pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % joints angles of initial confuguration
-    relVel=0.15; % relative velocity
-    movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
+    %% move to initial position
+pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
+relVel=0.15; % relative velocity
+movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
 
-%% Point to point motion in joint space
+      %% PTP motion
+      jPos={}
+      homePos={}
+     [ jPos ] = getJointsPos( t ) % get current joints position
 
-      homePos={};
-      [ jPos ] = getJointsPos( t ); % get current joints position
-    
-      fprintf('\nCurrent joints positions of robot are \n')
-      jPos
       
            
       for ttt=1:7  % home position

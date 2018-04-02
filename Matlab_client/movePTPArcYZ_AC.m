@@ -1,3 +1,4 @@
+function [ state ] =movePTPArcYZ_AC(t,theta,c,vel)
 %% This function is used for moving the endeffector on an arc in the YZ plane, for the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -13,3 +14,20 @@
 % vel : is a double, defines the motion velocity mm/sec.
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017
+
+    k=[1;0;0];
+    pos=getEEFPos( t );
+    c=colVec(c);
+    c1=[pos{1};c(1);c(2)];
+    movePTPArc_AC(t,theta,c1,k,vel)
+
+end
+
+function [ y ] = colVec( v)
+% Convert a vector to a column vector:
+    if(size(v,2)==1)
+        y=v;
+    else
+        y=v';
+    end
+end

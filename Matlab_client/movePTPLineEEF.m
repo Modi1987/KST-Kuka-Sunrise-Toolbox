@@ -1,3 +1,4 @@
+function [ state ] = movePTPLineEEF( t , Pos, relVel)
 %% This function is used for performing point to point motion in Cartizian space, for the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -22,6 +23,33 @@
 % vel: is a double, and it represents the linear motion velocity, mm/sec.
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017
+
+    theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
+    fprintf(t, theCommand);
+    message=fgets(t);
+    
+    sendEEfPositions( t ,Pos); % send destination joint positions.
+    
+    
+    theCommand='doPTPinCS';
+    fprintf(t, theCommand); % start the point to point motion.
+    message=fgets(t);
+    
+    readingFlag=false;
+    
+    message='';
+    
+    while readingFlag==false
+        message=fgets(t);
+        
+        if checkAcknowledgment(message)
+            readingFlag=true;
+        end
+    end
+    
+    
+    
+end
 
 
 

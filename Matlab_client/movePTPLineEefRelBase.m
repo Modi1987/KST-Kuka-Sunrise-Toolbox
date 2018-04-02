@@ -1,3 +1,4 @@
+function [ state ] = movePTPLineEefRelBase( t , Pos, relVel)
 %% This function is used for moving the endeffector on a line, for the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -16,3 +17,41 @@
 % mm/sec). 
 
 % Copy right, Mohammad SAFEEA, 9th of May 2017
+
+
+    theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
+    fprintf(t, theCommand);
+    message=fgets(t);
+    % The new position of end-effector, described in robot 
+    newPos={0,0,0,0,0,0};
+    
+    newPos{1}=Pos{1};
+    newPos{2}=Pos{2};
+    newPos{3}=Pos{3};
+    
+    
+    sendEEfPositions( t ,newPos); % send destination joint positions.
+    
+    
+    theCommand='doPTPinCSRelBase';
+    fprintf(t, theCommand); % start the point to point motion.
+    message=fgets(t);
+    
+    readingFlag=false;
+    
+    message='';
+    
+    while readingFlag==false
+        message=fgets(t);
+        
+        if checkAcknowledgment(message)
+            readingFlag=true;
+        end
+    end
+    
+    
+    
+end
+
+
+

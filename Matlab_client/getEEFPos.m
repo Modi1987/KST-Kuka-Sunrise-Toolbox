@@ -1,3 +1,4 @@
+function [ Pos ] = getEEFPos( t )
 %% This function is used to get the endeffector position and orientation of the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -17,3 +18,27 @@
 % media flange are in realtion to the base reference frame of the robot.
 
 % Copy right, Mohammad SAFEEA, 3rd of May 2017
+
+theCommand='Eef_pos';
+fprintf(t, theCommand);
+message=fgets(t);
+%disp(message)
+[Pos,N]=getDoubleFromString(message);
+
+end
+
+function [jPos,j]=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+end
+
