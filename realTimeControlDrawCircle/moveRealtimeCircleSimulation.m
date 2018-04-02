@@ -1,6 +1,9 @@
 % KUKA sunrise toolbox example.
 % moving end-effector of the robot on a circle.
 
+% Copy right: Mohammad SAFEEA
+% 16th-Oct-2017
+
 clear all;
 close all;
 clc;

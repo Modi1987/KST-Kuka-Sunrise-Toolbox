@@ -1,4 +1,6 @@
 function [tKuka,flag]=connectToKuka( jPos)
+% Copy right: Mohammad SAFEEA
+% 16th-Oct-2017
 
 cDir = pwd;
 cDir=getTheKSTDirectory(cDir);
