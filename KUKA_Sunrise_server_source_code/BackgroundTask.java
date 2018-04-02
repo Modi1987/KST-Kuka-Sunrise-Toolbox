@@ -153,6 +153,10 @@ class BackgroundTask implements Runnable {
 		        		this.sendCommand(ack);
 		        		MatlabToolboxServer.daCommand="";
 		        	}
+					else if(MatlabToolboxServer.daCommand.startsWith("DcSe"))
+		        	{
+		        		updateEEFPositionArray();
+		        	}
 		        	else
 		        	{
 		        		// inquiring data from server
@@ -177,7 +181,109 @@ class BackgroundTask implements Runnable {
 		}
 		
 	}
+
 	
+	private void updateEEFPositionArray()
+	{
+		//////////////////////////////////////////////////
+		//Start of server update functions
+		/////////////////////////////////////////////////////						
+		
+		if(MatlabToolboxServer.daCommand.startsWith("DcSeCar_"))
+		{
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			// this.sendCommand(ack);
+			MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarExT_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarMT_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarEEfP_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendEEFforcesToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarJP_"))
+		{
+		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+		if(tempBool==false)
+		{
+		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+		}
+		MatlabToolboxServer.svr.sendJointsPositionsToClient();
+		MatlabToolboxServer.daCommand="";
+		}
+		
+		//////////////////////////////////////////////////
+		//End of Servo joints update functions
+		//////////////////////////////////////////////////////
+	}
+	
+	private boolean getThePositions(String thestring) {
+		StringTokenizer st= new StringTokenizer(thestring,"_");
+		if(st.hasMoreTokens())
+		{
+			String temp=st.nextToken();
+				int j=0;
+				while(st.hasMoreTokens())
+				{
+					if(j<6)
+					{
+						//getLogger().warn(jointString);
+						try
+						{
+							MatlabToolboxServer.EEfServoPos[j]=Double.parseDouble(st.nextToken());
+						}
+						catch(Exception e)
+						{
+							return false;
+						}						
+					}					
+					j++;
+				}
+				MatlabToolboxServer.daCommand="";
+				return true;
+				
+			}
+			else
+			{
+				return false;
+			}
+	}
+
+	
+
 	
 	private void updateJointsPositionArray()
 	{

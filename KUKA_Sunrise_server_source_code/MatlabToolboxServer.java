@@ -59,6 +59,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
     public static double EEFposCirc2[];
     public static boolean terminateFlag=false;
     public static boolean directSmart_ServoMotionFlag=false;
+    public static double EEfServoPos[];
     //---------------------------------------------------
     int _port;
     //private static final String stopCharacter="\n"+Character.toString((char)(10));
@@ -80,6 +81,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         EEFposCirc1=new double[7];
         EEFposCirc2=new double[7];
         updateCycleJointPos=new double[7];
+        EEfServoPos=new double[7];
         for(int i=0;i<7;i++)
         {
         	jpos[i]=0;
@@ -88,6 +90,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
             EEFposCirc2[i]=0;
         	jDispMax[i]=0;
         	updateCycleJointPos[i]=0;
+        	EEfServoPos[i]=0;
         }
         terminateFlag=false;
         daCommand="";
@@ -157,6 +160,16 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         		daCommand="";
         		getLogger().info("realtime control initiated");
         		directServoStartJoints();
+        		getLogger().info("realtime control terminated");
+        		
+        	}
+        	else if(daCommand.startsWith("stDcEEf_"))
+        	{
+        		directSmart_ServoMotionFlag=true;
+        		dabak.sendCommand(ack);
+        		daCommand="";
+        		getLogger().info("realtime control in Cartesian space initiated");
+        		directServoStartCartezian();
         		getLogger().info("realtime control terminated");
         		
         	}
@@ -446,7 +459,99 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         theDirectServoRuntime.stopMotion();
         getLogger().info("Stop the DirectServo motion for the stop instruction was sent");
     }
-    
+
+
+	private void directServoStartCartezian() {
+		
+		boolean doDebugPrints = false;
+
+        DirectServo aDirectServoMotion = new DirectServo(
+                _lbr.getCurrentJointPosition());
+
+        aDirectServoMotion.setMinimumTrajectoryExecutionTime(40e-3);
+
+        getLogger().info("Starting DirectServo motion in position control mode");
+        _lbr.moveAsync(aDirectServoMotion);
+
+        getLogger().info("Get the runtime of the DirectServo motion");
+        IDirectServoRuntime theDirectServoRuntime = aDirectServoMotion
+                .getRuntime();
+
+        Frame aFrame = theDirectServoRuntime.getCurrentCartesianDestination(_lbr.getFlange());
+        Frame destFrame = aFrame.copyWithRedundancy();
+        // Initiate the initial position 
+        EEfServoPos[0]=aFrame.getX();
+        EEfServoPos[1]=aFrame.getY();
+        EEfServoPos[2]=aFrame.getZ();
+        EEfServoPos[3]=aFrame.getAlphaRad();
+        EEfServoPos[4]=aFrame.getBetaRad();
+        EEfServoPos[5]=aFrame.getGammaRad();
+        
+        try
+        {
+            // do a cyclic loop
+            // Do some timing...
+            // in nanosec
+
+			while(directSmart_ServoMotionFlag==true)
+			{
+
+                // ///////////////////////////////////////////////////////
+                // Insert your code here
+                // e.g Visual Servoing or the like
+                // Synchronize with the realtime system
+                theDirectServoRuntime.updateWithRealtimeSystem();
+                Frame msrPose = theDirectServoRuntime
+                        .getCurrentCartesianDestination(_lbr.getFlange());
+
+                if (doDebugPrints)
+                {
+                	getLogger().info("Current cartesian goal " + aFrame);
+                    getLogger().info("Current joint destination "
+                            + theDirectServoRuntime.getCurrentJointDestination());
+                }
+
+                Thread.sleep(1);
+
+                // update Cartesian positions
+                destFrame.setX(EEfServoPos[0]);
+                destFrame.setY(EEfServoPos[1]);
+                destFrame.setZ(EEfServoPos[2]);
+                destFrame.setAlphaRad(EEfServoPos[3]);
+                destFrame.setBetaRad(EEfServoPos[4]);
+                destFrame.setGammaRad(EEfServoPos[5]);
+
+                if (doDebugPrints)
+                {
+                    getLogger().info("New cartesian goal " + destFrame);
+                    getLogger().info("LBR position "
+	                            + _lbr.getCurrentCartesianPosition(_lbr
+	                                    .getFlange()));
+                    getLogger().info("Measured cartesian pose from runtime "
+	                            + msrPose);
+                }
+
+	                theDirectServoRuntime.setDestination(destFrame);
+                
+            }
+        }
+        catch (Exception e)
+        {
+            getLogger().info(e.getLocalizedMessage());
+            e.printStackTrace();
+            //Print statistics and parameters of the motion
+            getLogger().info("Simple Cartesian Test \n" + theDirectServoRuntime.toString());
+
+            getLogger().info("Stop the DirectServo motion");
+            
+        }
+        theDirectServoRuntime.stopMotion();
+        getLogger().info("Stop the DirectServo motion for the stop instruction was sent");
+		
+	}
+
+
+	
     double getTheDisplacment(double dj)
     {
 		return dj;
