@@ -18,10 +18,8 @@ jPos={pi / 180 * 30, pi / 180 * 30, 0, -pi / 180 * 60, 0,...
 % end
 
 % calculate current position of flange point of the robot
-qs=zeros(7,1);
-for i=1:7
-    qs(i)=jPos{i};
-end
+qs=cell2mat(jPos)';
+
         TefTool=eye(4);
         T0=directKinematics(qs,TefTool); % EEF frame transformation matrix
         p0=T0(1:3,4);
