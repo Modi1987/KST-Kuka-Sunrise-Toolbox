@@ -12,6 +12,9 @@ function [t0,t1,t2]=calculateInterpolationTimes(L,v,a)
 % t1: time for acceleration, constant velocity.
 % t2: time for acceleration, constant velocity and for deceleration
 
+% Copy right: Mohammad SAFEEA
+% 16th-Oct-2017
+
 taw=v/a;
 
 if(L>a*taw*taw)
