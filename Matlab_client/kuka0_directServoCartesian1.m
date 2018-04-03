@@ -36,7 +36,7 @@ fprintf('Cartesian position')
 eefpos=getEEFPos( t );
 eefposDist=eefpos;
 disp(eefpos)
-%% Start direct servo in joint space       
+%% Start direct servo in Cartesian space       
 realTime_startDirectServoCartesian(t);
 disp('Starting direct servo in Cartesian space');
 w=2; % motion constants, frequency rad/sec
@@ -63,7 +63,7 @@ try
             % Send EEF position to robot
             if(toc-t_0>0.002)
                 counter=counter+1;
-                sendEEfPosition( t ,eefposDist);
+                sendEEfPositionf( t ,eefposDist);
                 t_0=toc;
             end
         end
