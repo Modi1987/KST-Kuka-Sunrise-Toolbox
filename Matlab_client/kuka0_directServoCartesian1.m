@@ -41,25 +41,34 @@ realTime_startDirectServoCartesian(t);
 disp('Starting direct servo in Cartesian space');
 w=2; % motion constants, frequency rad/sec
 A=75; % motion constants, amplitude of motion (mm)
-t0=now*86400; % calculate initial time
+tic;
 deltaT=0;
-tstart=t0;
 counter=0;
+initiationFlag=0;
 disp('Enter control loop, stream EEF positions')
 try
-    t_0=now*86400;
+    %% Control loop
     while(deltaT<(6*pi/w))
-        %% ferform trajectory calculation here
-        time=now*86400;
-        deltaT=time-t0;
-        eefposDist{3}=eefpos{3}-A*(1-cos(w*deltaT));
-        %% Send EEF position to robot
-        if(now*86400-t_0>0.002)
-            counter=counter+1;
-            sendEEfPosition( t ,eefposDist);
-            t_0=now*86400;
+        if(initiationFlag==0)
+            initiationFlag=1;
+            t_0=toc;
+            t0=t_0;
+        else
+            time=toc;
+            deltaT=time-t0;
+            %%%%%%%%%%%%%%%%%%%%%%%%
+            %% Perform trajectory calculation here
+            eefposDist{3}=eefpos{3}-A*(1-cos(w*deltaT));
+            %%%%%%%%%%%%%%%%%%%%%%%%
+            % Send EEF position to robot
+            if(toc-t_0>0.002)
+                counter=counter+1;
+                sendEEfPosition( t ,eefposDist);
+                t_0=toc;
+            end
         end
     end
+    tstart=t0;
     tend=time;
     rate=counter/(tend-tstart);
     %% Stop the direct servo motion
