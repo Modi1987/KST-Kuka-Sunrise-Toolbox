@@ -1,3 +1,4 @@
+% Copyright Mohammad SAFEEA, 17th-Aug-2017
 function factor=jointLimitAvoidance(jointIndex,jPos,dq)
 % Return the displacemnt according to joint limits
 clearance=pi/24;

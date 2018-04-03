@@ -1,3 +1,4 @@
+% Copyright Mohammad SAFEEA, 17th-Aug-2017
 function [figureHandle,anglesTextHandlesCellArray,labelTextHandlesCellArray]= constructInterface( )
 % figureHandle=figure;
 
