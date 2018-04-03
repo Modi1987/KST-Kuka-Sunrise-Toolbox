@@ -1,4 +1,5 @@
 function [ Tt ] = updateTransform(T,w,v,dt)
+% Copyright Mohammad SAFEEA, 17th-Aug-2017
 % This function takes the input of the 
 normw=norm(w);
 if norm(w)>0

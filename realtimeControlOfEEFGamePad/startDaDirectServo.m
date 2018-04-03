@@ -1,5 +1,5 @@
 function [tKuka,flag]=startDaDirectServo( jPos)
-
+% Copyright Mohammad SAFEEA, 17th-Aug-2017
 cDir = pwd;
 cDir=getTheKSTDirectory(cDir);
 addpath(cDir);
