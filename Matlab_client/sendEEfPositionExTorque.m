@@ -1,4 +1,4 @@
-function [ output_args ] = sendEEfPosition( t_Kuka ,EEEFpos)
+function [ ExTorque ] = sendEEfPositionExTorque( t_Kuka ,EEEFpos)
 %% Syntax
 % sendEEfPosition( t_Kuka ,EEEFpos)
 
@@ -13,7 +13,7 @@ function [ output_args ] = sendEEfPosition( t_Kuka ,EEEFpos)
 
 % Copy right, Mohammad SAFEEA, 1st of April 2018
 
-theCommand='DcSeCar_';
+theCommand='DcSeCarExT_';
 
 for i=1:6
     x=EEEFpos{i};
@@ -22,5 +22,6 @@ end
 % send the message through network
 fprintf(t_Kuka, theCommand);
 message=fgets(t);
+[ExTorque,k]=
 end
 

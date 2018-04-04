@@ -1,4 +1,4 @@
-function [ output_args ] = sendEEfPosition( t_Kuka ,EEEFpos)
+function [ JPOS ] = sendEEfPositionGetActualJpos( t_Kuka ,EEEFpos)
 %% Syntax
 % sendEEfPosition( t_Kuka ,EEEFpos)
 
@@ -13,7 +13,7 @@ function [ output_args ] = sendEEfPosition( t_Kuka ,EEEFpos)
 
 % Copy right, Mohammad SAFEEA, 1st of April 2018
 
-theCommand='DcSeCar_';
+theCommand='DcSeCarJP_';
 
 for i=1:6
     x=EEEFpos{i};
@@ -22,5 +22,20 @@ end
 % send the message through network
 fprintf(t_Kuka, theCommand);
 message=fgets(t);
+[JPOS,N]=getDoubleFromString(message);
 end
 
+function [jPos,j]=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+end
