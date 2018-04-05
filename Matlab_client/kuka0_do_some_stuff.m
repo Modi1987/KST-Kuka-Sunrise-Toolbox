@@ -13,21 +13,21 @@ close all,clear all,clc
 warning('off');
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-t=net_establishConnection( ip );
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
     %% move to initial position
 pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
 relVel=0.15; % relative velocity
-movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
+movePTPJointSpace( t_Kuka , pinit, relVel); % point to point motion in joint space
 
     %% Get the joints positions
-     [ jPos ] = getJointsPos( t )
+     [ jPos ] = getJointsPos( t_Kuka )
     %% Start the direct servo
-     realTime_startDirectServoJoints(t);
+     realTime_startDirectServoJoints(t_Kuka);
      scale=4;
      n=60*scale;
      step=pi/(n*12);
@@ -39,7 +39,7 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
      for i=1:n
          jPos{1}=jPos{1}+step;
          %jPos{2}=jPos{2}-step;
-         sendJointsPositions( t ,jPos);
+         sendJointsPositions( t_Kuka ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
           counter=counter+1;
@@ -52,7 +52,7 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
       for i=1:n
          jPos{1}=jPos{1}-step;
         % jPos{2}=jPos{2}+step;
-         sendJointsPositions( t ,jPos);
+         sendJointsPositions( t_Kuka ,jPos);
          pause(tempoDaEspera);
          % Generate the trajectory
          counter=counter+1;
@@ -62,10 +62,10 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
          jointAnglesArray(:,counter)=jVec;
       end
       pause(1);
-      realTime_stopDirectServoJoints( t );
+      realTime_stopDirectServoJoints( t_Kuka );
 %% error in here, check for reason
       for tttt=1:10
-          getJointsPos( t )
+          getJointsPos( t_Kuka )
       end
 
       
@@ -74,41 +74,41 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
 
     % move along a trajectory using the direct servo function
     
-    setBlueOff(t);
-    setBlueOn(t);
+    setBlueOff(t_Kuka);
+    setBlueOn(t_Kuka);
     pause(3);
-    setBlueOff(t);
+    setBlueOff(t_Kuka);
 
 
       %% Play the motion again, from the trajectory
       trajectory=jointAnglesArray;
       delayTime=tempoDaEspera;
-      realTime_moveOnPathInJointSpace( t , trajectory,delayTime);
+      realTime_moveOnPathInJointSpace( t_Kuka , trajectory,delayTime);
       
      
       %% Get position roientation of end effector
       fprintf('Cartesian position')
-      getEEFPos( t )
+      getEEFPos( t_Kuka )
       
       %% Get position of end effector
       fprintf('Cartesian position')
-      getEEFCartesianPosition( t )
+      getEEFCartesianPosition( t_Kuka )
       
       %% Get orientation of end effector
       fprintf('Cartesian orientation')
-      getEEFCartesianOrientation( t )
+      getEEFCartesianOrientation( t_Kuka )
       
       %% Get force at end effector
       fprintf('Cartesian force')
-      getEEF_Force(t)
+      getEEF_Force(t_Kuka)
       
       %% Get moment at end effector
       fprintf('moment at eef')
-      getEEF_Moment(t)
+      getEEF_Moment(t_Kuka)
       
       %% PTP motion
       
-     [ jPos ] = getJointsPos( t ); % get current joints position
+     [ jPos ] = getJointsPos( t_Kuka ); % get current joints position
 
       
            
@@ -117,14 +117,14 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
       end
       
       relVel=0.15;
-      movePTPJointSpace( t , homePos, relVel); % go to home position
-      movePTPJointSpace( t , jPos, relVel); % return back to original position
+      movePTPJointSpace( t_Kuka , homePos, relVel); % go to home position
+      movePTPJointSpace( t_Kuka , jPos, relVel); % return back to original position
       
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
 end
 warning('on');
 

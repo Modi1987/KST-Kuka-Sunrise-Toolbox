@@ -1,4 +1,4 @@
-function [ output_args ] = kuka6_turnOffServer( t )
+function [ output_args ] = net_turnOffServer( t )
 %% This function is used to turn off the server on the robot
 % function [ output_args ] = net_turnOffServer( t )
 % t: is the TCP/IP connection object

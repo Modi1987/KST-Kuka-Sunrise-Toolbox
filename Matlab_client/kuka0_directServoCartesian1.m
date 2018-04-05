@@ -19,10 +19,10 @@ warning('off')
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-global t;
-t=net_establishConnection( ip );
+global t_Kuka;
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 end
@@ -30,14 +30,14 @@ end
 jPos={0,0,0,-pi/2,0,pi/2,0};
 %setBlueOn(t); % turn on blue light
 relVel=0.15;
-movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
 %% Get Cartesian position of EEF
 fprintf('Cartesian position')
-eefpos=getEEFPos( t );
+eefpos=getEEFPos( t_Kuka );
 eefposDist=eefpos;
 disp(eefpos)
 %% Start direct servo in Cartesian space       
-realTime_startDirectServoCartesian(t);
+realTime_startDirectServoCartesian(t_Kuka);
 disp('Starting direct servo in Cartesian space');
 w=2; % motion constants, frequency rad/sec
 A=75; % motion constants, amplitude of motion (mm)
@@ -63,7 +63,7 @@ try
             % Send EEF position to robot
             if(toc-t_0>0.002)
                 counter=counter+1;
-                sendEEfPositionf( t ,eefposDist);
+                sendEEfPositionf( t_Kuka ,eefposDist);
                 t_0=toc;
             end
         end
@@ -72,7 +72,7 @@ try
     tend=time;
     rate=counter/(tend-tstart);
     %% Stop the direct servo motion
-    realTime_stopDirectServoCartesian( t );
+    realTime_stopDirectServoCartesian( t_Kuka );
     fprintf('\nThe rate of update per second is: \n');
     disp(rate);
     fprintf('\n')
@@ -80,10 +80,10 @@ try
     %% turn off light
     %setBlueOff(t); 
     %% turn off the server
-    net_turnOffServer( t );
-    fclose(t);
+    net_turnOffServer( t_Kuka );
+    fclose(t_Kuka);
     warning('on')
 catch
     %% turn off the server
-    net_turnOffServer( t );   
+    net_turnOffServer( t_Kuka );   
 end

@@ -11,22 +11,22 @@ close all,clear all,clc
 warning('off');
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-t=net_establishConnection( ip );
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
     
       %% Get position roientation of end effector
     
-      setBlueOn(t); % turn on blue light
+      setBlueOn(t_Kuka); % turn on blue light
     
       
           %% move to initial position
 jPos={0,pi*20/180,0,-pi*70/180,0,pi*60/180,0}; % initial confuguration
 relVel=0.15; % relative velocity
-movePTPJointSpace( t , jPos, relVel); % point to point motion in joint space
+movePTPJointSpace( t_Kuka , jPos, relVel); % point to point motion in joint space
 
 %% Linear relative motion of end effector, relative to base frame
 deltaX=0;deltaY=0;deltaZ=100.;
@@ -36,9 +36,9 @@ Pos{3}=deltaZ;
 
 vel=250; % linear velocity of end effector, mm/sec
 
-movePTPLineEefRelBase( t , Pos, vel);
+movePTPLineEefRelBase( t_Kuka , Pos, vel);
 Pos{3}=-deltaZ;
-movePTPLineEefRelBase( t , Pos, vel);
+movePTPLineEefRelBase( t_Kuka , Pos, vel);
 
 %% Linear relative motion of end effector, relative to EEF frame
 Pos{1}=deltaX;
@@ -47,16 +47,16 @@ Pos{3}=deltaZ;
 
 vel=150; % linear velocity of end effector, mm/sec
 
-movePTPLineEefRelEef( t , Pos, vel);
+movePTPLineEefRelEef( t_Kuka , Pos, vel);
 Pos{3}=-deltaZ;
-movePTPLineEefRelEef( t , Pos, vel);
+movePTPLineEefRelEef( t_Kuka , Pos, vel);
   
-setBlueOff(t); % turn off blue light
+setBlueOff(t_Kuka); % turn off blue light
 
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
 end
 warning('on');

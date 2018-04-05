@@ -24,20 +24,20 @@ warning('off')
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-global t;
-t=net_establishConnection( ip );
+global t_Kuka;
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
     
       %% Move point to point to an initial position
         jPos={0,0,0,-pi/2,0,pi/2,0};
-      setBlueOff(t); % turn Off blue light
+      setBlueOff(t_Kuka); % turn Off blue light
     
       relVel=0.15;
-      movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+      movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
      %% Pause for 3 seocnds
      pause(3); 
         %% Start direct servo in joint space    
@@ -50,7 +50,7 @@ else
         nStifness=50; % null space stifness
         
         % Start the realtime control with impedence
-        realTime_startImpedanceJoints(t,massOfTool,cOMx,cOMy,cOMz,...
+        realTime_startImpedanceJoints(t_Kuka,massOfTool,cOMx,cOMy,cOMz,...
         cStiness,rStifness,nStifness);
         
        w=0.6; % motion constants, frequency rad/sec
@@ -97,7 +97,7 @@ else
             end
           counter=counter+1;
           %% Send joint positions to robot
-          taw=sendJointsPositionsExTorque( t ,jPosCommand);
+          taw=sendJointsPositionsExTorque( t_Kuka ,jPosCommand);
           
           tawTemp=zeros(7,1);
           for i=1:7
@@ -120,18 +120,18 @@ else
 
        
        %% Stop the realtime control with impedence motion
-       realTime_stopImpedanceJoints( t );
+       realTime_stopImpedanceJoints( t_Kuka );
 
        fprintf('\n Motion stopped \n');
        pause(2);
        %% turn off light
-       setBlueOff(t); 
+       setBlueOff(t_Kuka); 
        
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
        
       
 end

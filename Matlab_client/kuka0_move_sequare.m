@@ -16,9 +16,9 @@ close all,clear all,clc
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-t=net_establishConnection( ip );
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
@@ -26,14 +26,14 @@ else
     %% move to initial position
 pinit={0,pi*20/180,0,-pi*70/180,0,pi*90/180,0}; % initial confuguration
 relVel=0.15; % relative velocity
-movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
+movePTPJointSpace( t_Kuka , pinit, relVel); % point to point motion in joint space
 
       %% Get position roientation of end effector
       disp('Cartesian position')
-      Pos=getEEFPos( t )
+      Pos=getEEFPos( t_Kuka )
       z_1=Pos{3}; % save initial hight level
     
-      setBlueOn(t); % turn on blue light
+      setBlueOn(t_Kuka); % turn on blue light
     
       z0=448+3; % go to writing position
       
@@ -44,39 +44,39 @@ movePTPJointSpace( t , pinit, relVel); % point to point motion in joint space
       
       Pos{3}=z0; %% first point
       
-       movePTPLineEEF( t , Pos, relVel) 
+       movePTPLineEEF( t_Kuka , Pos, relVel) 
        
        disp=50*2;
        
        %% move in x positive direction
        Pos{1}=Pos{1}+disp; 
       
-       movePTPLineEEF( t , Pos, relVel)
+       movePTPLineEEF( t_Kuka , Pos, relVel)
        
        %% move in y negative direction
        Pos{2}=Pos{2}-disp; 
       
-       movePTPLineEEF( t , Pos, relVel)
+       movePTPLineEEF( t_Kuka , Pos, relVel)
        
        %% move in x negative direction
        Pos{1}=Pos{1}-disp; 
       
-       movePTPLineEEF( t , Pos, relVel)
+       movePTPLineEEF( t_Kuka , Pos, relVel)
        
        %% move in y positive direction
        Pos{2}=Pos{2}+disp; 
       
-       movePTPLineEEF( t , Pos, relVel)
+       movePTPLineEEF( t_Kuka , Pos, relVel)
 
        %% Go back to initial position
        Pos{3}=z_1;
-       movePTPLineEEF( t , Pos, relVel) 
+       movePTPLineEEF( t_Kuka , Pos, relVel) 
        
-       setBlueOff(t); 
+       setBlueOff(t_Kuka); 
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
 end
 

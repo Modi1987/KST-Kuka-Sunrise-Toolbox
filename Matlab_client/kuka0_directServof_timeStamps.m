@@ -19,10 +19,10 @@ warning('off')
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-global t;
-t=net_establishConnection( ip );
+global t_Kuka;
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
@@ -31,13 +31,13 @@ else
       
       jPos={0,0,0,0,0,0,0};
     
-      setBlueOff(t); % turn Off blue light
+      setBlueOff(t_Kuka); % turn Off blue light
     
       relVel=0.15;
-      movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+      movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
  
         %% Start direct servo in joint space       
-        realTime_startDirectServoJoints(t);
+        realTime_startDirectServoJoints(t_Kuka);
         
        w=0.8*2; % motion constants, frequency rad/sec
        A=pi/6; % motion constants, amplitude of motion
@@ -67,27 +67,27 @@ else
           counter=counter+1;
           %% Send joint positions to robot
           %sendJointsPositions( t ,jPos);
-          sendJointsPositionsf( t ,jPos);
+          sendJointsPositionsf( t_Kuka ,jPos);
           time_stamps(counter)=dt;
            
        end
        tend=time;
        rate=counter/(tend-tstart);
        %% Stop the direct servo motion
-       realTime_stopDirectServoJoints( t );
+       realTime_stopDirectServoJoints( t_Kuka );
 
        fprintf('\nThe rate of joint nagles update per second is: \n');
        disp(rate);
        fprintf('\n')
        pause(2);
        %% turn off light
-       setBlueOff(t); 
+       setBlueOff(t_Kuka); 
        
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
        
        %% save time stamps
        save('timingdata.mat','time_stamps');

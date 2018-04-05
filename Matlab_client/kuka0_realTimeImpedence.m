@@ -20,10 +20,10 @@ warning('off')
 
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-global t;
-t=net_establishConnection( ip );
+global t_Kuka;
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
@@ -34,10 +34,10 @@ else
    
         jPos={0,0,0,-pi/2,0,pi/2,0};
       %jPos={0,0,0,0,0,0,0};
-      setBlueOff(t); % turn Off blue light
+      setBlueOff(t_Kuka); % turn Off blue light
     
       relVel=0.15;
-      movePTPJointSpace( t , jPos, relVel); % move to initial configuration
+      movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
      %% Pause for 3 seocnds
      pause(3); 
         %% Start direct servo in joint space    
@@ -50,7 +50,7 @@ else
         nStifness=50; % null space stifness
         
         % Start the realtime control with impedence
-        realTime_startImpedanceJoints(t,massOfTool,cOMx,cOMy,cOMz,...
+        realTime_startImpedanceJoints(t_Kuka,massOfTool,cOMx,cOMy,cOMz,...
         cStiness,rStifness,nStifness);
         
        w=0.6; % motion constants, frequency rad/sec
@@ -79,7 +79,7 @@ else
           counter=counter+1;
           %% Send joint positions to robot
           %sendJointsPositions( t ,jPos);
-          sendJointsPositionsf( t ,jPosCommand);
+          sendJointsPositionsf( t_Kuka ,jPosCommand);
           time_stamps(counter)=dt;
            
        end
@@ -87,20 +87,20 @@ else
        rate=counter/(tend-tstart);
        
        %% Stop the realtime control with impedence motion
-       realTime_stopImpedanceJoints( t );
+       realTime_stopImpedanceJoints( t_Kuka );
 
        fprintf('\nThe rate of joint nagles update per second is: \n');
        disp(rate);
        fprintf('\n')
        pause(2);
        %% turn off light
-       setBlueOff(t); 
+       setBlueOff(t_Kuka); 
        
       %% turn off the server
-       net_turnOffServer( t );
+       net_turnOffServer( t_Kuka );
 
 
-       fclose(t);
+       fclose(t_Kuka);
        
        %% save time stamps
        save('timingdata.mat','time_stamps');

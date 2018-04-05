@@ -10,21 +10,21 @@ close all,clear all,clc
 warning('off');
 ip='172.31.1.147'; % The IP of the controller
 % start a connection with the server
-t=net_establishConnection( ip );
+t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t)
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   warning('Connection could not be establised, script aborted');
   return;
 else
     
 for theCOunt=1:2
-kuka0_motions(t)
+kuka0_motions(t_Kuka)
 end   
       %% turn off the server
-        net_turnOffServer( t );
+        net_turnOffServer( t_Kuka );
     
 
-       fclose(t);
+       fclose(t_Kuka);
 end
 warning('on');
 
