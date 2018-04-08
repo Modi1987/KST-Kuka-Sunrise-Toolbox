@@ -16,5 +16,7 @@ function [C]=gen_CentrifugalMatrix(q,Pcii,Icii,mcii,dq)
 %--------------------
 % C: 7x7 matrix, the centrifugal matrix of the KUKA iiwa 7 R 800.
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 T=kukaGetKenimaticModelAccelerated(q);
 C=GetCentrifugalMatrix_2(T,Pcii,Icii,mcii,dq);

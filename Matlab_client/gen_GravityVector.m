@@ -15,6 +15,8 @@ function [ G ] = gen_GravityVector(q,Pcii,mcii)
 %--------------------
 % G: 7x1 matrix, the torques vector due to gravity of the KUKA iiwa 7 R 800.
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 G=zeros(7,1);
 g=[0;0;-9.81]; % gravity acceleration vector described in base frame of the robot
 T=kukaGetKenimaticModelAccelerated(q);

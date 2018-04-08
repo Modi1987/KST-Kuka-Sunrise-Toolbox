@@ -18,7 +18,7 @@ function [ torques ] = getJointsExternalTorques( t )
 % torques: the torques of the joints due to external force/moment, it is
 % 1x7 cell array (unit Newton.Meter).
 
-% Copy right, Mohammad SAFEEA, 11th of May 2017
+% Copyright, Mohammad SAFEEA, 11th of May 2017
 
     theCommand='Torques_ext_J'; 
     fprintf(t, theCommand);

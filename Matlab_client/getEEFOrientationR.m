@@ -15,7 +15,7 @@ function rMat= getEEFOrientationR(t)
 % of the media flange of the robot.
 % t : is the TCP/IP comunication object.
 
-%% Copy right, Mohammad SAFEEA 7th of August 2017.
+%% Copyright, Mohammad SAFEEA 7th of August 2017.
 
 alfa={0,-pi/2,pi/2,pi/2,-pi/2,-pi/2,pi/2};
 d={0.34,0.0,0.4,0.0,0.4,0.0,0.28}; 

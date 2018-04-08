@@ -15,7 +15,7 @@ function [ f ] = getEEF_Moment( t )
 % described in the robot base frame. The moment is measured in
 % (Newton.meter)
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 
 theCommand='Eef_moment';

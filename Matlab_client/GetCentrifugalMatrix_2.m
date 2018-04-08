@@ -14,7 +14,7 @@ function [Bt]=GetCentrifugalMatrix_2(T,Pcii,Icii,mcii,dq)
 % mcii is (1xn) vector, each element of which specifies a mass of one of
 % the links
 
-%% Copy right Mohammad SAFEEA 2nd,April,2018
+% Copyright Mohammad SAFEEA 2nd,April,2018
 
 n=max(size(mcii));
 %% Initialization of Ai and Bi.

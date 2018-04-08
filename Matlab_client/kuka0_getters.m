@@ -4,7 +4,7 @@
 % First start the server on the KUKA iiwa controller
 % Then run the following script in Matlab
 
-% Copy right: Mohammad SAFEEA, 3rd of May 2017
+% Copyright: Mohammad SAFEEA, 3rd of May 2017
 
 close all,clear all,clc
 warning('off')

@@ -4,7 +4,7 @@ function [M]=GetInertiaMatrix5(T,Pcii,Icii,mcii)
 % matrix by Mohammad SAFEEA
 % Paper describing the method has been submitted 
 
-%% Copy right: Mohammad SAFEEA, 2nd-April-2018
+%% Copyright: Mohammad SAFEEA, 2nd-April-2018
 
 %% version one, accelerated by customed skew matrix multiply
 n=max(size(mcii));

@@ -9,7 +9,7 @@
 % First start the server on the KUKA iiwa controller
 % Then run this script using Matlab
 
-% Copy right: Mohammad SAFEEA, 8th of Nov 2017
+% Copyright: Mohammad SAFEEA, 8th of Nov 2017
 
 % Important: Be careful when runnning the script, be sure that no human, nor obstacles
 % are around the robot

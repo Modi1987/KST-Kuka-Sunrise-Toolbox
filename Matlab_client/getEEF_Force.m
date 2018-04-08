@@ -14,7 +14,7 @@ function [ f ] = getEEF_Force( t )
 % f: is 1x3 cell array. Representing the  X,Y and Z components of the force acting on the
 % endeffector the forces are measured in (Newton).
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 theCommand='Eef_force';
 fprintf(t, theCommand);

@@ -12,7 +12,7 @@ function [ jPos ] = getJointsPos( t )
 % jPos: is 1x7 cell array of the joints' angles of the robot (unit
 % Radians). 
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 theCommand='getJointsPositions';
 fprintf(t, theCommand);

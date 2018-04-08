@@ -15,7 +15,7 @@ function [ state ] =movePTPArc_AC(t,theta,c,k,relVel)
 % vector.
 % vel : is a double, defines the motion velocity mm/sec.
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
 c=colVec(c);
 k=colVec(k);

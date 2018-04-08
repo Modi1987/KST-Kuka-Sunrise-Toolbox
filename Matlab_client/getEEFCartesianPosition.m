@@ -14,7 +14,7 @@ function [ Pos ] = getEEFCartesianPosition( t )
 % Pos: is 1x3 cell array. Representing the  X,Y and Z positions of the
 % endeffector. The returned values are in (millimeters)
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 theCommand='Eef_pos';
 fprintf(t, theCommand);

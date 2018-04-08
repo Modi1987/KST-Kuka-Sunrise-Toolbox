@@ -17,7 +17,7 @@ function [ Pos ] = getEEFPos( t )
 % effector (unit radians). The position/orientation of the
 % media flange are in realtion to the base reference frame of the robot.
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 theCommand='Eef_pos';
 fprintf(t, theCommand);

@@ -15,7 +15,7 @@ function [ state ] = movePTPJointSpace( t , jPos, relVel)
 % relVel: is a double, from zero to one, specifies the over-ride relative
 % velocity. 
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
     theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
     fprintf(t, theCommand);

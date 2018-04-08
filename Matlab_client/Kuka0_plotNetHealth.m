@@ -6,7 +6,7 @@
 
 % The script plots the timing data
 
-% Copy right: Mohammad SAFEEA, 15th of June 2017
+% Copyright: Mohammad SAFEEA, 15th of June 2017
 
 close all,clear all;clc;
 

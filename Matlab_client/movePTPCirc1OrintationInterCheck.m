@@ -16,7 +16,7 @@ function [ state ] = movePTPCirc1OrintationInterCheck( t , f1,f2, relVel)
 % state: returns (true) if the circular motion is valid, returns false
 % otherwise
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
     theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
     fprintf(t, theCommand);

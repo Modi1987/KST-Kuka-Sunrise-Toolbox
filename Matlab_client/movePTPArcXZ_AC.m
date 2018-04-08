@@ -13,7 +13,7 @@ function [ state ] =movePTPArcXZ_AC(t,theta,c,vel)
 % c: the XZ coordinates of the center of the circle, it is 1x2 vector.
 % vel : is a double, defines the motion velocity mm/sec.
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
 
     k=[0;1;0];

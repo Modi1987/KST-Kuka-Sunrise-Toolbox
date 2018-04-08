@@ -16,7 +16,7 @@ function [ state ] = getPin4State( t )
 % pin state is false. Otherwise, if the pin is not connected the return
 % value is empty.
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
 theCommand='getPin4';
 fprintf(t, theCommand);

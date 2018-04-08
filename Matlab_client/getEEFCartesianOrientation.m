@@ -1,4 +1,4 @@
-function [ Pos ] = getEEFCartisianOrientation( t )
+function [ Pos ] = getEEFCartesianOrientation( t )
 %% This function is used to get the endeffector cartizian orientation of the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -14,7 +14,7 @@ function [ Pos ] = getEEFCartisianOrientation( t )
 % Ori: is 1x3 cell array,  alpha,beta and gama angles of the endeffector,
 % the angles are measured in radians.
 
-% Copy right, Mohammad SAFEEA, 3rd of May 2017
+% Copyright, Mohammad SAFEEA, 3rd of May 2017
 
 theCommand='Eef_pos';
 fprintf(t, theCommand);

@@ -16,5 +16,7 @@ function [B]=gen_CoriolisMatrix(q,Pcii,Icii,mcii,dq)
 %--------------------
 % M: 7x7 matrix, the mass matrix of the KUKA iiwa 7 R 800.
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 T=kukaGetKenimaticModelAccelerated(q);
 B=GetCoriolisMatrix1(T,Pcii,Icii,mcii,dq);

@@ -14,7 +14,7 @@ function [ torques ] = getMeasuredTorqueAtJoint( t,k )
 % torque: is the value of the torque measured at joint (k) due to external
 % force/moment acting on the robot. Unit (Newton.meter)
 
-% Copy right, Mohammad SAFEEA, 11th of May 2017
+% Copyright, Mohammad SAFEEA, 11th of May 2017
 
 if(k>7)
     disp('Error KUKA has only 7 joints');

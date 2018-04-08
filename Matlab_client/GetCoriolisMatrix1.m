@@ -15,7 +15,7 @@ function [Bt]=GetCoriolisMatrix1(T,Pcii,Icii,mcii,dq)
 % the links
 
 
-%% Copyright Mohammad SAFEEA
+% Copyright Mohammad SAFEEA
 
 n=max(size(mcii));
 %% Initialization of Ai and Bi.

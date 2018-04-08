@@ -19,6 +19,8 @@ function [ taw ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,d2q)
 %--------------------
 % taw: 7x1 vector, the torques on the joints due to the direct dynamics.
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 [M]=gen_MassMatrix(q,Pcii,Icii,mcii);
 [B]=gen_CoriolisMatrix(q,Pcii,Icii,mcii,dq);
 [ G ] = gen_GravityVector(q,Pcii,mcii);

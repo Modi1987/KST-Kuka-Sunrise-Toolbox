@@ -14,7 +14,7 @@ function [ torques ] = getJointsMeasuredTorques( t )
 % torques: the measured torques of the joints, it is
 % 1x7 cell array (unit Newton.Meter).
 
-% Copy right, Mohammad SAFEEA, 11th of May 2017
+% Copyright, Mohammad SAFEEA, 11th of May 2017
 
     theCommand='Torques_m_J';  
     fprintf(t, theCommand);

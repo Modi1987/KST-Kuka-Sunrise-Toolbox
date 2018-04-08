@@ -15,5 +15,7 @@ function [M]=gen_MassMatrix(q,Pcii,Icii,mcii)
 %--------------------
 % M: 7x7 matrix, the mass matrix of the KUKA iiwa 7 R 800.
 
+% Copyright: Mohammad SAFEEA
+
 T=kukaGetKenimaticModelAccelerated(q);
 [M]=GetInertiaMatrix5(T,Pcii,Icii,mcii);

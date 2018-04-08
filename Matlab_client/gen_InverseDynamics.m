@@ -19,6 +19,8 @@ function [ d2q ] = gen_InverseDynamics(q,Pcii,Icii,mcii,dq,taw)
 %--------------------
 % d2q: is 7x1 vector, joint angular acceleration vector 
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 [M]=gen_MassMatrix(q,Pcii,Icii,mcii);
 [B]=gen_CoriolisMatrix(q,Pcii,Icii,mcii,dq);
 [ G ] = gen_GravityVector(q,Pcii,mcii);

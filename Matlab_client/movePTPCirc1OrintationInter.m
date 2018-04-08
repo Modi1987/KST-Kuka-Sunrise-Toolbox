@@ -21,7 +21,7 @@ function [ state ] = movePTPCirc1OrintationInter( t , f1,f2, relVel)
 
 % vel: is the motion linear velocity, mm/sec.
 
-% Copy right, Mohammad SAFEEA, 9th of May 2017
+% Copyright, Mohammad SAFEEA, 9th of May 2017
 
     theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
     fprintf(t, theCommand);

@@ -1,5 +1,7 @@
 function ret=checkErrorMessage(message)
 
+% Copyright: Mohammad SAFEEA, 9th-April-2018
+
 ak='error';
 
 if ~exist('message','var')
