@@ -1,5 +1,6 @@
 package lbrExampleApplications;
 
+//Copyright: Mohammad SAFEEA, 9th-April-2018
 
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
 

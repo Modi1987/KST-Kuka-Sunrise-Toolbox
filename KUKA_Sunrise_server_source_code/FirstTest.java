@@ -12,7 +12,9 @@ import com.kuka.roboticsAPI.applicationModel.RoboticsAPIApplication;
 import com.kuka.roboticsAPI.applicationModel.tasks.RoboticsAPITask;
 import com.kuka.roboticsAPI.applicationModel.tasks.UseRoboticsAPIContext;
 import com.kuka.roboticsAPI.conditionModel.ICondition;
+import com.kuka.roboticsAPI.conditionModel.JointTorqueCondition;
 import com.kuka.roboticsAPI.controllerModel.Controller;
+import com.kuka.roboticsAPI.deviceModel.JointEnum;
 import com.kuka.roboticsAPI.deviceModel.LBR;
 import com.kuka.roboticsAPI.geometricModel.Frame;
 import com.kuka.roboticsAPI.geometricModel.math.Transformation;
@@ -37,7 +39,7 @@ import com.kuka.roboticsAPI.geometricModel.math.Transformation;
  */
 public class FirstTest extends RoboticsAPIApplication {
 	private Controller kuka_Sunrise_Cabinet_1;
-	private LBR _lbr;
+	private static LBR _lbr;
 	
 	public MediaFlangeIOGroup daIO;
 
@@ -52,6 +54,10 @@ public class FirstTest extends RoboticsAPIApplication {
 		
 	}
 	
+static double[] jpos={-Math.PI / 180 * 90., -Math.PI / 180 * 10., 0., -Math.PI / 180 * 100., Math.PI / 180 * 90.,
+        Math.PI / 180 * 90., 0.};
+static double jRelVel=0.1;
+
     private void moveToInitialPosition()
     {
     	_lbr.move(
@@ -76,27 +82,54 @@ public class FirstTest extends RoboticsAPIApplication {
 
 		moveToInitialPosition();
 		
-		Frame f1,f2;
-		double r=75;
-		f1=_lbr.getCurrentCartesianPosition(_lbr.getFlange());
-		f2=_lbr.getCurrentCartesianPosition(_lbr.getFlange());
-		
-		f1.setY(f1.getY()+r);
-		f1.setZ(f1.getZ()-r);
-		
-		f1.setGammaRad(f1.getGammaRad()+Math.PI/8);
-		
-		f2.setZ(f2.getZ()-2*r);
-		
-		f2.setGammaRad(f2.getGammaRad()+Math.PI/2);
-		
-		_lbr.getFlange().move(circ(f1,f2).setCartVelocity(50));
-		
-		
+		double[] indeces={0,3};
+		double[] torques={5,5};
+		PTPmotionJointSpaceConditional(indeces,torques);
 		
 		
 	}
 
+	public static void PTPmotionJointSpaceConditional(double[] indeces,double[] torques)
+	{
+		JointTorqueCondition[] con= new JointTorqueCondition [7];
+		JointEnum[] jointsNum=new JointEnum[7];
+		jointsNum[0]=JointEnum.J1;
+		jointsNum[1]=JointEnum.J2;
+		jointsNum[2]=JointEnum.J3;
+		jointsNum[3]=JointEnum.J4;
+		jointsNum[4]=JointEnum.J5;
+		jointsNum[5]=JointEnum.J6;
+		jointsNum[6]=JointEnum.J7;
+		
+		int num=indeces.length;
+		if(num==0)
+		{
+
+		}
+		
+		for(int i=0;i<num;i++)
+		{
+			int index=(int)indeces[i];
+			con[i]=new JointTorqueCondition(jointsNum[index],-torques[i],+torques[i]);
+		}
+		
+		ICondition comb=con[0];
+		
+		for(int i=1;i<num;i++)
+		{
+			comb=comb.or(con[i]);
+		}
+		
+		_lbr.move(
+        		ptp(jpos[0],jpos[1],
+        				jpos[2],
+        				jpos[3],jpos[4],
+        				jpos[5],
+        				jpos[6]).setJointVelocityRel(jRelVel).breakWhen(comb));
+		
+	
+	}
+	
 	/**
 	 * Auto-generated method stub. Do not modify the contents of this method.
 	 */

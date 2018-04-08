@@ -1,5 +1,7 @@
 package lbrExampleApplications;
 
+//Copyright: Mohammad SAFEEA, 9th-April-2018
+
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.circ;
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.lin;
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.linRel;
@@ -8,7 +10,10 @@ import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
 import java.util.StringTokenizer;
 
 import com.kuka.generated.ioAccess.MediaFlangeIOGroup;
+import com.kuka.roboticsAPI.conditionModel.ICondition;
+import com.kuka.roboticsAPI.conditionModel.JointTorqueCondition;
 import com.kuka.roboticsAPI.controllerModel.Controller;
+import com.kuka.roboticsAPI.deviceModel.JointEnum;
 import com.kuka.roboticsAPI.deviceModel.LBR;
 import com.kuka.roboticsAPI.geometricModel.Frame;
 
@@ -29,7 +34,89 @@ public class PTPmotionClass {
 		this.kuka_Sunrise_Cabinet_1=kuka_Sunrise_Cabinet_1;
 		daIO=new MediaFlangeIOGroup(kuka_Sunrise_Cabinet_1);
 	}
+
 	
+	/*
+	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 */
+	public static void PTPmotionJointSpaceConditional(int n,double[] indices,double[] minTorque, double[] maxTorque)
+	{
+		JointTorqueCondition[] con= new JointTorqueCondition [7];
+		JointEnum[] jointsNum=new JointEnum[7];
+		jointsNum[0]=JointEnum.J1;
+		jointsNum[1]=JointEnum.J2;
+		jointsNum[2]=JointEnum.J3;
+		jointsNum[3]=JointEnum.J4;
+		jointsNum[4]=JointEnum.J5;
+		jointsNum[5]=JointEnum.J6;
+		jointsNum[6]=JointEnum.J7;
+		
+		int num=n;
+		if(num==0)
+		{
+			// Do not perform motion
+			String tempString="done"+stopCharacter;
+			daback.sendCommand(tempString);
+		}
+		
+		for(int i=0;i<num;i++)
+		{
+			int index=(int)indices[i];
+			con[i]=new JointTorqueCondition(jointsNum[index],minTorque[i],maxTorque[i]);
+		}
+		
+		ICondition comb=con[0];
+		
+		for(int i=1;i<num;i++)
+		{
+			comb=comb.or(con[i]);
+		}
+		
+		double[] distPos=new double [7];
+		for(int i=0;i<7;i++)
+		{
+			distPos[i]=MatlabToolboxServer.jpos[i];
+		}
+		
+		_lbr.move(
+        		ptp(distPos[0],distPos[1],
+        				distPos[2],
+        				distPos[3],distPos[4],
+        				distPos[5],
+        				distPos[6]).setJointVelocityRel(MatlabToolboxServer.jRelVel).breakWhen(comb));
+		
+		boolean interruptionFlag=false;
+		for(int i=0;i<7;i++)
+		{
+			double x1=_lbr.getCurrentJointPosition().get(i);
+			double x2=distPos[i];
+			double clearance=0.1*Math.PI/180;
+			if(Math.abs(x1-x2)>clearance)
+			{
+				interruptionFlag=true;
+				break;
+			}
+		}
+		// Return back the acknowledgment message
+		String tempString;
+		if(interruptionFlag==true)
+		{
+			tempString="interrupted"+stopCharacter;
+		}
+		else
+		{
+			tempString="done"+stopCharacter;
+		}
+		
+		daback.sendCommand(tempString);
+		
+	}
+	
+	
+	
+	/*
+	 * %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 */
 	public static void PTPmotionJointSpace()
 	{
 		_lbr.move(
@@ -146,5 +233,4 @@ public class PTPmotionClass {
 		
 	}
 	
-
 }

@@ -1,5 +1,7 @@
 package lbrExampleApplications;
 
+//Copyright: Mohammad SAFEEA, 9th-April-2018
+
 import com.kuka.roboticsAPI.deviceModel.JointPosition;
 import com.kuka.roboticsAPI.deviceModel.LBR;
 import com.kuka.roboticsAPI.geometricModel.Frame;

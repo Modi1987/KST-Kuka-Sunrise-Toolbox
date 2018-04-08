@@ -1,5 +1,7 @@
 package lbrExampleApplications;
 
+//Copyright: Mohammad SAFEEA, 9th-April-2018
+
 import java.util.StringTokenizer;
 
 

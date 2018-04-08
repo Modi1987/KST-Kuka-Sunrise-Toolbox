@@ -1,5 +1,5 @@
 package lbrExampleApplications;
-/* By Mohammad SAFEEA: 13th-Marhc-2017
+/* By Mohammad SAFEEA: 2nd-April-2017
  * 
  * KST 1.2
  * 
@@ -300,6 +300,27 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 					daCommand="";
 				}
 			}
+        	// PTP motion with condition instructions
+        	else if(daCommand.startsWith("doPTP!"))
+        	{
+        		if(daCommand.startsWith("doPTP!inJS"))
+				{
+        			double[] indices=new double[7];
+        			double[] maxTorque=new double[7];
+        			double[] minTorque=new double[7];
+        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+        			dabak.sendCommand(ack);
+    				daCommand="";
+        			for(int i=0;i<n;i++)
+        			{
+        				String strInfo="[minTorque,maxTorque] for joint "+
+        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+        			+" , "+Double.toString(maxTorque[i]);
+        	        	getLogger().info(strInfo);
+        			}
+        			PTPmotionClass.PTPmotionJointSpaceConditional( n, indices, minTorque, maxTorque);
+				}
+        	}
 			else if(daCommand.startsWith("jRelVel"))
 			{
 				getLogger().info(daCommand);

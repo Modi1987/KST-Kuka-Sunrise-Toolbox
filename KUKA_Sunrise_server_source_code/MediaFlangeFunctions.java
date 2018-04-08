@@ -1,5 +1,7 @@
 package lbrExampleApplications;
 
+//Copyright: Mohammad SAFEEA, 9th-April-2018
+
 import com.kuka.generated.ioAccess.MediaFlangeIOGroup;
 import com.kuka.roboticsAPI.controllerModel.Controller;
 import com.kuka.roboticsAPI.deviceModel.LBR;
