@@ -1,17 +1,19 @@
 function [ MT ] = sendEEfPositionMTorque( t_Kuka ,EEEFpos)
 %% Syntax
-% sendEEfPosition( t_Kuka ,EEEFpos)
+% [ MT ] = sendEEfPositionMTorque( t_Kuka ,EEEFpos)
 
 %% About:
 % This function is used to send the target positions of the end-effector for the
-% direct servo motion
-% this function is for direct-servoing in Cartesian space
+% direct servo motion and receives the measured torques of the joints
 
 %% Arreguamnets
 % t_Kuka: is the TCP/IP connection object
 % EEEFpos: is 6 cells array of doubles
 
-% Copy right, Mohammad SAFEEA, 1st of April 2018
+%% Return value:
+% MT: is 7 cell array of doubles of the Joints measured moments
+
+% Copyright, Mohammad SAFEEA, 1st of April 2018
 
 theCommand='DcSeCarMT_';
 

@@ -1,17 +1,19 @@
 function [ JPOS ] = sendEEfPositionGetActualJpos( t_Kuka ,EEEFpos)
 %% Syntax
-% sendEEfPosition( t_Kuka ,EEEFpos)
+% [ JPOS ] = sendEEfPositionGetActualJpos( t_Kuka ,EEEFpos)
 
 %% About:
 % This function is used to send the target positions of the end-effector for the
-% direct servo motion
-% this function is for direct-servoing in Cartesian space
+% direct servo motion and receives the actual joints positions from the controller
 
 %% Arreguamnets
 % t_Kuka: is the TCP/IP connection object
 % EEEFpos: is 6 cells array of doubles
 
-% Copy right, Mohammad SAFEEA, 1st of April 2018
+%% Return value:
+% JPOS: is 7 cell array of doubles
+
+% Copyright, Mohammad SAFEEA, 1st of April 2018
 
 theCommand='DcSeCarJP_';
 
