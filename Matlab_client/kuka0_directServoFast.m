@@ -22,8 +22,8 @@ ip='172.31.1.147'; % The IP of the controller
 global t_Kuka;
 t_Kuka=net_establishConnection( ip );
 
-if ~exist('t','var') || isempty(t_Kuka)
-  warning('Connection could not be establised, script aborted');
+if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
+  disp('Connection could not be establised, script aborted');
   return;
 end
     
@@ -38,32 +38,34 @@ movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
 
 %% Start direct servo in joint space       
 realTime_startDirectServoJoints(t_Kuka);
-
+%% Some variables
 w=2.0; % motion constants, frequency rad/sec
 A=pi/6; % motion constants, amplitude of motion
-
-a=datevec(now);
-t0=now*86400; % calculate initial time
-
 dt=0;
-
-tstart=t0;
 counter=0;
-t_0=now*24*60*60;
+%% Initiate timing
+tic;
 %% Control loop
-try    
+try 
+    daCount=0;
     while(dt<(80*pi/w))
-     %% ferform trajectory calculation here
-      time=now*86400;
+        if daCount==0
+            t0=toc; % calculate initial time
+            t_0=toc;
+            daCount=1;
+        end
+     %% perform trajectory calculation here
+      time=toc;
       dt=time-t0;
       jPos{1}=A*(1-cos(w*dt));
       %% Send joint positions to robot
-        if(now*86400-t_0>0.002)
+        if(toc-t_0>0.003)
             counter=counter+1;
             sendJointsPositionsf( t_Kuka ,jPos);
-            t_0=now*86400;
+            t_0=toc;
         end
     end
+    tstart=t0;
     tend=time;
     rate=counter/(tend-tstart);
     %% Stop the direct servo motion

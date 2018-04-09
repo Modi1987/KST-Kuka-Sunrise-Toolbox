@@ -23,7 +23,7 @@ global t_Kuka;
 t_Kuka=net_establishConnection( ip );
 
 if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
-  warning('Connection could not be establised, script aborted');
+  disp('Connection could not be establised, script aborted');
   return;
 end
     
@@ -41,31 +41,23 @@ realTime_startDirectServoJoints(t_Kuka);
 
 w=1.5; % motion constants, frequency rad/sec
 A=pi/6; % motion constants, amplitude of motion
-
-a=datevec(now);
-t0=now*86400; % calculate initial time
-
-dt=0;
-
-tstart=t0;
 counter=0;
-t_0=now*24*60*60;
+%% Initiate timing variables
+dt=0;
+tic;
+t0=toc; % calculate initial time
 %% Control loop
 try    
     while(dt<(80*pi/w))
-     %% ferform trajectory calculation here
-      time=now*86400;
-      dt=time-t0;
-      jPos{1}=A*(1-cos(w*dt));
-      counter=counter+1;
-      %% Send joint positions to robot
-      daTime=now*86400;
-      if((daTime-t_0)>0.003)
-        t_0=daTime;
+        %% Perform trajectory calculation here
+        time=toc;
+        dt=time-t0;
+        jPos{1}=A*(1-cos(w*dt));
+        counter=counter+1;
+        %% Send joint positions to robot
         sendJointsPositions( t_Kuka ,jPos);
-      end
-
     end
+    tstart=t0;
     tend=time;
     rate=counter/(tend-tstart);
     %% Stop the direct servo motion
