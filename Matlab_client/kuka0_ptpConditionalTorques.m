@@ -9,7 +9,9 @@
 
 % Copyright: Mohammad SAFEEA, 8th of April 2018
 
-% Important: Be careful when runnning the script, close all,clear all;clc;
+% Important: Be careful when runnning the script, 
+
+close all,clear all;clc;
 
 warning('off')
 
@@ -19,9 +21,10 @@ global t_Kuka;
 t_Kuka=net_establishConnection( ip );
 
 if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
-  warning('Connection could not be establised, script aborted');
+  disp('Connection could not be establised, script aborted');
   return;
 end
+disp('An example on using the interruptible PTP motion functions for Human robot collaboration')
 %% Move PTP in joint space to some inital position
 jPos={0,0,0,-pi/2,0,pi/2,0};
 relVel=0.15;
@@ -35,8 +38,10 @@ res=movePTP_ConditionalTorque_JointSpace( t_Kuka...
     , jPos, relVel,joints_indices,max_torque,min_torque);
 if(res==1)
     disp('Motion completed successfully');
-else
+elseif(res==0)
     disp('Motion interrupted');
+elseif(res==-1)
+    disp('Error while performing the motion');
 end
 %% Turn off the server
 net_turnOffServer( t_Kuka );

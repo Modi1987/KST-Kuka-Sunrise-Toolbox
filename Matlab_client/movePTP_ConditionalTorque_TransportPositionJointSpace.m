@@ -1,18 +1,16 @@
-function [ state ] = movePTP_ConditionalTorque_JointSpace( t_Kuka , jPos, relVel,joints_indices,max_torque,min_torque)
-%% This function is used for performing point to point motion in joint space,
-% for the KUKA iiwa 7 R 800.
+function [ state ] = movePTP_ConditionalTorque_TransportPositionJointSpace( t_Kuka , relVel,joints_indices,max_torque,min_torque)
+%% This function is used for performing point to point motion in joint space 
+% to the transport position of the robot, for the KUKA iiwa 7 R 800
 % this motion is interruptible when one or more of the joints-torques exceed the predefined limits 
 
 %% Syntax:
-%  [ state ] = movePTP_ConditionalTorque_JointSpace( t_Kuka , jPos, relVel,joints_indices,max_torque,min_torque)
+% [ state ] = movePTP_ConditionalTorque_TransportPositionJointSpace( t_Kuka , relVel,joints_indices,max_torque,min_torque)
 
 %% About:
 % This function is used to move the robot point to point in joint space.
 
 %% Arreguments:
 % t_Kuka: is the TCP/IP connection
-% jPos: is the destanation position in joint space, it is 1x7 cell array,
-% joint angles are in radians.
 % relVel: is a double, from zero to one, specifies the over-ride relative
 % velocity. 
 % joints_indices: is a vector of the indices of the joints where the
@@ -21,14 +19,14 @@ function [ state ] = movePTP_ConditionalTorque_JointSpace( t_Kuka , jPos, relVel
 % specified in the (joints_indices) vector.
 % min_torque: is a vector of the minimum torque limits for the joints
 % specified in the (joints_indices) vector. 
+% if there is an error, the return value is minus one
 
 %% Return value:
 % state: a number equals to one if the motion is completed sccessfully or a
 % zero if the motion was interrupted due to external contact with the
 % robot.
-% if there is an Error, the return value is minus one
 
-% Copyright, Mohammad SAFEEA, 9th of April 2018
+% Copy right, Mohammad SAFEEA, 9th of April 2018
 
 if((size(relVel,1)==1)&&(size(relVel,2)==1))
 else
@@ -38,17 +36,17 @@ else
 end
 % Check if the inputs "joints_indices,max_torque,min_torque" are vectors
 if(isVec(joints_indices)==0)
-    disp('Error, joints_indices shall be a vector');
+    disp('Error, joints_indices shall be a vector')
     state=-1;
     return;
 end
 if(isVec(max_torque)==0)
-    disp('Error, max_torque shall be a vector');
+    disp('Error, max_torque shall be a vector')
     state=-1;
     return;
 end
 if(isVec(min_torque)==0)
-    disp('Error, min_torque shall be a vector');
+    disp('Error, min_torque shall be a vector')
     state=-1;
     return;
 end
@@ -84,6 +82,14 @@ else
     return;
 end
 
+jPos=[];
+for i=1:7
+    jPos{i}=0;
+end
+
+jPos{2}=25*pi/180;
+jPos{4}=90*pi/180;
+
 sendJointsPositions( t_Kuka ,jPos); % send destination joint positions.
 
 theCommand='doPTP!inJS';
@@ -97,7 +103,7 @@ for i=1:j_num
 end
 
 fprintf(t_Kuka, theCommand); % start the point to point motion.
-message=fgets(t_Kuka);
+message=fgets(t);
 if checkAcknowledgment(message)
     disp('Motion started successfully');
 else
@@ -110,7 +116,7 @@ end
 message='';
 
 while true
-    message=fgets(t_Kuka);
+    message=fgets(t);
     daSize=max(size(message));
     if(daSize>2)
         if(strfind(message,'done')==1)
@@ -124,6 +130,8 @@ while true
     end
 end
 
+    
+    
 end
 
 function y=colVec(x)
@@ -143,4 +151,6 @@ function y=isVec(x)
         y=1;
     end
 end
+
+
 
