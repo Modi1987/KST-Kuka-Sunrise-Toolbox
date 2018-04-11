@@ -60,9 +60,27 @@ if(isVec(min_torque)==0)
     state=-1;
     return;
 end
+
 joints_indices=colVec(joints_indices);
 max_torque=colVec(max_torque);
 min_torque=colVec(min_torque);
+
+% Check if size of vectrs are equal
+j_num=size(joints_indices,1);
+n=size(min_torque,1);
+if(j_num==n)
+else
+    disp('Error, sizes of vectors "joints_indices" and "min_torque" shall be equal');
+    state=-1;
+    return;
+end
+n=size(max_torque,1);
+if(j_num==n)
+else
+    disp('Error, sizes of vectors "joints_indices" and "max_torque" shall be equal');
+    state=-1;
+    return;
+end
 
 theCommand=['jRelVel_',num2str(VEL),'_']; % set over ride.
 fprintf(t_Kuka, theCommand);
@@ -89,7 +107,7 @@ for i=1:j_num
 end
 
 fprintf(t_Kuka, theCommand); % start the point to point motion.
-message=fgets(t);
+message=fgets(t_Kuka);
 if checkAcknowledgment(message)
     disp('Motion started successfully');
 else
@@ -103,7 +121,7 @@ end
 message='';
 
 while true
-    message=fgets(t);
+    message=fgets(t_Kuka);
     daSize=max(size(message));
     if(daSize>2)
         if(strfind(message,'done')==1)

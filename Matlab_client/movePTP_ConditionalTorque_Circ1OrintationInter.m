@@ -41,17 +41,17 @@ else
 end
 % Check if the inputs "joints_indices,max_torque,min_torque" are vectors
 if(isVec(joints_indices)==0)
-    disp('Error, joints_indices shall be a vector')
+    disp('Error, joints_indices shall be a vector');
     state=-1;
     return;
 end
 if(isVec(max_torque)==0)
-    disp('Error, max_torque shall be a vector')
+    disp('Error, max_torque shall be a vector');
     state=-1;
     return;
 end
 if(isVec(min_torque)==0)
-    disp('Error, min_torque shall be a vector')
+    disp('Error, min_torque shall be a vector');
     state=-1;
     return;
 end
@@ -114,7 +114,7 @@ if(ret==false)
     return;
 end
 
-theCommand='doPTP!inCSCircle1_';
+theCommand='doPTP!CSCircle1_';
 for i=1:j_num
     datemp=joints_indices(i)-1;
     theCommand=[theCommand,'_',num2str(datemp)];

@@ -35,6 +35,42 @@ else
     state=-1;
     return;
 end
+% Check if the inputs "joints_indices,max_torque,min_torque" are vectors
+if(isVec(joints_indices)==0)
+    disp('Error, joints_indices shall be a vector');
+    state=-1;
+    return;
+end
+if(isVec(max_torque)==0)
+    disp('Error, max_torque shall be a vector');
+    state=-1;
+    return;
+end
+if(isVec(min_torque)==0)
+    disp('Error, min_torque shall be a vector');
+    state=-1;
+    return;
+end
+joints_indices=colVec(joints_indices);
+max_torque=colVec(max_torque);
+min_torque=colVec(min_torque);
+
+% Check if size of vectrs are equal
+j_num=size(joints_indices,1);
+n=size(min_torque,1);
+if(j_num==n)
+else
+    disp('Error, sizes of vectors "joints_indices" and "min_torque" shall be equal');
+    state=-1;
+    return;
+end
+n=size(max_torque,1);
+if(j_num==n)
+else
+    disp('Error, sizes of vectors "joints_indices" and "max_torque" shall be equal');
+    state=-1;
+    return;
+end
 
 theCommand=['jRelVel_',num2str(relVel),'_']; % set over ride.
 fprintf(t_Kuka, theCommand);
