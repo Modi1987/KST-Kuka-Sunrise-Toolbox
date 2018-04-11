@@ -49,13 +49,13 @@ public class MediaFlangeFunctions {
 	
 	public boolean pin11On()
 	{
-		daIO.setOutputX3Pin1(true);
+		daIO.setOutputX3Pin11(true);
 		return true;
 	}
 	
 	public boolean pin11Off()
 	{
-		daIO.setOutputX3Pin1(false);
+		daIO.setOutputX3Pin11(false);
 		return true;
 	}
 	
@@ -73,13 +73,13 @@ public class MediaFlangeFunctions {
 	
 	public boolean pin12On()
 	{
-		daIO.setOutputX3Pin2(true);
+		daIO.setOutputX3Pin12(true);
 		return true;
 	}
 	
 	public boolean pin12Off()
 	{
-		daIO.setOutputX3Pin2(false);
+		daIO.setOutputX3Pin12(false);
 		return true;
 	}
 	

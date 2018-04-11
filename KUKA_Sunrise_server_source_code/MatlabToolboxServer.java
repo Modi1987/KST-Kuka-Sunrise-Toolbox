@@ -318,8 +318,43 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         			+" , "+Double.toString(maxTorque[i]);
         	        	getLogger().info(strInfo);
         			}
-        			PTPmotionClass.PTPmotionJointSpaceConditional( n, indices, minTorque, maxTorque);
+        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
 				}
+        		else if(daCommand.startsWith("doPTP!inCS"))
+				{
+        			double[] indices=new double[7];
+        			double[] maxTorque=new double[7];
+        			double[] minTorque=new double[7];
+        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+        			dabak.sendCommand(ack);
+    				daCommand="";
+        			for(int i=0;i<n;i++)
+        			{
+        				String strInfo="[minTorque,maxTorque] for joint "+
+        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+        			+" , "+Double.toString(maxTorque[i]);
+        	        	getLogger().info(strInfo);
+        			}
+        			PTPmotionClass.PTPmotionLineCartizianSpaceTorquesConditional(n, indices, minTorque, maxTorque);
+				}
+        		else if(daCommand.startsWith("doPTP!CSCircle1"))
+				{
+        			double[] indices=new double[7];
+        			double[] maxTorque=new double[7];
+        			double[] minTorque=new double[7];
+        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+        			dabak.sendCommand(ack);
+    				daCommand="";
+        			for(int i=0;i<n;i++)
+        			{
+        				String strInfo="[minTorque,maxTorque] for joint "+
+        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+        			+" , "+Double.toString(maxTorque[i]);
+        	        	getLogger().info(strInfo);
+        			}
+        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
+				}
+        		
         	}
 			else if(daCommand.startsWith("jRelVel"))
 			{
@@ -573,9 +608,13 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 
 
 	
-    double getTheDisplacment(double dj)
+	double getTheDisplacment(double dj)
     {
-		return dj;
+    	double   a=0.07; 
+    	double b=a*0.75; 
+		double exponenet=-Math.pow(dj/b, 2);
+		return Math.signum(dj)*a*(1-Math.exp(exponenet));
+		
     }
 
 
