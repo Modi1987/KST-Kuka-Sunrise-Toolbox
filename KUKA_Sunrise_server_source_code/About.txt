@@ -1,0 +1,2 @@
+This folder contains the Java soruce code for the Sunrise Workbench.
+The source code is provided for the iiwa7R800 and the iiwa14R820.
