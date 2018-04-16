@@ -27,70 +27,70 @@ if ~exist('t_Kuka','var') || isempty(t_Kuka) || strcmp(t_Kuka.Status,'closed')
   return;
 else
     
-      %% Get position roientation of end effector
-      
-      jPos={0,0,0,0,0,0,0};
-    
-      setBlueOff(t_Kuka); % turn Off blue light
-    
-      relVel=0.15;
-      movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
- 
-        %% Start direct servo in joint space       
-        realTime_startDirectServoJoints(t_Kuka);
-        
-       w=0.8*2; % motion constants, frequency rad/sec
-       A=pi/6; % motion constants, amplitude of motion
-       
-       a=datevec(now);
-       t0=a(6)+a(5)*60+a(4)*60*60; % calculate initial time
-       
-       dt=0;
-     precission=1000;
-     precission_flag=true;
-     tstart=t0;
-     counter=0;
-     duration=15*60; %15 minutes
-     time_stamps=zeros(1,1000*duration);
-       while(dt<duration)
-         %% ferform trajectory calculation here
-          a=datevec(now);
-          time=a(6)+a(5)*60+a(4)*60*60;
-          dt=time-t0;
-          
-          jPos{7}=A*(1-cos(w*dt));
-          if precission_flag
-            for temp_i=1:7
-                jPos{temp_i}=floor(jPos{temp_i}*precission)/precission; % limit the number of decimal degits to 3
-            end
-          end
-          counter=counter+1;
-          %% Send joint positions to robot
-          %sendJointsPositions( t ,jPos);
-          sendJointsPositionsf( t_Kuka ,jPos);
-          time_stamps(counter)=dt;
-           
-       end
-       tend=time;
-       rate=counter/(tend-tstart);
-       %% Stop the direct servo motion
-       realTime_stopDirectServoJoints( t_Kuka );
+    %% Get position roientation of end effector
 
-       fprintf('\nThe rate of joint nagles update per second is: \n');
-       disp(rate);
-       fprintf('\n')
-       pause(2);
-       %% turn off light
-       setBlueOff(t_Kuka); 
-       
-      %% turn off the server
-       net_turnOffServer( t_Kuka );
+    jPos={0,0,0,0,0,0,0};
+
+    setBlueOff(t_Kuka); % turn Off blue light
+
+    relVel=0.15;
+    movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
+
+    %% Start direct servo in joint space       
+    realTime_startDirectServoJoints(t_Kuka);
+
+    w=0.8*2; % motion constants, frequency rad/sec
+    A=pi/6; % motion constants, amplitude of motion
+
+    a=datevec(now);
+    t0=a(6)+a(5)*60+a(4)*60*60; % calculate initial time
+
+    dt=0;
+    precission=1000;
+    precission_flag=true;
+    tstart=t0;
+    counter=0;
+    duration=60; %1 minute
+    time_stamps=zeros(1,1000*duration);
+    while(dt<duration)
+     %% ferform trajectory calculation here
+      a=datevec(now);
+      time=a(6)+a(5)*60+a(4)*60*60;
+      dt=time-t0;
+
+      jPos{7}=A*(1-cos(w*dt));
+      if precission_flag
+        for temp_i=1:7
+            jPos{temp_i}=floor(jPos{temp_i}*precission)/precission; % limit the number of decimal degits to 3
+        end
+      end
+      counter=counter+1;
+      %% Send joint positions to robot
+      sendJointsPositions( t_Kuka ,jPos);
+      time_stamps(counter)=dt;
+
+    end
+    tend=time;
+    rate=counter/(tend-tstart);
+    %% Stop the direct servo motion
+    realTime_stopDirectServoJoints( t_Kuka );
+
+    fprintf('\nThe rate of joint nagles update per second is: \n');
+    disp(rate);
+    fprintf('\n')
+    pause(2);
+    %% turn off light
+    setBlueOff(t_Kuka); 
+
+    %% turn off the server
+    net_turnOffServer( t_Kuka );
 
 
-       fclose(t_Kuka);
-       
-       %% save time stamps
-       save('timingdata.mat','time_stamps');
-      
+    fclose(t_Kuka);
+
+    %% Plot time stamps
+    timeIntervals=time_stamps(2:counter)-time_stamps(1:counter-1);
+    time_stamps=time_stamps(1:counter-1);
+    plot(time_stamps,timeIntervals);
 end
  warning('on')
