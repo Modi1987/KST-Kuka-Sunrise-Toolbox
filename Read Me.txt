@@ -1,13 +1,13 @@
-# Mohammad SAFEEA 22nd Oct 2017
+# Mohammad SAFEEA 16th-April-2018
 -------------------------------
 KUKA Sunrise Toolbox for Matlab
 --------------------------------------------------------------------------
-A Toolbox used to control KUKA iiwa 7 R 800 robot from an external computer using Matlab.
+A Toolbox used to control KUKA iiwa 7/14 R 800/820 robots from an external computer using Matlab.
 Such that no knowledge about programming the industerial manipulator is required.
 A knowledge of using Matlab is required.
 --------------------------------------------------------------------------
 Hardware required:
-1- The kuka iiwa 7 R 800 robot.
+1- The kuka iiwa 7 R 800 robot, or kuka iiwa 14 R 820.
 2- External PC
 3- An Ethernet network between PC and the robot shall be established.
 --------------------------------------------------------------------------
@@ -16,22 +16,20 @@ A- on the PC side, you need the following:
 	1- Matlab.
 	2- The KST Toolbox, provided in the folder ((Matlab_client)) of github.
 B- on the controller side, you need:
-	1- KUKA sunrise project ((KST_1.0.zip)), provided in the root folder of github.
+	1- KUKA sunrise project, or its source code, please refer to document 
+	((Import KST to SunriseWorkbench.pdf)) for more info.
 --------------------------------------------------------------------------
 To utilize the Toolbox:
 A- You have to configure the robot controller:
-	1- Unzip the file KST_1.0.rar, a SunriseWorkbench project.
-	2- Open the project ((KST_1.0)) using the SunriseWorkbench, if you have no experience about how to do this
-	   refer to the guide-file ((Import KST to SunriseWorkbench.pdf)), this guide-file is provided in the KST 
-	   github repository.
-	3- Synchronise the project ((KST_1.0)) to the robot.
-	4- After Synchronising, run the ((MatlabToolboxServer)) application from the smart pad, 
+	1- Follow the steps listed in ((Import KST to SunriseWorkbench.pdf)).
+	2- Synchronise the project ((KST_X.XX)) to the robot.
+	3- After Synchronising, run the ((MatlabToolboxServer)) application from the smart pad, 
 	once run the utilizer can connect to the robot from a remote PC using Matlab.
 B- To use the Toolbox from Matlab:
-	5- Open Matlab
-	6- From the Command window of Matlab , Navigate to the Toolbox folder, 
+	1- Open Matlab
+	2- From the Command window of Matlab , Navigate to the Toolbox folder, 
 	folder ((Matlab_client)).
-	7- Run the file, ((kuka0_move_lin.m)), for testing:
+	3- Run the file, ((kuka0_move_lin.m)), for testing:
 Once executed, the robot will go to an initial configuration,
 then the end-effector shall move 50 mm in the X direction, starting from the initial configuration
 , then it shall return back to the initial configuration
@@ -45,25 +43,39 @@ Case study, collision avoidance in automobile industry:
 	https://www.youtube.com/watch?v=mHhYHzWPqCc
 	https://www.youtube.com/watch?v=xrr78QzLHaU
 -----------------------------------------------------------------------
-In case you got trouble using the realtime control, do the following:
-1- Open the KST1.0 project
-2- Go to the class: MatlabToolboxServer.java
-3- Change the body of the function
+In case you got trouble using the realtime functionality in position control mode, 
+You can try one of the following solutions:
 
-    double getTheDisplacment(double dj)
-    {
-	return dj;
-    }
+** Reconfigure your PC, and KST server:
+ A- PC side: Disable the nagle algorithm and the Throtelling as descriped in the 
+	((Tips and tricks)) folder of the github rpo.
+ B- Use a blending function inside KST server:
+	1- Open the KST_x.xx project
+	2- Go to the class: MatlabToolboxServer.java
+	3- Change the body of the function
 
-to
+	    double getTheDisplacment(double dj)
+	    {
+		return dj;
+	    }
 
-    double getTheDisplacment(double dj)
-    {
-    	double   a=0.07; 
-    	double b=a*0.75; 
-	double exponenet=-Math.pow(dj/b, 2);
-	return Math.signum(dj)*a*(1-Math.exp(exponenet));
-    }
+	to
+
+	    double getTheDisplacment(double dj)
+	    {
+	    	double   a=0.07; 
+	    	double b=a*0.75; 
+		double exponenet=-Math.pow(dj/b, 2);
+		return Math.signum(dj)*a*(1-Math.exp(exponenet));
+	    }
+
+
+** Switch to velocity control mode
+You can use KST_1.6 and upper to control iiwa in a velocity control mode.
+In such a case you can use a position feed back from the robot, and implement a controller
+for position control, this will result in smooth motion, without a need for disabling the
+nagle algorithm and the throtelling. An example is provided in the repo please refer to
+the matlab script ((Tutorial_softRealTimeJointsVelControl.m))
 -----------------------------------------------------------------------
 Note: After running the server ((MatlabToolboxServer)) on the controller,
 the utilizer has 60 seconds to connect using Matlab, otherwise
