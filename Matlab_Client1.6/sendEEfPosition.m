@@ -19,7 +19,7 @@ function [ ret ] = sendEEfPosition( t_Kuka ,EEEFpos)
 
 % Copy right, Mohammad SAFEEA, 1st of April 2018
 
-theCommand='DcSeCar_';
+theCommand='DcSeCarW_';
 
 for i=1:6
     x=EEEFpos{i};
