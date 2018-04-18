@@ -23,7 +23,21 @@ for i=1:6
 end
 % send the message through network
 fprintf(t_Kuka, theCommand);
-message=fgets(t);
-[ExTorque,k]=
+message=fgets(t_Kuka);
+[ExTorque,k]=getDoubleFromString(message);
 end
 
+function [jPos,j]=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+end

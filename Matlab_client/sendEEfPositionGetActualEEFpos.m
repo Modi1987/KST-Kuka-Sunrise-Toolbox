@@ -23,7 +23,7 @@ for i=1:6
 end
 % send the message through network
 fprintf(t_Kuka, theCommand);
-message=fgets(t);
+message=fgets(t_Kuka);
 [EEFpos,N]=getDoubleFromString(message);
 end
 
