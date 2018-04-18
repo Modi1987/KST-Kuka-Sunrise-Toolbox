@@ -1,9 +1,12 @@
-function [flag]=nonBlocking_isGoalReached(t)
+function [flag]=nonBlocking_isGoalReached(t_Kuka)
 % this functions is used with nonBlocking motion functions to chekc whether
 % the goal is reached.
 
 %% Syntax:
 % [flag]=nonBlocking_isGoalReached()
+
+%% Arreguments
+% t_Kuka: is the TCP/IP connection object 
 
 %% return value
 % flag is a numerical value:
@@ -24,9 +27,13 @@ if(strcmp(x,paramName))
         flag=-1;
         return;
     end
-    % check if parameters are equal
-    flag=1;
-    eefpos=getEEFPos( t );
+% check if parameters are equal
+flag=1;
+    [eefpos,tempFlag]=GetActualEEFpos( t_Kuka );
+    if tempFlag==false
+        flag=1;
+        return;
+    end
     for i=1:6
         x1=paramVal{i};
         x2=eefpos{i};
@@ -37,7 +44,7 @@ if(strcmp(x,paramName))
             return;
         end
     end
-    pause(1);
+    pause(0.1);
     return;
 end
 %% if motion at joint space level
@@ -51,7 +58,11 @@ if(strcmp(x,paramName))
     end
     % check if parameters are equal
     flag=1;
-    eefpos=getJointsPos( t );
+    [eefpos,tempFlag]=GetActualJOINTSpos( t_Kuka );
+    if tempFlag==false
+        flag=1;
+        return;
+    end
     for i=1:6
         x1=paramVal{i};
         x2=eefpos{i};
@@ -62,7 +73,68 @@ if(strcmp(x,paramName))
             return;
         end
     end
-    pause(1);
+    pause(0.1);
     return;
+end
+end
+
+
+function [ EEFpos,flag ] = GetActualEEFpos( t_Kuka )
+EEEFpos={0,0,0,0,0,0};
+theCommand='DcSeCarEEfP_';
+
+for i=1:6
+    x=EEEFpos{i};
+    theCommand=[theCommand,sprintf('%0.5f',x),'_'];
+end
+% send the message through network
+fprintf(t_Kuka, theCommand);
+message=fgets(t_Kuka);
+[EEFpos,N]=getDoubleFromString(message);
+if(N==0)
+    flag=false;
+    message=fgets(t_Kuka);
+    [EEFpos,N]=getDoubleFromString(message);
+else
+    flag=true;
+end
+end
+
+function [ EEFpos,flag ] = GetActualJOINTSpos( t_Kuka )
+EEEFpos={0,0,0,0,0,0};
+theCommand='DcSeCarJP_';
+
+for i=1:6
+    x=EEEFpos{i};
+    theCommand=[theCommand,sprintf('%0.5f',x),'_'];
+end
+% send the message through network
+fprintf(t_Kuka, theCommand);
+message=fgets(t_Kuka);
+[EEFpos,N]=getDoubleFromString(message);
+if(N==0)
+    flag=false;
+    message=fgets(t_Kuka);
+    [EEFpos,N]=getDoubleFromString(message);
+else
+    flag=true;
+end
+end
+
+function [jPos,j]=getDoubleFromString(message)
+n=max(max(size(message)));
+j=0;
+numString=[];
+for i=1:n
+    if message(i)=='_'
+        j=j+1;
+        jPos{j}=str2num(numString);
+        numString=[];
+    else
+        numString=[numString,message(i)];
+    end
+end
+if j==0
+    jPos={0};
 end
 end
