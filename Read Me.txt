@@ -112,6 +112,7 @@ kuka0_preciseHandGuidingExample:an example on using the precise handguiding func
 				this is not the same as KUKA handguiding. The precise hand guiding
 				is a dedecated functionality (controller) that was establised to 
 				achieve precise hand guiding at end-effector level.
+kuka0_iiwa_vrep:		This example is used for controlling KUKA iiwa from Vrep simulator.
 
 -----------------------------------------------------------------------
 

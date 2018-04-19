@@ -10,10 +10,17 @@ A basic knowledge of using Matlab is required.
 
 
 # Videos demos:
+* Real time control of KUKA iiwa from Vrep simulator using MATLAB and KST:
+
+https://youtu.be/2vK5BGIS1h4
+
 * Real time control of KUKA iiwa using space mouse:
 
 https://youtu.be/-KjZGUkJzZM
 
+* Control iiwa using Skeleton data from Kinect and KST:
+
+https://www.youtube.com/watch?v=2S-z3WCAAAU
 
 * Real time conotrol of KUKA iiwa using a game controller:
 
