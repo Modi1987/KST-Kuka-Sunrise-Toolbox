@@ -1,0 +1,55 @@
+# Mohammad SAFEEA 24th-April-2018
+-------------------------------
+Robust TCPIP KUKA Sunrise Toolbox RKST for Matlab
+--------------------------------------------------------------------------
+In this folder the KUKA Sunrise Toolbox is provided with new flavour, the 
+main  changes affects the network architecture between KUKA robot and the 
+Matlab script, where, the client server architecture in RKST has been flipped 
+over KST:
+1- The Sunrise.Workbench project is provied as a client, is a server in KST.
+2- The Matlab code is provided as a server, is a client in KST.
+--------------------------------------------------------------------------~
+Advantages:
+***********
+The Sunrise.Workbench application of the RKST can be forced to terminate from the
+teach pendant, this procedure is unfeasible in the situation of KST which can
+not be forced to terminate.
+--------------------------------------------------------------------------- 
+When might you want to force KST to stop from tach pendant:
+************************************************************
+In case of the loss of connection between
+the Robot and the PC, which can occur due to sporadic hardware failure or software error: 
+1- Unplugging the Ethernet cable connecting the two devices
+2- A crash of MATLAB
+3- Electrical power cut on PC side.
+.....etc
+In such a case the user might need to force the KST to stop, and run it again after resolving
+the problem.
+-----------------------------------------------------------------------------
+Why can't we force KST to terminate from the teach pendant:
+***********************************************************
+>>>
+The server thread of the KST, on KUKA iiwa controller is uninterruptable from the teach pendant.
+This thread keeps on running, and can not be forced to stop, even after forcing the main applicaiton 
+Matlab_toolbox_server to stop. 
+This causes an error when the user is trying to restart the KST server on KUKS iiwa, this is caused
+due to the fact that the server socket is already open and could not be closed. This problem keeps 
+arousing even after setting the thread of the class "BackgroundTask" of the KST as a Daemon thread.
+>>>
+-----------------------------------------------------------------------------
+Due to the previous issue the RKST is proposed.
+-----------------------------------------------------------------------------
+Setup defference between the KST and the RKST:
+**********************************************
+a- In the case of the RKST, MATLAB script plays the role of the server, while the
+KUKA iiwa application plays the robot of the client, as such the suer shall start
+the MATLAB script first, then he shall run the MatlabToolboxClient application from
+the teach pendant.
+b- Another slight setup step is required for using the RKST:
+   Before synchronising the Sunrise.Workbench application of the RKST to IIWA ROBOT, 
+   the user shall modify the IP address in the RKST source code.
+   This address shall be modified as the following:
+	1- Open the file ((MatlabToolboxClient.java)) in the RKST source code.
+	2- Then modify the line: private static String _ip="172.31.69.55"; 
+	3- Change the IP address to your PC address.
+	4- Then synchronise the RKST client to your IIWA robot.

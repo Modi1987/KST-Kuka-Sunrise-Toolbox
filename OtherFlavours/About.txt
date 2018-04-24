@@ -1,0 +1,5 @@
+In this folder you find other flavours of KST
+The new flavours include different network archetectures, 
+different Ethernet comunication techniques, including unique/multi
+TCPIP, UDP or mixture of both.
+This folder is a work in progress, new code will be added with time.
