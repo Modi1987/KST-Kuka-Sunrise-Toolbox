@@ -7,7 +7,13 @@ A Toolbox used to control KUKA iiwa 7 R 800 robot from an external computer usin
 Using the KST the utilizer can control the iiwa robot from his/her computer without a need for programming  the industerial manipulator.
 
 A basic knowledge of using Matlab is required.
+------------------------------------------
 
+# Video Tutorials on how to utilize the toolbox are available at:
+
+https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8
+
+-----------------
 
 # Videos demos:
 * Real time control of KUKA iiwa from Vrep simulator using MATLAB and KST:
