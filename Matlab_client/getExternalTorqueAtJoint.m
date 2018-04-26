@@ -2,7 +2,7 @@ function [ torque ] = getExternalTorqueAtJoint( tKuka,k )
 %% This function is used to get the external torque at some joint, for the KUKA iiwa robot.
 
 %% Syntax:
-% [ torque ] = getMeasuredTorqueAtJoint( tKuka,k )
+% [ torque ] = getExternalTorqueAtJoint( tKuka,k )
 
 %% About:
 % This function is used to get external torque (due to external forces) at
