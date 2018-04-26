@@ -1,4 +1,4 @@
-function [ torques ] = getMeasuredTorqueAtJoint( t,k )
+function [ torque ] = getMeasuredTorqueAtJoint( t,k )
 %% This function is used to get the measured torque at some joint, for the KUKA iiwa 7 R 800.
 
 %% Syntax:
@@ -30,6 +30,7 @@ end
     message=fgets(t);
       
     torques=getDoubleFromString(message);
+    torque=torques{k};
 end
 
 function jPos=getDoubleFromString(message)
