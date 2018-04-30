@@ -6,6 +6,9 @@ A Toolbox used to control KUKA iiwa 7/14 R 800/820 robots from an external compu
 Such that no knowledge about programming the industerial manipulator is required.
 A knowledge of using Matlab is required.
 --------------------------------------------------------------------------
+Video tutorials are available:
+https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8
+--------------------------------------------------------------------------
 Hardware required:
 1- The kuka iiwa 7 R 800 robot, or kuka iiwa 14 R 820.
 2- External PC
@@ -82,15 +85,17 @@ the utilizer has 60 seconds to connect using Matlab, otherwise
 the server will turn-off automatically. 
 -----------------------------------------------------------------------
 Other example files are also provided, example scripts are:
-kuka0_circles: in this example the manipulator perform circular motions
-kuka0_directServo: real-time control of the robot joints from remote PC.
-kuka0_do_some_stuff: demonstrates how to use the some of the Toolbox functionalities
-kuka0_getters: how to acquire data from robot
-kuka0_longTest: long test.
-kuka0_move_lin: move robot in linear motions, using remote PC
-kuka0_move_lin_relative: move robot in linear motion 
-kuka0_move_ptp: perform point to point motions using remote PC
-kuka0_move_sequare: move along a sequare
+kuka0_circles: 			in this example the manipulator perform circular motions
+kuka0_directServo: 		real-time control of the robot joints from remote PC.
+kuka0_directServoCartesian:	real-time control of the robot EEF position/orientation
+				in Cartesian space from remote PC.
+kuka0_do_some_stuff: 		demonstrates how to use the some of the Toolbox functionalities
+kuka0_getters: 			how to acquire data from robot
+kuka0_longTest: 		long test, same as (kuka0_do_some_stuff) repeated over several cycles
+kuka0_move_lin: 		move robot in linear motions, using remote PC
+kuka0_move_lin_relative: 	move robot in linear motion 
+kuka0_move_ptp: 		perform point to point motions using remote PC
+kuka0_move_sequare: 		move along a sequare
 kuka0_gampade_EEFPosControl:	example of integrating external hardware (gamepad)
 				with the KST for realtime control of the manipulator.
 				In this example the iiwa robot is controlled in realtime
@@ -112,8 +117,24 @@ kuka0_preciseHandGuidingExample:an example on using the precise handguiding func
 				this is not the same as KUKA handguiding. The precise hand guiding
 				is a dedecated functionality (controller) that was establised to 
 				achieve precise hand guiding at end-effector level.
+				Using this functionality the user can move the EEF in three groups of motion
+				1- Linear motion along the X,Y or Z axes of the base.
+				2- Pivoting motion, for orienting the EEF in space
+				3- Rotation of the EEF around its axes
+				This controller offers a smooth/precise motion in Cartesian space, allowing
+				the user to acheive a pin-point positioning accuracy.
 kuka0_iiwa_vrep:		This example is used for controlling KUKA iiwa from Vrep simulator.
+kuka0_moveOnEllipticalTrajectory:
+				This example is used to demonstrate how to utilize the point to point
+				motion functions on an elliptical curve, the functions are able to draw
+				an entire ellipse or a part of an ellipse.
+kuka0_ptpPickPlacePhisicalInteraction:
+				This example is used to demonstrate the physical interaction functionalities provided by the KST.
+				The example demonstrates a pick and place cell, where the coworker interacts physically with the robot.
 
+kuka0_realTimeImpedancePlotTOrqueFeedBack:
+				This prgoram is used to control the robot in real-time at impedence mode, at the same
+				time, the program acquires the joints torques and plots them in a graph.
 -----------------------------------------------------------------------
 
 Important: be sure that the robot is well fixed to the table.
