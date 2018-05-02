@@ -1,6 +1,11 @@
 % Copyright Mohammad SAFEEA, 2nd-May-2018
 
 % Controlling KUKA iiwa robot using 3D mouse.
+
+% Important note: when operating the robot with 3D mouse
+% do not drive the robot near joints limits
+% or near work space limits
+
 clear all;
 close all;
 clc;
