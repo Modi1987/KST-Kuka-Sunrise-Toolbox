@@ -134,7 +134,7 @@ while true
     sendJointsPositions( t_Kuka ,jPos);
     %% update initial positions, target transform
     qin=qt;
-    [Tt,j]=directKinematics(qin,TefTool); 
+ 
 end
 %% Turn off the direct servo
 realTime_stopDirectServoJoints(t_Kuka);
