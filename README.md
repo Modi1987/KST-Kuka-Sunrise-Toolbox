@@ -90,10 +90,6 @@ Path                                 | Content description
 [realTimeControl_iiwa_from_Vrep/][8] | Demo, using KST with V-rep to control iiwa robot.
 [realtimeControlOfEEFGamePad/][9]    | Teleoperation, control EEF from GamePad.
 [realtimeControlOfJoint...../][10]   | Teleoperation, control joints from GamePad.
-[Import KST to SunriseW......][11]   | Documentation, how to synchronize the Java code to controller.
-[Read me.txt][12]                    | Quick start guide.
-[Toolbox function.xlsx][13]          | List of supported functions by KST.
-
 
 
 
