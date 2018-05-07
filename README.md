@@ -100,10 +100,10 @@ Path                                 | Content description
 [2]: /Matlab_client
 [3]: /OtherFlavours
 [4]: /Other_MATLAB_functionalities
-[5]: /Tips_and_tricks
+[5]: /Tips%20and%20tricks
 [6]: /realTimeControlDrawCircle
 [7]: /realTimeControlDrawEllipse
-[8]: /realTimeControl_iiwa_from_Vrep
+[8]: /realTimeControl_iiwa_From_Vrep
 [9]: /realtimeControlOfEEFGamePad
 [10]: /realtimeControlOfJointSpaceUsingGamePad
 
