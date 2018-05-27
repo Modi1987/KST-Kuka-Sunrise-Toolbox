@@ -1,4 +1,4 @@
-function [ taw ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,d2q)
+function [ d2q ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,taw)
 %% This function is used to calculate the direct dynamics of the KUKA iiwa 7  R 800
 % This function proposes that the robot is mounted with the base in the
 % horizontal poistion.
@@ -7,7 +7,7 @@ function [ taw ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,d2q)
 %--------------------
 % q: is 1x7 vector, joint nagles vector of the manipulator
 % dq: is 1x7 vector, joint angular velocity vector 
-% d2q: is 1x7 vector, joint angular acceleration vector 
+% taw: 1x7 vector, the torques on the joints.
 % Pcii: is 3X7 matrix while each column represents the local coordinates
 % of the center of mass of each link.
 % Icii: is (3x3x7) matrix, each 3x3 matrix of which represnets the
@@ -17,7 +17,7 @@ function [ taw ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,d2q)
 
 % Return value:
 %--------------------
-% taw: 7x1 vector, the torques on the joints due to the direct dynamics.
+% d2q: is 7x1 vector, joint angular acceleration vector 
 
 % Copyright: Mohammad SAFEEA, 9th-April-2018
 
@@ -26,8 +26,8 @@ function [ taw ] = gen_DirectDynamics(q,Pcii,Icii,mcii,dq,d2q)
 [ G ] = gen_GravityVector(q,Pcii,mcii);
 % convert angular velocity/acceleration into column vectors
 dq=columnVec(dq);
-d2q=columnVec(d2q);
-taw=M*d2q+B*dq+G;
+taw=columnVec(taw);
+d2q=M\(taw-B*dq-G);
 end
 
 function y=columnVec(x)
