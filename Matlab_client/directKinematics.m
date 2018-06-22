@@ -1,5 +1,12 @@
 function [eef_transform,J]=directKinematics(q,TefTool)
-%% Calculates the direct kinematics of the KUKA iiwa 7 R 800 robot
+%% Calculates the direct kinematics of the KUKA iiwa 7 R 800 robot with flange "Medien-Flansch Touch pneumatisch"
+% If you have a different flange or if you are utilizing the iiwa 14 R 820 change the array "d" of the DH parameters
+% as described in the comments listed under the section "DH PARAMETERS FOR THE ROBOT" below
+
+% The DH parameters used in code are calcualted from the technical data in the manual:
+% [1] Medien-Flansch
+%     Für Produktfamilie LBR iiwa
+%     Montage- und Betriebsanleitung, Page 30  
 
 % Syntax:
 % [eef_transform,J]=directKinematics(q,TefTool)
@@ -17,11 +24,21 @@ function [eef_transform,J]=directKinematics(q,TefTool)
 % Copyright:
 % Mohammad SAFEEA
 % 16th-Aug-2017
+% updated: 22nd-June-2018
 
+%% DH PARAMETERS FOR THE ROBOT
 alfa={0,-pi/2,pi/2,pi/2,-pi/2,-pi/2,pi/2};
-d={0.34,0.0,0.4,0.0,0.4,0.0,0.28}; 
+% following are "d" parameters for iiwa 7 R 800 
+d={0.34,0.0,0.4,0.0,0.4,0.0,0.126};
+% following are "d" parameters for iiwa 14 R 820 
+% d={0.36,0.0,0.42,0.0,0.4,0.0,0.126};
+
+% The following is for accounting for the length of the flange "Medien-Flansch Touch pneumatisch".
+d(7)=0.126+0.061; % if you have another type of flange, please refer to reference [1] above.
+
 a={0,0,0,0,0,0,0};
 
+%% Calculating the direct Kinematics
 T=zeros(4,4,7);
 i=1;
 T(:,:,i)=getDHMatrix(alfa{i},q(i),d{i},a{i});
