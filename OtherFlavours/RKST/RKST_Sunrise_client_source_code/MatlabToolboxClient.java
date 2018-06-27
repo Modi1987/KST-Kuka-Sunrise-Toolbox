@@ -1,12 +1,18 @@
-package lbrExampleApplications;
-/* By Mohammad SAFEEA: 2nd-April-2017
+package lbrExampleApplications_client;
+/* By Mohammad SAFEEA: Coimbra University-Portugal, 
+ * Ensam University-France
  * 
- * KST 1.2
+ * KST 1.7
  * 
  * First upload 07-May-2017
  * 
- * This is a multi-threaded server program that is meant to be used with KUKA iiwa 7 R 800
- * robot with pneumatic flange, the server listens on the port 30005.
+ * Final update 26th-06-2018 
+ * 
+ * This is a multi-threaded server program that is meant to be used with both
+ *    KUKA iiwa 7 R 800
+ * or KUKA iiwa 14 R 820.
+ * The robot shall be provided with a pneumatic flange, 
+ * the client of this application connects on the port 30001.
  * 
  * */
 
@@ -20,6 +26,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import com.kuka.common.ThreadUtil;
 import com.kuka.connectivity.motionModel.directServo.DirectServo;
 import com.kuka.connectivity.motionModel.directServo.IDirectServoRuntime;
 import com.kuka.generated.ioAccess.MediaFlangeIOGroup;
@@ -70,15 +77,15 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
     //private static final String stopCharacter="\n"+Character.toString((char)(10));
     private static final String stopCharacter=Character.toString((char)(10));
     private static final String ack="done"+stopCharacter;
-
+    private static final String nak="nak"+stopCharacter;
+    private static final int MILLI_SLEEP_TO_EMULATE_COMPUTATIONAL_EFFORT = 20;
 
     @Override
     public void initialize()
     {
+    	_ip=getApplicationData().getProcessData("PC_IP").getValue();
         _lbr = getContext().getDeviceFromType(LBR.class);
         kuka_Sunrise_Cabinet_1 = getController("KUKA_Sunrise_Cabinet_1");
-		_lbr = (LBR) getDevice(kuka_Sunrise_Cabinet_1,
-				"LBR_iiwa_7_R800_1");
 		// INitialize the variables
         jpos=new double[7];
         jDispMax=new double[7];
@@ -162,279 +169,295 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
         // for each
         // instruction that do not sent something back.
         // This loop will be deactivated when the direct_servo function is being used
-        while(terminateFlag==false)
+    	while(terminateFlag==false)
         {
-        	if(daCommand.startsWith("startDirectServoJoints"))
-        	{
-        		directSmart_ServoMotionFlag=true;
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        		getLogger().info("realtime control initiated");
-        		directServoStartJoints();
-        		getLogger().info("realtime control terminated");
-        		
-        	}
-        	else if(daCommand.startsWith("stDcEEf_"))
-        	{
-        		directSmart_ServoMotionFlag=true;
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        		getLogger().info("realtime control in Cartesian space initiated");
-        		directServoStartCartezian();
-        		getLogger().info("realtime control terminated");
-        		
-        	}
-        	// raltime velocity control in joint space
-        	else if(daCommand.startsWith("stVelDcJoint_"))
-        	{
-        		directSmart_ServoMotionFlag=true;
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        		getLogger().info("Velocity-mode, realtime control in joint space initiated");
-        		directServoStartVelMode();
-        		getLogger().info("realtime control terminated");
-        		
-        	}
+    		try
+    		{
+    			while(terminateFlag==false)
+    	        {
+    	        	if(daCommand.startsWith("startDirectServoJoints"))
+    	        	{
+    	        		directSmart_ServoMotionFlag=true;
+    	        		dabak.sendCommand(ack);
+    	        		daCommand="";
+    	        		getLogger().info("realtime control initiated");
+    	        		directServoStartJoints();
+    	        		getLogger().info("realtime control terminated");
+    	        		
+    	        	}
+    	        	else if(daCommand.startsWith("stDcEEf_"))
+    	        	{
+    	        		directSmart_ServoMotionFlag=true;
+    	        		dabak.sendCommand(ack);
+    	        		daCommand="";
+    	        		getLogger().info("realtime control in Cartesian space initiated");
+    	        		directServoStartCartezian();
+    	        		getLogger().info("realtime control terminated");
+    	        		
+    	        	}
+    	        	// raltime velocity control in joint space
+    	        	else if(daCommand.startsWith("stVelDcJoint_"))
+    	        	{
+    	        		directSmart_ServoMotionFlag=true;
+    	        		dabak.sendCommand(ack);
+    	        		daCommand="";
+    	        		getLogger().info("Velocity-mode, realtime control in joint space initiated");
+    	        		directServoStartVelMode();
+    	        		getLogger().info("realtime control terminated");
+    	        		
+    	        	}
 
-        	else if(daCommand.startsWith(
-        			"startSmartImpedneceJoints"))
-        	{
-        		// pre-processing step
-        		directSmart_ServoMotionFlag=true;
-        		double[] variables=
-        				SmartServoWithImpedence.
-        				getControlParameters(daCommand);
-        		if(variables.length>6)
-        		{
-	        		double massOfTool=variables[0];
-	    			double[] toolsCOMCoordiantes=
-	    				{variables[1],variables[2],variables[3]};
-	    			double cStifness=variables[4];
-	    			double rStifness=variables[5];
-	    			double nStifness=variables[6];
-	    			getLogger().info("Mass: "+Double.toString(massOfTool));
-	    			getLogger().info("COM X : "+Double.toString(toolsCOMCoordiantes[0]));
-	    			getLogger().info("COM Y : "+Double.toString(toolsCOMCoordiantes[1]));
-	    			getLogger().info("COM Z : "+Double.toString(toolsCOMCoordiantes[2]));
-	    			getLogger().info("Stiffness C: "+Double.toString(cStifness));
-	    			getLogger().info("Stiffness R: "+Double.toString(rStifness));
-	    			getLogger().info("Stiffness N: "+Double.toString(nStifness));
-	    			dabak.sendCommand(ack);
-	        		daCommand="";
-	        		
-	    			try
-	        		{
-	    				getLogger().info("realtime control initiated");
-		    			SmartServoWithImpedence.
-		    			startRealTimeWithImpedence
-		    			( _lbr,kuka_Sunrise_Cabinet_1
-		    				,  massOfTool,
-		    				toolsCOMCoordiantes, 
-		    				cStifness, rStifness,nStifness) ;
-	        		}
-	        		catch (Exception e) {
-	        			// TODO: handle exception
-	        			getLogger().error(e.toString());
-	        		}
-	    			getLogger().info("realtime control terminated");
-	        		dabak.sendCommand(ack);
-	        		daCommand="";
-        		}
-        		
-        	}
-        	// Start the hand guiding mode
-        	else if(daCommand.startsWith("handGuiding"))
-        	{
-        		FastHandGUiding.handGUiding(_lbr, kuka_Sunrise_Cabinet_1);
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        	}
-        	// Start the precise hand guiding mode
-        	else if(daCommand.startsWith("preciseHandGuiding"))
-        	{
-        		
-    			double weightOfTool;
-    			double[] toolsCOMCoordiantes=
-    					new double[3];
-        		try
-        		{
-        			// pre-processing step
-        			String tempstring=daCommand;
-        			double[] toolData=new double[4];
-        			toolData=PreciseHandGuidingForUpload2.
-        			getWightAndCoordiantesOfCOMofTool
-        			(daCommand);
-        			tempstring=PreciseHandGuidingForUpload2.LBRiiwa7R800;
-        			// separate data of tool to weight+COM
-        			weightOfTool=toolData[0];
-        			for(int kj=0;kj<3;kj++)
-        			{
-        				toolsCOMCoordiantes[kj]=
-        						toolData[kj+1];	
-        			}
-        			// start the precise hand guiding
-        			PreciseHandGuidingForUpload2.
-        			HandGuiding(_lbr, kuka_Sunrise_Cabinet_1
-        			,tempstring,weightOfTool,toolsCOMCoordiantes);
-        		
-        		}
-        		catch (Exception e) {
-        			// TODO: handle exception
-        			getLogger().error(e.toString());
-        		}
-        		dabak.sendCommand(ack);
-        		daCommand="";
-        	} 
-        	
-        	// PTP instructions
-        	if(daCommand.startsWith("doPTPin"))
-        	{
-				if(daCommand.startsWith("doPTPinJS"))
-				{
-					dabak.sendCommand(ack);
-					PTPmotionClass.PTPmotionJointSpace();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("doPTPinCSRelEEF"))
-				{
-					dabak.sendCommand(ack);
-					PTPmotionClass.PTPmotionCartizianSpaceRelEEf();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("doPTPinCSRelBase"))
-				{
-					dabak.sendCommand(ack);
-					//getLogger().info("move end effector relative, in base frame");
-					PTPmotionClass.PTPmotionCartizianSpaceRelWorld();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("doPTPinCSCircle1"))
-				{
-					
-					dabak.sendCommand(ack);
-					PTPmotionClass.PTPmotionCartizianSpaceCircle();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("doPTPinCS"))
-				{
-					
-					dabak.sendCommand(ack);
-					PTPmotionClass.PTPmotionCartizianSpace();
-					daCommand="";
-				}
-			}
-        	// PTP motion with condition instructions
-        	else if(daCommand.startsWith("doPTP!"))
-        	{
-        		if(daCommand.startsWith("doPTP!inJS"))
-				{
-        			double[] indices=new double[7];
-        			double[] maxTorque=new double[7];
-        			double[] minTorque=new double[7];
-        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
-        			dabak.sendCommand(ack);
-    				daCommand="";
-        			for(int i=0;i<n;i++)
-        			{
-        				String strInfo="[minTorque,maxTorque] for joint "+
-        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
-        			+" , "+Double.toString(maxTorque[i]);
-        	        	getLogger().info(strInfo);
-        			}
-        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
-				}
-        		else if(daCommand.startsWith("doPTP!inCS"))
-				{
-        			double[] indices=new double[7];
-        			double[] maxTorque=new double[7];
-        			double[] minTorque=new double[7];
-        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
-        			dabak.sendCommand(ack);
-    				daCommand="";
-        			for(int i=0;i<n;i++)
-        			{
-        				String strInfo="[minTorque,maxTorque] for joint "+
-        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
-        			+" , "+Double.toString(maxTorque[i]);
-        	        	getLogger().info(strInfo);
-        			}
-        			PTPmotionClass.PTPmotionLineCartizianSpaceTorquesConditional(n, indices, minTorque, maxTorque);
-				}
-        		else if(daCommand.startsWith("doPTP!CSCircle1"))
-				{
-        			double[] indices=new double[7];
-        			double[] maxTorque=new double[7];
-        			double[] minTorque=new double[7];
-        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
-        			dabak.sendCommand(ack);
-    				daCommand="";
-        			for(int i=0;i<n;i++)
-        			{
-        				String strInfo="[minTorque,maxTorque] for joint "+
-        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
-        			+" , "+Double.toString(maxTorque[i]);
-        	        	getLogger().info(strInfo);
-        			}
-        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
-				}
-        		
-        	}
-			else if(daCommand.startsWith("jRelVel"))
-			{
-				getLogger().info(daCommand);
-				jRelVel=StringManipulationFunctions.jointRelativeVelocity(daCommand);
-				dabak.sendCommand(ack);
-				daCommand="";
-			}
-        	// Get torques of joints
-			else if(daCommand.startsWith("Torques"))
-			{
-				if(daCommand.startsWith("Torques_ext_J"))
-				{
-					svr.sendJointsExternalTorquesToClient();
-					daCommand="";
-				}
-				else if(daCommand.startsWith("Torques_m_J"))
-				{
-					svr.sendJointsMeasuredTorquesToClient();
-					daCommand="";
-				}		
-			}
-        	// Get parameters of end effector
-			else if(daCommand.startsWith("Eef"))
-			{			
-				if(daCommand.equals("Eef_force"))
-				{
-					svr.sendEEFforcesToClient();
-					daCommand="";
-				}
-				else if(daCommand.equals("Eef_moment"))
-				{
-					svr.sendEEFMomentsToClient();
-					daCommand="";
-				}	
-				else if(daCommand.equals("Eef_pos"))
-				{
-					svr.sendEEfPositionToClient();
-					daCommand="";
-				}
-			}
-        	
-			/*else if(daCommand.length()>0)
-			{
-				getLogger().warn("Unrecognized instruction: "+daCommand);
-				try {
-					Thread.sleep(100);
-					// daCommand=""; // do not use
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}*/
-        	
-        	
-        }
+    	        	else if(daCommand.startsWith(
+    	        			"startSmartImpedneceJoints"))
+    	        	{
+    	        		// pre-processing step
+    	        		directSmart_ServoMotionFlag=true;
+    	        		double[] variables=
+    	        				SmartServoWithImpedence.
+    	        				getControlParameters(daCommand);
+    	        		if(variables.length>6)
+    	        		{
+    		        		double massOfTool=variables[0];
+    		    			double[] toolsCOMCoordiantes=
+    		    				{variables[1],variables[2],variables[3]};
+    		    			double cStifness=variables[4];
+    		    			double rStifness=variables[5];
+    		    			double nStifness=variables[6];
+    		    			getLogger().info("Mass: "+Double.toString(massOfTool));
+    		    			getLogger().info("COM X : "+Double.toString(toolsCOMCoordiantes[0]));
+    		    			getLogger().info("COM Y : "+Double.toString(toolsCOMCoordiantes[1]));
+    		    			getLogger().info("COM Z : "+Double.toString(toolsCOMCoordiantes[2]));
+    		    			getLogger().info("Stiffness C: "+Double.toString(cStifness));
+    		    			getLogger().info("Stiffness R: "+Double.toString(rStifness));
+    		    			getLogger().info("Stiffness N: "+Double.toString(nStifness));
+    		    			dabak.sendCommand(ack);
+    		        		daCommand="";
+    		        		
+    		    			try
+    		        		{
+    		    				getLogger().info("realtime control initiated");
+    			    			SmartServoWithImpedence.
+    			    			startRealTimeWithImpedence
+    			    			( _lbr,kuka_Sunrise_Cabinet_1
+    			    				,  massOfTool,
+    			    				toolsCOMCoordiantes, 
+    			    				cStifness, rStifness,nStifness) ;
+    		        		}
+    		        		catch (Exception e) {
+    		        			// TODO: handle exception
+    		        			getLogger().error(e.toString());
+    		        		}
+    		    			getLogger().info("realtime control terminated");
+    		        		dabak.sendCommand(ack);
+    		        		daCommand="";
+    	        		}
+    	        		
+    	        	}
+    	        	// Start the hand guiding mode
+    	        	else if(daCommand.startsWith("handGuiding"))
+    	        	{
+    	        		FastHandGUiding.handGUiding(_lbr, kuka_Sunrise_Cabinet_1);
+    	        		dabak.sendCommand(ack);
+    	        		daCommand="";
+    	        	}
+    	        	// Start the precise hand guiding mode
+    	        	else if(daCommand.startsWith("preciseHandGuiding"))
+    	        	{
+    	        		
+    	    			double weightOfTool;
+    	    			double[] toolsCOMCoordiantes=
+    	    					new double[3];
+    	        		try
+    	        		{
+    	        			// pre-processing step
+    	        			String tempstring=daCommand;
+    	        			double[] toolData=new double[4];
+    	        			toolData=PreciseHandGuidingForUpload2.
+    	        			getWightAndCoordiantesOfCOMofTool
+    	        			(daCommand);
+    	        			tempstring=PreciseHandGuidingForUpload2.LBRiiwa7R800;
+    	        			// separate data of tool to weight+COM
+    	        			weightOfTool=toolData[0];
+    	        			for(int kj=0;kj<3;kj++)
+    	        			{
+    	        				toolsCOMCoordiantes[kj]=
+    	        						toolData[kj+1];	
+    	        			}
+    	        			System.out.println("Weight of tool is:");
+    	        			System.out.println(Double.toString(toolData[0]));
+    	        			// start the precise hand guiding
+    	        			PreciseHandGuidingForUpload2.
+    	        			HandGuiding(_lbr, kuka_Sunrise_Cabinet_1
+    	        			,tempstring,weightOfTool,toolsCOMCoordiantes);
+    	        		
+    	        		}
+    	        		catch (Exception e) {
+    	        			// TODO: handle exception
+    	        			getLogger().error(e.toString());
+    	        		}
+    	        		dabak.sendCommand(ack);
+    	        		daCommand="";
+    	        	} 
+    	        	
+    	        	// PTP instructions
+    	        	if(daCommand.startsWith("doPTPin"))
+    	        	{
+    					if(daCommand.startsWith("doPTPinJS"))
+    					{
+    						dabak.sendCommand(ack);
+    						PTPmotionClass.PTPmotionJointSpace();
+    						daCommand="";
+    					}
+    					else if(daCommand.startsWith("doPTPinCSRelEEF"))
+    					{
+    						dabak.sendCommand(ack);
+    						PTPmotionClass.PTPmotionCartizianSpaceRelEEf();
+    						daCommand="";
+    					}
+    					else if(daCommand.startsWith("doPTPinCSRelBase"))
+    					{
+    						dabak.sendCommand(ack);
+    						//getLogger().info("move end effector relative, in base frame");
+    						PTPmotionClass.PTPmotionCartizianSpaceRelWorld();
+    						daCommand="";
+    					}
+    					else if(daCommand.startsWith("doPTPinCSCircle1"))
+    					{
+    						
+    						dabak.sendCommand(ack);
+    						PTPmotionClass.PTPmotionCartizianSpaceCircle();
+    						daCommand="";
+    					}
+    					else if(daCommand.startsWith("doPTPinCS"))
+    					{
+    						
+    						dabak.sendCommand(ack);
+    						PTPmotionClass.PTPmotionCartizianSpace();
+    						daCommand="";
+    					}
+    				}
+    	        	// PTP motion with condition instructions
+    	        	else if(daCommand.startsWith("doPTP!"))
+    	        	{
+    	        		if(daCommand.startsWith("doPTP!inJS"))
+    					{
+    	        			double[] indices=new double[7];
+    	        			double[] maxTorque=new double[7];
+    	        			double[] minTorque=new double[7];
+    	        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+    	        			dabak.sendCommand(ack);
+    	    				daCommand="";
+    	        			for(int i=0;i<n;i++)
+    	        			{
+    	        				String strInfo="[minTorque,maxTorque] for joint "+
+    	        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+    	        			+" , "+Double.toString(maxTorque[i]);
+    	        	        	getLogger().info(strInfo);
+    	        			}
+    	        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
+    					}
+    	        		else if(daCommand.startsWith("doPTP!inCS"))
+    					{
+    	        			double[] indices=new double[7];
+    	        			double[] maxTorque=new double[7];
+    	        			double[] minTorque=new double[7];
+    	        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+    	        			dabak.sendCommand(ack);
+    	    				daCommand="";
+    	        			for(int i=0;i<n;i++)
+    	        			{
+    	        				String strInfo="[minTorque,maxTorque] for joint "+
+    	        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+    	        			+" , "+Double.toString(maxTorque[i]);
+    	        	        	getLogger().info(strInfo);
+    	        			}
+    	        			PTPmotionClass.PTPmotionLineCartizianSpaceTorquesConditional(n, indices, minTorque, maxTorque);
+    					}
+    	        		else if(daCommand.startsWith("doPTP!CSCircle1"))
+    					{
+    	        			double[] indices=new double[7];
+    	        			double[] maxTorque=new double[7];
+    	        			double[] minTorque=new double[7];
+    	        			int n=StringManipulationFunctions.get_Indexes_ValBoundaries(daCommand,indices,minTorque,maxTorque);
+    	        			dabak.sendCommand(ack);
+    	    				daCommand="";
+    	        			for(int i=0;i<n;i++)
+    	        			{
+    	        				String strInfo="[minTorque,maxTorque] for joint "+
+    	        			Double.toString(indices[i])+" is "+Double.toString(minTorque[i])
+    	        			+" , "+Double.toString(maxTorque[i]);
+    	        	        	getLogger().info(strInfo);
+    	        			}
+    	        			PTPmotionClass.PTPmotionJointSpaceTorquesConditional( n, indices, minTorque, maxTorque);
+    					}
+    	        		
+    	        	}
+    				else if(daCommand.startsWith("jRelVel"))
+    				{
+    					getLogger().info(daCommand);
+    					jRelVel=StringManipulationFunctions.jointRelativeVelocity(daCommand);
+    					dabak.sendCommand(ack);
+    					daCommand="";
+    				}
+    	        	// Get torques of joints
+    				else if(daCommand.startsWith("Torques"))
+    				{
+    					if(daCommand.startsWith("Torques_ext_J"))
+    					{
+    						svr.sendJointsExternalTorquesToClient();
+    						daCommand="";
+    					}
+    					else if(daCommand.startsWith("Torques_m_J"))
+    					{
+    						svr.sendJointsMeasuredTorquesToClient();
+    						daCommand="";
+    					}		
+    				}
+    	        	// Get parameters of end effector
+    				else if(daCommand.startsWith("Eef"))
+    				{			
+    					if(daCommand.equals("Eef_force"))
+    					{
+    						svr.sendEEFforcesToClient();
+    						daCommand="";
+    					}
+    					else if(daCommand.equals("Eef_moment"))
+    					{
+    						svr.sendEEFMomentsToClient();
+    						daCommand="";
+    					}	
+    					else if(daCommand.equals("Eef_pos"))
+    					{
+    						svr.sendEEfPositionToClient();
+    						daCommand="";
+    					}
+    				}
+    	        	
+    				/*else if(daCommand.length()>0)
+    				{
+    					getLogger().warn("Unrecognized instruction: "+daCommand);
+    					try {
+    						Thread.sleep(100);
+    						// daCommand=""; // do not use
+    					} catch (InterruptedException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+    					
+    				}*/
+    	        	
+    	        	
+    	        }
+    			
+    		}
+    		catch(Exception e)
+    		{
+    			getLogger().error(e.toString());
+    			daCommand="";
+    			dabak.sendCommand(nak);
+    		}
+    		
+        }    	
     }
 
 
@@ -495,7 +518,7 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
                 }
 
 
-                Thread.sleep(1);
+                //Thread.sleep(1);
                 //getLogger().warn(Double.toString(jpos[0]));
                 //getLogger().info(daCommand);
                 JointPosition currentPos = new JointPosition(
@@ -509,7 +532,8 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
                 for (int k = 0; k < destination.getAxisCount(); ++k)
                 {            		                		                        
                 	destination.set(k, jPOS[k]);
-                }                                
+                }       
+                ThreadUtil.milliSleep(MILLI_SLEEP_TO_EMULATE_COMPUTATIONAL_EFFORT);
 	            theDirectServoRuntime.setDestination(destination);
 	                
             }
@@ -734,11 +758,11 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
 	
 	double getTheDisplacment(double dj)
     {
-		return dj;
-    	/*double   a=0.07; 
+		//return dj;
+    	double   a=0.07; 
     	double b=a*0.75; 
 		double exponenet=-Math.pow(dj/b, 2);
-		return Math.signum(dj)*a*(1-Math.exp(exponenet));*/
+		return Math.signum(dj)*a*(1-Math.exp(exponenet));
 		
     }
 

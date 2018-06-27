@@ -1,4 +1,4 @@
-package lbrExampleApplications;
+package lbrExampleApplications_client;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -147,7 +147,7 @@ public class PreciseHandGuidingForUpload2 {
     
     private static boolean handGuidingFlag=true;
     
-    private static boolean toolLucked=false;   
+    private static boolean toolLucked=true;   
     
     private static boolean locked=toolLucked;
 
@@ -516,7 +516,7 @@ public class PreciseHandGuidingForUpload2 {
 					if(j<4)
 					{
 						//getLogger().warn(jointString);
-						MatlabToolboxClient.jpos[j]=
+						val[j]=
 								Double.parseDouble(stringData);
 					}
 					

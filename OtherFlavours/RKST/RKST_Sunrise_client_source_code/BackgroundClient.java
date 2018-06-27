@@ -1,6 +1,21 @@
-package lbrExampleApplications;
+package lbrExampleApplications_client;
 
-//Copyright: Mohammad SAFEEA, 9th-April-2018
+/* By Mohammad SAFEEA: Coimbra University-Portugal, 
+ * Ensam University-France
+ * 
+ * KST 1.7
+ * 
+ * First upload 07-May-2017
+ * 
+ * Final update 26th-06-2018 
+ * 
+ * This is a multi-threaded server program that is meant to be used with both
+ *    KUKA iiwa 7 R 800
+ * or KUKA iiwa 14 R 820.
+ * The robot shall be provided with a pneumatic flange, 
+ * the client of this application connects on the port 30001.
+ * 
+ * */
 
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
 
@@ -79,7 +94,7 @@ class BackgroundClient implements Runnable {
 				if(scan.hasNextLine())
 				{			
 					MatlabToolboxClient.daCommand=scan.nextLine();
-					 
+					
 					if(MatlabToolboxClient.daCommand.startsWith("jf_"))
 		        	{
 		        		boolean tempBool=getTheJointsf(MatlabToolboxClient.daCommand);

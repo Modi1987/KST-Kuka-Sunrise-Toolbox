@@ -1,4 +1,4 @@
-package lbrExampleApplications;
+package lbrExampleApplications_client;
 
 // Copyright: Mohammad SAFEEA, 9th-April-2018
 
