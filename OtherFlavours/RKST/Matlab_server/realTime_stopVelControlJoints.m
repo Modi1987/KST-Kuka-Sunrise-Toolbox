@@ -1,4 +1,4 @@
-function realTime_stopVelControlJoints( t_Kuka )
+function [ret]=realTime_stopVelControlJoints( t_Kuka )
 %% Applicable to KST 1.6
 
 %% Syntax:
@@ -20,22 +20,9 @@ theCommand='stopDirectServoJoints';
 fprintf(t_Kuka, theCommand);
 
 message=fgets(t_Kuka); % Acknowledge  message of direct servo turned off is
-i=0;
-if(size(message,2)>4)
-    i=i+1;
-    if(message(i)=='d')
-            i=i+1;
-    if(message(i)=='o')
-            i=i+1;
-    if(message(i)=='n')
-            i=i+1;
-    if(message(i)=='e')
-        disp('Acknowledge, real time control turned off');
-    end
-    end
-    end
-    end
-    
+[ret]=checkAcknowledgment(message);
+if ret==true
+        disp('Acknowledge, real time control turned off'); 
 end
 
 end

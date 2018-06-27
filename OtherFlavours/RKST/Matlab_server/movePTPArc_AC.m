@@ -62,7 +62,7 @@ k=colVec(k);
 
 
 
-        movePTPCirc1OrintationInter( t , f1,f2, relVel)
+        state=movePTPCirc1OrintationInter( t , f1,f2, relVel);
 
     
     

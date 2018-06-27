@@ -19,7 +19,7 @@ function [ state ] =movePTPArcXY_AC(t,theta,c,vel)
     pos=getEEFPos( t );
     c=colVec(c);
     c1=[c;pos{3}];
-    movePTPArc_AC(t,theta,c1,k,vel)
+    state=movePTPArc_AC(t,theta,c1,k,vel);
 
 end
 

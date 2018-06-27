@@ -40,11 +40,11 @@ function [ state ] = movePTPLineEefRelBase( t , Pos, relVel)
     readingFlag=false;
     
     message='';
-    
+    state=false;
     while readingFlag==false
         message=fgets(t);
-        
-        if checkAcknowledgment(message)
+        state=checkAcknowledgment(message);
+        if state
             readingFlag=true;
         end
     end

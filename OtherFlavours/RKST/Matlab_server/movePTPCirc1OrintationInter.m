@@ -55,10 +55,11 @@ function [ state ] = movePTPCirc1OrintationInter( t , f1,f2, relVel)
     
     message='';
     
+    state=false;
     while readingFlag==false
         message=fgets(t);
-        
-        if checkAcknowledgment(message)
+        state=checkAcknowledgment(message);
+        if state
             readingFlag=true;
         end
     end

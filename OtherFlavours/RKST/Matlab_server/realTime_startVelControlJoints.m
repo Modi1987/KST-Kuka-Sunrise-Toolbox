@@ -24,30 +24,10 @@ function [ret]=realTime_startVelControlJoints( t_Kuka )
 theCommand='stVelDcJoint_';
 fprintf(t_Kuka, theCommand);
 message=fgets(t_Kuka);
-i=0;
-ret=true;
-if(size(message,2)>4)
-    i=i+1;
-    if(message(i)=='d')
-            i=i+1;
-        if(message(i)=='o')
-                i=i+1;
-            if(message(i)=='n')
-                    i=i+1;
-                if(message(i)=='e')
-                    disp('Acknowledge, realtime control turned on');
-                else
-                    ret=false;
-                end
-            else
-                ret=false;
-            end
-        else
-            ret=false;
-        end
-    else
-        ret=false;
-    end    
+
+[ret]=checkAcknowledgment(message);
+if ret==true
+	disp('Acknowledge, realtime control turned on');
 end
 delay(0.5); % introduce some time delay, so the robot turns on the direct servo before starting the motion
 end

@@ -20,7 +20,7 @@ for k=1:n
     pause(delayTime);
 end
 
-realTime_stopDirectServoJoints( t );
+[ state ] =realTime_stopDirectServoJoints( t );
 
 end
 
