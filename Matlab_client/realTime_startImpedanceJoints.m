@@ -1,4 +1,4 @@
-function [ output_args ] = realTime_startImpedanceJoints(t,weightOfTool,cOMx,cOMy,cOMz,...
+function [ ret ] = realTime_startImpedanceJoints(t,weightOfTool,cOMx,cOMy,cOMz,...
         cStiness,rStifness,nStifness)
 %% realTime_startImpedanceJoints 
 % This function is used to turn on the realtime control with impedance on the robot
@@ -39,22 +39,11 @@ disp(theCommand)
 
 fprintf(t, theCommand);
 message=fgets(t);
-i=0;
-if(size(message,2)>4)
-    i=i+1;
-    if(message(i)=='d')
-            i=i+1;
-    if(message(i)=='o')
-            i=i+1;
-    if(message(i)=='n')
-            i=i+1;
-    if(message(i)=='e')
-        disp('Acknowledge, realtime control with impedance turned on');
-    end
-    end
-    end
-    end
-    
+
+[ret]=checkAcknowledgment(message);
+
+if ret==true
+        disp('Acknowledge, realtime control with impedance turned on');   
 end
 delay(0.1); % introduce some time delay, so the robot turns on the direct servo before starting the motion
 end
