@@ -1,6 +1,8 @@
 %% KUKA Sunrise Toolbox class
 % Works with Sunrise application version KST_1.7  and higher
 
+% Copyright Mohammad SAFEEA, 15th-July-2018
+
 classdef KST < handle
     
     properties (Constant=true)
@@ -19,7 +21,7 @@ classdef KST < handle
         None=0.0;
     end
     
-	% private variables
+	% protected variables
     properties (SetAccess = protected) % public)
         ip='';
         I_data=[]; % inretial data of the robot
@@ -38,13 +40,15 @@ classdef KST < handle
                 if(sum(sum(size(temp)==[4,4]))==2)
                     this.Teftool=temp;
                 else
-                    error('Size of transofmration matrix is 4x4');
+                    error('Size of passed transofmration matrix is not 4x4');
+			return;
                 end
             elseif nargin == 3
                 % assigin Teftool the default value
                 this.Teftool=eye(4);
             else
-              error('Number of inputs is not correct, check the input arreguments');
+              error('Number of arguments is not correct, check the input arguments');
+		return;
             end
             % Assign the ip of the robot           
             this.ip=robot_ip;
@@ -67,7 +71,9 @@ classdef KST < handle
             end
             
             this.I_data=I_data;
-            this.dh_data=dh_data;                       
+            this.dh_data=dh_data;   
+		% transfer center of mass of last link from elbow frame "convention used by cited studies" to flange frame "convention used in KST"
+		this.I_data.pcii(3,7)=this.I_data.pcii(3,7)-this.dh_data.d{7};                    
         end
         
         %% Interaction functions
