@@ -23,6 +23,10 @@ https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe
 
 https://youtu.be/2vK5BGIS1h4
 
+* Object recognition and grasping using KUKA iiwa:
+
+https://www.youtube.com/watch?v=bwBRwdwVE2w
+
 * Real time control of KUKA iiwa using space mouse:
 
 https://youtu.be/-KjZGUkJzZM
