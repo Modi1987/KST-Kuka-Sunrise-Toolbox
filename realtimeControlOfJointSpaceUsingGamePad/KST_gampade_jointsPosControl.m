@@ -1,7 +1,12 @@
+% Using the gamepad for controlling the joints positions of KUKA
+% iiwa 7 R 800 robot.
+% This script implements a graphical user interface, which gives a feedback
+% about the position of the joints' angles.
+
 % Copyright Mohammad SAFEEA, 17th-Aug-2017
-clear all;
-close all;
-clc;
+
+close all;clear;clc;
+warning('off')
 %% Start the joystick, make sure that the joystick is connected
 instrreset;
 ID=1;
@@ -107,8 +112,8 @@ while true
         sendJointsPositions( tKuka ,jPos);
      end
     
-     %% TO be done
-     % Add a condition to break the loop, when x button of the gamepad is
+     % A condition to break the loop, when x button of the gamepad is
+     % pressed
      b=button(joy,1);
      if(b==1)
          break;
@@ -117,7 +122,7 @@ while true
     % pause(0.1)
 end
 close(figureHandle);
-    %% turn off the server
-    net_turnOffServer( tKuka );
-    fclose(tKuka);
+%% turn off the server
+net_turnOffServer( tKuka );
+fclose(tKuka);
     
