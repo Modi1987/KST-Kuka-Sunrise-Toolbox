@@ -128,7 +128,8 @@ w_control=filterVar*w_control+(1-filterVar)*darV*normalizedAngularMotionInput;
 v_control=filterVar*v_control+(1-filterVar)*darV*normalizedLinearMotionInput;
 
 % Calculate target transform using command, and current transform
- Tt=updateTransform2(Tt,w_control,v_control,dt);
+[Tt,notImportant]=iiwa.directKinematics(qin);
+Tt=updateTransform2(Tt,w_control,v_control,dt);
 
 qt= iiwa.gen_InverseKinematics(qin, Tt,numberOfIterations,lambda );
 % A condition to break the loop, when first space mouse button is
@@ -141,7 +142,7 @@ for i=1:7
     jPos{i}=qt(i);
 end
 %% Send reference joints to robot
-iiwa.sendJointsPositions(Pos);
+iiwa.sendJointsPositions(jPos);
 %% update initial positions, target transform
 qin=qt;
 end
