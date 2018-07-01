@@ -34,7 +34,7 @@ d={0.34,0.0,0.4,0.0,0.4,0.0,0.126};
 % d={0.36,0.0,0.42,0.0,0.4,0.0,0.126};
 
 % The following is for accounting for the length of the flange "Medien-Flansch Touch pneumatisch".
-d(7)=0.126+0.061; % if you have another type of flange, please refer to reference [1] above.
+d{7}=0.126+0.061; % if you have another type of flange, please refer to reference [1] above.
 
 a={0,0,0,0,0,0,0};
 
