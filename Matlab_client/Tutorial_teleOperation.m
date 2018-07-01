@@ -122,6 +122,7 @@ while true
     v_control=filterVar*v_control+(1-filterVar)*darV*normalizedLinearMotionInput;
 
     % Calculate target transform using command, and current transform
+     [Tt,notImportant]=directKinematics(qin,TefTool);
      Tt=updateTransform2(Tt,w_control,v_control,dt);
      
      qt=kukaDLSSolver( qin, Tt, TefTool,numberOfIterations,lambda );
