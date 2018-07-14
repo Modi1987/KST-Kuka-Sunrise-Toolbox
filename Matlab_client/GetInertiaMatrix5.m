@@ -71,7 +71,8 @@ end
 M=zeros(n,n);
 for i=1:n
     for j=1:i
-        M(i,j)=kj(:,j)'*fi(:,i)+kjpj(:,j)'*gi(:,i);
+        M(i,j)=kj(1,j)*fi(1,i)+kj(2,j)*fi(2,i)+kj(3,j)*fi(3,i)+...
+kjpj(1,j)*gi(1,i)+kjpj(2,j)*gi(2,i)+kjpj(3,j)*gi(3,i);
         M(j,i)=M(i,j);
     end
 end
