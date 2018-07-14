@@ -16,8 +16,7 @@ A basic knowledge of using Matlab is required.
 * Video tutorials on KST version 1.7 are [available here]().
 * Video tutorials on earlier versions of KST are [available here](https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8)
 
-Earlier versions of KST still works with the newer version 1.7.
-The newer version KST-1.7 only provides a wrapper class, that wraps the various functions of earlier versions in the file KST.m. As such the user has the freedom of choice to utilize KST-1.7 or eariler version according to his own preference.
+The newer version of KUKS Sunrise Toolbox (KST-1.7) provides a wrapper class that wraps the various functions of earlier versions in the file KST.m. As such earlier versions of KST still works with the newer version 1.7. And the user has the freedom of choice to utilize KST-1.7 or eariler versions according to his own preference.
 
 --------------------------------------
 
