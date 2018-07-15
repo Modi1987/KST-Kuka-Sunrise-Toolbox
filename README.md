@@ -28,6 +28,40 @@ The video examples range from pick and place applications where kinect camera is
 
 --------------------------------------
 
+# Package Content
+
+Path                                 | Content description
+-------------------------------------| ----------------------------------------------------------
+[KUKA_Sunrise_server_source_code/][1]| Java source code for IIWA controller.
+[Matlab_client/][2]                  | Matlab code for KST.
+[OtherFlavours/][3]                  | Other versions of KST.
+[Other_MATLAB_functionalities/][4]   | Hand-guiding/Physical-interaction functions.
+[Tips and tricks/][5]                | Documentation for enhancing network performance on PC.
+[realTimeControlDrawCircle/][6]      | Demo on trajectory generation/IK/on-the-fly control.
+[realTimeControlDrawEllipse/][7]     | Demo on trajectory generation/IK/on-the-fly control.
+[realTimeControl_iiwa_from_Vrep/][8] | Demo, using KST with V-rep to control iiwa robot.
+[realtimeControlOfEEFGamePad/][9]    | Teleoperation, control EEF from GamePad.
+[realtimeControlOfJoint...../][10]   | Teleoperation, control joints from GamePad.
+
+
+
+<!-- --------------------------------------------------------------------------------- -->
+
+<!-- Links in GitHub, -->
+[1]: /KUKA_Sunrise_server_source_code
+[2]: /Matlab_client
+[3]: /OtherFlavours
+[4]: /Other_MATLAB_functionalities
+[5]: /Tips%20and%20tricks
+[6]: /realTimeControlDrawCircle
+[7]: /realTimeControlDrawEllipse
+[8]: /realTimeControl_iiwa_From_Vrep
+[9]: /realtimeControlOfEEFGamePad
+[10]: /realtimeControlOfJointSpaceUsingGamePad
+
+--------------------------------------
+
+
 # Citations
 
 Please cite the following paper in your publications if it helps your research 
