@@ -1,5 +1,19 @@
-This folder contains the Java soruce code for the Sunrise Workbench.
-The source code is provided for the iiwa7R800 and the iiwa14R820.
-The code is provided with two flavors:
-	1- First flavor supports a pneumatic flange, 
-	2- Another flavor is universal where flange support is disabled.
+Copyright: Mohammad SAFEEA, 18th-July-2018
+------------------------------------------
+About:
+--------
+This folder contains the Java soruce code for the server part of the toolbox that runs on the controller side of the robot.
+This code is written using the Sunrise.Workbench, the utilizer shall use the Sunrise.Workbench to Synchronize the server application
+to the robot.
+ 
+Three versions of the server application are provided
+1- KST_1.7: (recommended) same as KST_1.6 but hard-coding has been avoided in the source code,
+            so same source code works for iiwa7R800 and iiwa14R820.
+2- KST_1.6: Two source codes of the server application are provided one for the iiwa7R800 and the other is for the iiwa14R820.
+3- KST_1.5: (Deprecated) does not support conditional and nonblocking motions.
+
+
+
+Each version of KST is provided with two flavors:
+	1- First flavor supports a touch-pneumatic flange. 
+	2- Another flavor is universal works on the robot regardless of the type of the flange, since that flange associated functionalities are disabled.

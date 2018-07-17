@@ -12,7 +12,7 @@ A basic knowledge of using Matlab is required.
 
 --------------------------------------
 
-# Video Tutorials on how to utilize the toolbox are available at:
+# Video tutorials on how to utilize the toolbox
 
 * Video tutorials on KST version 1.7 are [available here](https://www.youtube.com/playlist?list=PLz558OYgHuZd-Gc2-OryITKEXefAmrvae).
 * Video tutorials on KST version 1.6 are [available here](https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8)
@@ -21,7 +21,7 @@ The newer version of KUKA Sunrise Toolbox (KST-1.7) provides a wrapper class tha
 
 --------------------------------------
 
-# Video Gallery:
+# Video Gallery
 
 Video demos where MATLAB and KST are used to control iiwa manipulator are [available here](https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox/wiki/Videos). 
 The video examples range from pick & place applications where kinect camera is utilized for objects recognition and localization, to realtime collision avoidance with coworker/dynamic-obstacles in practical robotic cell, to controlling the manipulator from 3D simulation software or by using external hardware, and more.
