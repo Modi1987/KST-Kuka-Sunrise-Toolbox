@@ -1,7 +1,7 @@
 %% KUKA Sunrise Toolbox class
 % Works with Sunrise application version KST_1.7  and higher
 
-% Copyright Mohammad SAFEEA, 15th-July-2018
+% Copyright Mohammad SAFEEA, updated 18th-July-2018
 
 classdef KST < handle
     
@@ -28,6 +28,7 @@ classdef KST < handle
         dh_data=[]; % DH parameters of the robot, combination
         t_Kuka=[]; % tcpip connection object
         Teftool=eye(4);
+        RobotType='';
     end
     
     methods
@@ -57,11 +58,13 @@ classdef KST < handle
             I_data=[];
             dh_data=[];
             if(robotType==1)
+                datype='LBR7R800';
                 I_data=constInertialDataOf7R800();
                 dh_data=constDhDataOf7R800();
                 % account for the thickness of the flange
                 dh_data.d{7}=dh_data.d{7}+h_flange;
             elseif(robotType==2)
+                datype='LBR14R820';
                 I_data=constInertialDataOf14R820();
                 dh_data=constDhDataOf14R820();
                 % account for the thickness of the flange
@@ -71,7 +74,8 @@ classdef KST < handle
             end
             
             this.I_data=I_data;
-            this.dh_data=dh_data;   
+            this.dh_data=dh_data;  
+            this.RobotType=datype;
 		% transfer center of mass of last link from elbow frame "convention used by cited studies" to flange frame "convention used in KST"
 		this.I_data.pcii(3,7)=this.I_data.pcii(3,7)-this.dh_data.d{7};                    
         end
@@ -92,7 +96,11 @@ classdef KST < handle
         end
         
         function startPreciseHandGuiding( this,wightOfTool,COMofTool )
-            startPreciseHandGuiding( this.t_Kuka,wightOfTool,COMofTool );
+            if strcmp(this.RobotType,'LBR7R800')
+                startPreciseHandGuiding1( this.t_Kuka,wightOfTool,COMofTool );
+            elseif strcmp(this.RobotType,'LBR14R820')
+                startPreciseHandGuiding2( this.t_Kuka,wightOfTool,COMofTool );
+            end
         end
         
         %% Nonblocking

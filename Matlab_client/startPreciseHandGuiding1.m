@@ -3,7 +3,7 @@ function startPreciseHandGuiding1( t,wightOfTool,COMofTool )
 % This function is used to start the handguiding functionality on the robot
 
 %% Syntax:
-% [ output_args ] = startPreciseHandGuiding( t )
+% [ output_args ] = startPreciseHandGuiding1( t,wightOfTool,COMofTool )
 
 %% Arreguments:
 % t: is the TCP/IP connection object
