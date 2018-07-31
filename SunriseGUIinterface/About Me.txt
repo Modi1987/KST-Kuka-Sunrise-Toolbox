@@ -1,0 +1,12 @@
+This folder contains the script files for the virtual teach pendant, 
+which is a graphical teach pendant used to control the robot at EEF using
+the DirectServo iterface.
+
+The files in this folder shall be copied into the folder:
+(GUI simple interface XX)
+
+The main script of the virtual teach pendant program is:
+(virtualTeachPendant_main.m), this script is called by the virtual teach pendant button
+ from the main GUI interface (a0_interface.m).
+
+
