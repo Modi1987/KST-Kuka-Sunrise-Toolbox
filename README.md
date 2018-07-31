@@ -42,7 +42,7 @@ Path                                 | Content description
 [realTimeControl_iiwa_from_Vrep/][8] | Demo, using KST with V-rep to control iiwa robot.
 [realtimeControlOfEEFGamePad/][9]    | Teleoperation, control EEF from GamePad.
 [realtimeControlOfJoint...../][10]   | Teleoperation, control joints from GamePad.
-
+[SunriseGUIinterface/][11]	     | Friendly interface for controlling iiwa from MATLAB.
 
 
 <!-- --------------------------------------------------------------------------------- -->
@@ -58,6 +58,7 @@ Path                                 | Content description
 [8]: /realTimeControl_iiwa_From_Vrep
 [9]: /realtimeControlOfEEFGamePad
 [10]: /realtimeControlOfJointSpaceUsingGamePad
+[11]: /SunriseGUIinterface
 
 --------------------------------------
 
