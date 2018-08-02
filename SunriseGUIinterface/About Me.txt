@@ -1,12 +1,20 @@
-This folder contains the script files for the virtual teach pendant, 
-which is a graphical teach pendant used to control the robot at EEF using
-the DirectServo iterface.
+MATLAB GUI interface used to control KUKA iiwa using KST toolbox.
+------------------------------------------------------------------
 
-The files in this folder shall be copied into the folder:
-(GUI simple interface XX)
+Requirments to run the GUI example:
+-----------------------------------
+1- Synchronize the app "MatlabToolboxServer" into the controller of KUKA iiwa robot,
+   complete instruections are avialable in the document 
+   "Import KST to SunriseWorkbench.pdf".
+2- On a PC that is paired to the controller. Open the folder "SunriseGUIinterface" from the MATLAB.
+   For more info about pairing the PC to the controller please check the video tutorials of the KST.
+   And please note that the interface was built using MATLAB 2018.
 
-The main script of the virtual teach pendant program is:
-(virtualTeachPendant_main.m), this script is called by the virtual teach pendant button
- from the main GUI interface (a0_interface.m).
+Steps to run the GUI example:
+-------------------
+1- First run the "MatlabToolboxServer" app from the teach pendant of the robot.
+2- Then from Matlab run the m file "KSTclass_Tutorial_SunriseGUIinterface".
+
+A GUI interface will popup the user can use it to control the robot remotly.
 
 
