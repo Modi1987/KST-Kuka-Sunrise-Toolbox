@@ -5,13 +5,10 @@
 % An example script, it is used to show how to use the different
 % functions of the KUKA Sunrise matlab toolbox
 
-% First start the server on the KUKA iiwa controller
-% Then run this script using Matlab
+% First run the following script in Matlab
+% Then start the client on the KUKA iiwa controller
 
-% Copyright: Mohammad SAFEEA, 15th of June 2017
-
-% Important: Be careful when runnning the script, be sure that no human, nor obstacles
-% are around the robot
+% Mohammad SAFEEA, 8th-August-2018
 
 close all,clear all;clc;
 
@@ -33,7 +30,7 @@ jPos={0,0,0,0,0,0,0};
 
 setBlueOn(t_Kuka); % turn on blue light
 
-relVel=0.25;
+relVel=0.1;
 movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
 
 %% Start direct servo in joint space       

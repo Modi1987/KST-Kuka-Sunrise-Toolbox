@@ -10,7 +10,7 @@
 % are around the robot
 
 % This example works with Sunrise application version KST_1.7  and higher.
-% Copyright Mohammad SAFEEA, 25th-June-2018
+% Copyright Mohammad SAFEEA, 8th-August-2018
 
 
 close all;clear;clc;
@@ -33,7 +33,7 @@ disp('Moving first joint of the robot using a sinusoidal function')
 
 %% Go to initial position
 jPos={0,0,0,0,0,0,0};
-relVel=0.25;
+relVel=0.1;
 iiwa.movePTPJointSpace(jPos, relVel); % move to initial configuration
 
 %% Start direct servo in joint space       

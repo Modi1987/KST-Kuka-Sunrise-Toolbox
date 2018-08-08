@@ -10,7 +10,7 @@
 % Then run this script using Matlab
 
 % This example works with Sunrise application version KST_1.7  and higher.
-% Copyright Mohammad SAFEEA, 26th-June-2018
+% Copyright Mohammad SAFEEA, 8th-August-2018
 
 close all;clear;clc;
 warning('off')
@@ -64,7 +64,7 @@ rate=counter/(tend-tstart);
 %% Stop the direct servo motion
 iiwa.realTime_stopVelControlJoints();
 fprintf('\nTotal execution time is %f: \n',tend-t0 );
-fprintf('\nThe rate of joint nagles update per second is: \n');
+fprintf('\nThe rate of command update per second is: \n');
 disp(rate);
 fprintf('\n')
 pause(2);

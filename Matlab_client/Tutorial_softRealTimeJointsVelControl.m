@@ -6,13 +6,10 @@
 % An example script, it is used to show how to use the different
 % functions of the KUKA Sunrise matlab toolbox
 
-% First start the server on the KUKA iiwa controller
-% Then run this script using Matlab
+% First run the following script in Matlab
+% Then start the client on the KUKA iiwa controller
 
-% Copyright: Mohammad SAFEEA, 15th of April 2018
-
-% Important: Be careful when runnning the script, be sure that no human, nor obstacles
-% are around the robot
+% Mohammad SAFEEA, 8th-August-2018
 
 close all,clear all;clc;
 
@@ -65,7 +62,7 @@ try
     %% Stop the direct servo motion
     realTime_stopVelControlJoints( t_Kuka );
     fprintf('\nTotal execution time is %f: \n',tend-t0 );
-    fprintf('\nThe rate of joint nagles update per second is: \n');
+    fprintf('\nThe rate of command update per second is: \n');
     disp(rate);
     fprintf('\n')
     pause(2);
