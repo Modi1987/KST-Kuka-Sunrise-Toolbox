@@ -9,7 +9,7 @@
 % First run the following script in Matlab
 % Then start the client on the KUKA iiwa controller
 
-% Mohammad SAFEEA, 24th of April 2018
+% Mohammad SAFEEA, 8th-August-2018
 
 close all,clear all;clc;
 
@@ -62,7 +62,7 @@ try
     %% Stop the direct servo motion
     realTime_stopVelControlJoints( t_Kuka );
     fprintf('\nTotal execution time is %f: \n',tend-t0 );
-    fprintf('\nThe rate of joint nagles update per second is: \n');
+    fprintf('\nThe rate of command update per second is: \n');
     disp(rate);
     fprintf('\n')
     pause(2);

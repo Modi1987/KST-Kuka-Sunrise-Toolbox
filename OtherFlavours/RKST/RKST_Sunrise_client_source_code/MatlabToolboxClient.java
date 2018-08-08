@@ -35,13 +35,21 @@ import com.kuka.roboticsAPI.controllerModel.Controller;
 import com.kuka.roboticsAPI.deviceModel.JointPosition;
 import com.kuka.roboticsAPI.deviceModel.LBR;
 import com.kuka.roboticsAPI.geometricModel.Frame;
+import com.kuka.roboticsAPI.geometricModel.LoadData;
+import com.kuka.roboticsAPI.geometricModel.ObjectFrame;
+import com.kuka.roboticsAPI.geometricModel.Tool;
+import com.kuka.roboticsAPI.geometricModel.math.XyzAbcTransformation;
 
  
 public class MatlabToolboxClient extends RoboticsAPIApplication
 {
     private LBR _lbr; 
 	private Controller kuka_Sunrise_Cabinet_1;
-	
+	// Frame of the EEF
+	/////////////////////////////////////
+	// Tool Data
+	public static Tool _toolAttachedToLBR;
+	/////////////////////////////////////
 	// Utility classes
 	public static MediaFlangeFunctions mff; // utility functions to read Write mediaflange ports 
     public static StateVariablesOfRobot svr; // state variables publisher
@@ -173,9 +181,53 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
         {
     		try
     		{
+    			////////////////////////////////
+    			// Attach default tool equal to flange
+    			double[] tempx1={0,0,0,0,0,0};
+    			attachTheToolToFlange("defaultToolEqualFlange",tempx1);
+    			///////////////////////////////////////////////
+    			
     			while(terminateFlag==false)
     	        {
-    	        	if(daCommand.startsWith("startDirectServoJoints"))
+    				
+    				/////////////////////////////////////
+    				// Attach tool
+    				if(daCommand.startsWith("TFtrans"))
+    				{
+    					String st=daCommand;
+    					double[] tempx2=getTransformDataFromCommand(st);
+    					if(tempx2.length==6)
+    					{
+    						attachTheToolToFlange("KST17Tool",tempx2);
+    				        dabak.sendCommand(ack);
+    						daCommand="";
+    						getLogger().info("The tool is attached successfully");
+    						String message;
+    						message="X tool "+Double.toString(tempx2[0]);
+    						getLogger().info(message) ;		
+    						message="Y tool "+Double.toString(tempx2[1]);
+    						getLogger().info(message) ;	
+    						message="Z tool "+Double.toString(tempx2[2]);
+    						getLogger().info(message) ;	
+    						message="A tool "+Double.toString(tempx2[3]);
+    						getLogger().info(message) ;		
+    						message="B tool "+Double.toString(tempx2[4]);
+    						getLogger().info(message) ;	
+    						message="C tool "+Double.toString(tempx2[5]);
+    						getLogger().info(message) ;	
+    					}
+    					else
+    					{
+    				        dabak.sendCommand(nak);
+    						daCommand="";
+    						getLogger().info("Could not attach tool to robot, App terminated");
+    						terminateFlag=true;
+    						break;
+    					}
+
+    				}
+    				/////////////////////////////////////
+    				else if(daCommand.startsWith("startDirectServoJoints"))
     	        	{
     	        		directSmart_ServoMotionFlag=true;
     	        		dabak.sendCommand(ack);
@@ -460,8 +512,74 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
         }    	
     }
 
+	////////////////////////////////
+	// Attach the tool to the flange functions
+    private double[] getTransformDataFromCommand(String cmd)
+    {
+    	
+    	double[] val=null;
+		String thestring=cmd;
+		int numericDataCount=0;
+		StringTokenizer st= new StringTokenizer(thestring,"_");
+		if(st.hasMoreTokens())
+		{
+			// First token is the instruction, should be deleted
+			String temp=st.nextToken();
+			// Following tokens are data of transform from TCP to frame of flange
+				val=new double[6];
+				int j=0;
+				while(st.hasMoreTokens())
+				{
+					String stringData=st.nextToken();
+					if(j<7)
+					{
+						//getLogger().warn(jointString);
+						val[j]=
+								Double.parseDouble(stringData);
+						numericDataCount=numericDataCount+1;
+					}
+					
+					j++;
+				}				
+		}
+		if (numericDataCount==6)
+		{
+			return val;
+		}
+		else
+		{
+			double[] ret={1,2};
+			return ret;
+		}
+    }
+   
+    private void attachTheToolToFlange(String string,double[] x) {
+		// TODO Apêndice de método gerado automaticamente
+    	String TOOL_FRAME = string;
+	    double[] TRANSFORM_OF_TOOL = x; 
+	    double[] CENTER_OF_MASS_IN_MILLIMETER = { 0, 0, 0 }; 
+		LoadData _loadData = new LoadData();
+		double MASS=0;
+        _loadData.setMass(MASS);
+        _loadData.setCenterOfMass(
+                CENTER_OF_MASS_IN_MILLIMETER[0], CENTER_OF_MASS_IN_MILLIMETER[1],
+                CENTER_OF_MASS_IN_MILLIMETER[2]);
 
-    // Velocity-mode, joint space
+        _toolAttachedToLBR = new Tool(TOOL_FRAME, _loadData);
+        XyzAbcTransformation trans = XyzAbcTransformation.ofRad(
+        		TRANSFORM_OF_TOOL[0], TRANSFORM_OF_TOOL[1],
+        		TRANSFORM_OF_TOOL[2], TRANSFORM_OF_TOOL[3],
+        		TRANSFORM_OF_TOOL[4], TRANSFORM_OF_TOOL[5]);
+
+        ObjectFrame aTransformation = _toolAttachedToLBR.addChildFrame(TOOL_FRAME
+                + "(TCP)", trans);
+        _toolAttachedToLBR.setDefaultMotionFrame(aTransformation);
+        // Attach tool to the robot
+        _toolAttachedToLBR.attachTo(_lbr.getFlange());
+	}
+    
+    ///////////////////////////////////
+	// Velocity-mode, joint space
 	public void directServoStartVelMode()
     {
 
@@ -675,13 +793,13 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
         aDirectServoMotion.setMinimumTrajectoryExecutionTime(40e-3);
 
         getLogger().info("Starting DirectServo motion in position control mode");
-        _lbr.moveAsync(aDirectServoMotion);
+        MatlabToolboxClient._toolAttachedToLBR.moveAsync(aDirectServoMotion);
 
         getLogger().info("Get the runtime of the DirectServo motion");
         IDirectServoRuntime theDirectServoRuntime = aDirectServoMotion
                 .getRuntime();
 
-        Frame aFrame = theDirectServoRuntime.getCurrentCartesianDestination(_lbr.getFlange());
+        Frame aFrame = theDirectServoRuntime.getCurrentCartesianDestination(MatlabToolboxClient._toolAttachedToLBR.getDefaultMotionFrame());
         Frame destFrame = aFrame.copyWithRedundancy();
         // Initiate the initial position 
         EEfServoPos[0]=aFrame.getX();
@@ -706,7 +824,7 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
                 // Synchronize with the realtime system
                 theDirectServoRuntime.updateWithRealtimeSystem();
                 Frame msrPose = theDirectServoRuntime
-                        .getCurrentCartesianDestination(_lbr.getFlange());
+                        .getCurrentCartesianDestination(MatlabToolboxClient._toolAttachedToLBR.getDefaultMotionFrame());
 
                 if (doDebugPrints)
                 {
@@ -758,11 +876,13 @@ public class MatlabToolboxClient extends RoboticsAPIApplication
 	
 	double getTheDisplacment(double dj)
     {
-		//return dj;
+		return dj;
+		/*
     	double   a=0.07; 
     	double b=a*0.75; 
 		double exponenet=-Math.pow(dj/b, 2);
 		return Math.signum(dj)*a*(1-Math.exp(exponenet));
+		*/
 		
     }
 

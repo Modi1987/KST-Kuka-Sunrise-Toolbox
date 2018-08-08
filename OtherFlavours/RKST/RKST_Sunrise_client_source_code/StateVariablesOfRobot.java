@@ -62,7 +62,7 @@ public class StateVariablesOfRobot {
     
     public void sendEEFforcesToClient() {
     	
-		ForceSensorData cforce = _lbr.getExternalForceTorque(_lbr.getFlange());
+		ForceSensorData cforce = _lbr.getExternalForceTorque(MatlabToolboxClient._toolAttachedToLBR.getDefaultMotionFrame());
 		
 		String 	cmdforce=Double.toString(cforce.getForce().getX())
 				+"_"+Double.toString(cforce.getForce().getY())
@@ -77,7 +77,7 @@ public class StateVariablesOfRobot {
     
     public void sendEEFMomentsToClient() {
     	
-		ForceSensorData cforce = _lbr.getExternalForceTorque(_lbr.getFlange());
+		ForceSensorData cforce = _lbr.getExternalForceTorque(MatlabToolboxClient._toolAttachedToLBR.getDefaultMotionFrame());
 		
 		String 	cmdforce=Double.toString(cforce.getTorque().getX())
 				+"_"+Double.toString(cforce.getTorque().getY())
@@ -114,7 +114,7 @@ public class StateVariablesOfRobot {
 		// This functions sends the end effector position to the client
     	String cmdPos="";
 		// Read Cartesian position data
-		Frame daframe= _lbr.getCurrentCartesianPosition(_lbr.getFlange());
+		Frame daframe= _lbr.getCurrentCartesianPosition(MatlabToolboxClient._toolAttachedToLBR.getDefaultMotionFrame());
 		cmdPos= 
 		Double.toString(daframe.getX())
 				+"_"+Double.toString(daframe.getY())

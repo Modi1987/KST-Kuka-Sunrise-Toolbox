@@ -8,7 +8,7 @@
 % First run the following script in Matlab
 % Then start the client on the KUKA iiwa controller
 
-% Mohammad SAFEEA, 24th of April 2018
+% Mohammad SAFEEA, 8th-August-2018
 
 close all,clear all;clc;
 
@@ -30,7 +30,7 @@ jPos={0,0,0,0,0,0,0};
 
 setBlueOn(t_Kuka); % turn on blue light
 
-relVel=0.25;
+relVel=0.1;
 movePTPJointSpace( t_Kuka , jPos, relVel); % move to initial configuration
 
 %% Start direct servo in joint space       

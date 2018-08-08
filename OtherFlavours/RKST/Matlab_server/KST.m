@@ -1,7 +1,7 @@
 %% KUKA Sunrise Toolbox class
 % Works with Sunrise application version KST_1.7  and higher
 
-% Copyright Mohammad SAFEEA, updated 18th-July-2018
+% Copyright Mohammad SAFEEA, updated 8th-August-2018
 
 classdef KST < handle
     
@@ -29,6 +29,7 @@ classdef KST < handle
         t_Kuka=[]; % tcpip connection object
         Teftool=eye(4);
         RobotType='';
+        FlangeType=0;
     end
     
     methods
@@ -489,7 +490,21 @@ cStiness,rStifness,nStifness);
             else
                 disp('Connection established')
                 this.t_Kuka=t;
-                flag=1;
+                T=this.Teftool;
+                transForm(1)=T(1,4)*1000;
+                transForm(2)=T(2,4)*1000;
+                transForm(3)=T(3,4)*1000; % convert to (mm)
+                rot_angles_vec=rotm2eul(T(1:3,1:3),'ZYX');
+                transForm(4)=rot_angles_vec(1);
+                transForm(5)=rot_angles_vec(2);
+                transForm(6)=rot_angles_vec(3);
+                [y]=attachToolToFlange(t,transForm);
+                pause(0.4);
+                if(y==true)
+                    flag=1;
+                else
+                    flag=0;
+                end
             end
         end
         
