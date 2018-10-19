@@ -16,7 +16,7 @@ function [ N ] = gen_NullSpaceMatrix(q)
 
 TefTool=eye(4);
 [eef_transform,J]=gen_DirectKinematics(q,TefTool);
-N=eye(7)-J'*inv(J*J')*J';
+N=eye(7)-J'*inv(J*J')*J;
 
 end
 
