@@ -1,0 +1,51 @@
+Copyright: Mohammad SAFEEA, 7-Nov-2018
+------------------------------------------------------------
+Associated Video of this script is on YOURUBE using the following link:
+
+
+ABOUT:
+-------
+"CNCPlotter" folder contains MATLAB script that allows the owner of
+IIWA robot to use it as a Computer Numerically Controlled Plotter.
+
+The MATLAB script (KSTclass_Tutorial_CNCPlotter)
+is the main script that allows the owner of Kuka iiwa to use his
+manipulator as a plotter/CNC-cutter.
+
+In such a case the kuka iiwa plots/cuts drawings made by cad 
+programs.
+
+If you wish to use the script with different tool/robot configuraitons: 
+--------------------------------------------------------------------------------------------
+1- By default the MATLAB script (KSTclass_Tutorial_CNCPlotter)
+    is prepared to work with iiwa 7R800, using our plotting tool, 
+    if you have different robot/tool please follow the instructions 
+    in the file (KSTclass_Tutorial_CNCPlotter).
+
+
+If you wish to use the script for plotting your own drawings: 
+--------------------------------------------------------------------------------------------
+By default the MATLAB script (KSTclass_Tutorial_CNCPlotter)
+is prepared to plot the file (kst.plt) if you want to plot a different file 
+take the following into consideration
+
+1- The cad file format supported is HP Graphic Language
+   Plot file (plt). The user shall convert his drawing into
+   (plt) file format, then using KST and the provided script 
+   the user can execute the drawing on the robot.
+
+2- Pefore executing your (plt) file on the robot, the user shall
+   test it, by plotting it in matlab using the script file (plot_plt_in_graph).
+   Follow the instructions in the script file (plot_plt_in_graph) to do this.
+
+3- The user shall specify the path/name of the file to be plotted
+   (plt file) in the variable (fileName).
+
+4- By using the script file (plot_plt_in_graph), you can adjust the scale 
+     and the position of your drawing visually before plotting it.
+
+5- Copy the scale and the positioning parameters that you used in (plot_plt_in_graph),
+    into the (KSTclass_Tutorial_CNCPlotter).
+     
+
+Enjoy....
