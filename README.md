@@ -43,7 +43,7 @@ Path                                 | Content description
 [realtimeControlOfEEFGamePad/][9]    | Teleoperation, control EEF from GamePad.
 [realtimeControlOfJoint...../][10]   | Teleoperation, control joints from GamePad.
 [SunriseGUIinterface/][11]	     | Friendly GUI for controlling iiwa from MATLAB.
-
+[CNCPlotter/][12]	             | Use IIWA as CNC, [associated video here](https://youtu.be/SWzAkJVH--I).
 
 <!-- --------------------------------------------------------------------------------- -->
 
@@ -59,7 +59,7 @@ Path                                 | Content description
 [9]: /realtimeControlOfEEFGamePad
 [10]: /realtimeControlOfJointSpaceUsingGamePad
 [11]: /SunriseGUIinterface
-
+[12]: /iiwa_CNCPlotter
 --------------------------------------
 
 
