@@ -1,6 +1,6 @@
 function [ G ] = gen_GravityVector(q,Pcii,mcii)
- %% This function is used to calculate gravity vector of the KUKA iiwa 7 R 800 manipulator
-% This function proposes that the robot is mounted with the base in the
+ %% This function is used to calculate gravity-compensation vector of the KUKA iiwa 7 R 800 manipulator
+% This function proposes that the robot is mounted upright with the base in the
 % horizontal poistion.
  
 % Arreguments:
@@ -13,12 +13,12 @@ function [ G ] = gen_GravityVector(q,Pcii,mcii)
 
 % Return value:
 %--------------------
-% G: 7x1 matrix, the torques vector due to gravity of the KUKA iiwa 7 R 800.
+% G: 7x1 matrix, the torques vector due to gravity-compensation of the KUKA iiwa 7 R 800.
 
 % Copyright: Mohammad SAFEEA, 9th-April-2018
 
 G=zeros(7,1);
-g=[0;0;-9.81]; % gravity acceleration vector described in base frame of the robot
+g=[0;0;9.81]; % (-) gravity acceleration vector described in base frame of the robot
 T=kukaGetKenimaticModelAccelerated(q);
 
 % loop through the joints
