@@ -280,7 +280,7 @@ class BackgroundTask implements Runnable {
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarExT_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
 			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 			if(tempBool==false)
 			{
@@ -291,7 +291,7 @@ class BackgroundTask implements Runnable {
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarMT_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
 			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 			if(tempBool==false)
 			{
@@ -302,7 +302,7 @@ class BackgroundTask implements Runnable {
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarEEfP_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
 			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 			if(tempBool==false)
 			{
@@ -313,7 +313,7 @@ class BackgroundTask implements Runnable {
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarJP_"))
 		{
-			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
 			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
 			if(tempBool==false)
 			{
