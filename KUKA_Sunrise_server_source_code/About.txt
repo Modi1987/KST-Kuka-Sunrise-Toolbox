@@ -5,15 +5,26 @@ About:
 This folder contains the Java soruce code for the server part of the toolbox that runs on the controller side of the robot.
 This code is written using the Sunrise.Workbench, the utilizer shall use the Sunrise.Workbench to Synchronize the server application
 to the robot.
- 
-Three versions of the server application are provided
-1- KST_1.7: (recommended) same as KST_1.6 but hard-coding has been avoided in the source code,
+Please use the java code inside the folder (KST_1.7_iiwa_universal_noFlange_LTS)
+------------------------------------------
+
+Recommended package:
+--------------------
+We recommended to utlize the java code inside the folder (KST_1.7_iiwa_universal_noFlange_LongTermSupport).
+The code in this folder will be updated continuously and is meant for long term support.
+
+**********************************************************************
+Older packages:
+---------------
+Kept record keeping and for old users.
+Older packages the server application are provided in zip files:
+1- KST_1.7: (code in this zip file are not updated anymore) same as KST_1.6 but hard-coding has been avoided in the source code,
             so same source code works for iiwa7R800 and iiwa14R820.
 2- KST_1.6: Two source codes of the server application are provided one for the iiwa7R800 and the other is for the iiwa14R820.
 3- KST_1.5: (Deprecated) does not support conditional and nonblocking motions.
 
 
 
-Each version of KST is provided with two flavors:
+Each zip file of the older KST packages is provided with two flavors:
 	1- First flavor supports a touch-pneumatic flange. 
 	2- Another flavor is universal works on the robot regardless of the type of the flange, since that flange associated functionalities are disabled.
