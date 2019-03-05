@@ -10,7 +10,7 @@ Please use the java code inside the folder (KST_1.7_iiwa_universal_noFlange_LTS)
 
 Recommended package:
 --------------------
-We recommended to utlize the java code inside the folder (7_iiwa_universal_noFlange_LTS).
+We recommended to utlize the java code inside the folder (KST_1.7_iiwa_universal_noFlange_LTS).
 The code in this folder will be updated continuously and is meant for long term support.
 
 **********************************************************************
