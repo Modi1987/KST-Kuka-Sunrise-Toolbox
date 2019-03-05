@@ -138,6 +138,8 @@ public class SmartServoWithImpedence
         }
         
         startImpedenceControl(cStifness, rStifness,nStifness);
+		_toolAttachedToLBR.detach();
+		_toolAttachedToLBR=null;
     }
 
 
