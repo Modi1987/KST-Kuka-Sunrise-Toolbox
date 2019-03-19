@@ -69,21 +69,19 @@ Path                                 | Content description
 
 # Citations
 
-Please cite the following paper in your publications if it helps your research 
+Please cite the following article in your publications if it helps your research:
 
-Paper in the link: https://arxiv.org/abs/1709.01438
-
-@inproceedings{safeea2017,
-
-  author = {Mohammad Safeea and Pedro Neto},
-  
-  title = {KUKA Sunrise Toolbox: Interfacing Collaborative Robots with
-  
-MATLAB},
-
-  year = {2017}
-  
-  }
+@ARTICLE{Safeea2019,
+author={M. {Safeea} and P. {Neto}},
+journal={IEEE Robotics Automation Magazine},
+title={KUKA Sunrise Toolbox: Interfacing Collaborative Robots With MATLAB},
+year={2019},
+volume={26},
+number={1},
+pages={91-96},
+doi={10.1109/MRA.2018.2877776},
+ISSN={1070-9932},
+month={March},}
 
 
 --------------------------------------
