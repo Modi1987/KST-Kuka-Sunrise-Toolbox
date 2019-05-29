@@ -2,9 +2,9 @@
 
 # KUKA Sunrise Toolbox for Matlab
 
-A Toolbox used to control KUKA iiwa robots, the 7R800 and the 14R820, from an external computer using Matlab.
+A Toolbox used to control KUKA iiwa robots :robot:, the 7R800 and the 14R820, from an external computer using Matlab.
 
-Using the KST the utilizer can control the iiwa robot from his/her computer without a need for programming  the industerial manipulator.
+Using the KST the utilizer can control the iiwa robot from his/her computer using Matlab's simple syntax, without requiring any skills nor knowledge about programming the controller of the industerial manipulator.
 
 A basic knowledge of using Matlab is required.
 
@@ -14,8 +14,8 @@ A basic knowledge of using Matlab is required.
 
 # Video tutorials on how to utilize the toolbox
 
-* Video tutorials on KST version 1.7 are [available here](https://www.youtube.com/playlist?list=PLz558OYgHuZd-Gc2-OryITKEXefAmrvae).
-* Video tutorials on KST version 1.6 are [available here](https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8)
+* Video tutorials on KST version 1.7 are [available here](https://www.youtube.com/playlist?list=PLz558OYgHuZd-Gc2-OryITKEXefAmrvae)  :point_left: .
+* Video tutorials on KST version 1.6 are [available here](https://www.youtube.com/watch?v=_yTK0Gi0p3g&list=PLz558OYgHuZdVzTaB79iM8Y8u6EjFe0d8)  :point_left: .
 
 The newer version of KUKA Sunrise Toolbox (KST-1.7) provides a wrapper class that wraps the various functions of the earlier version (KST-1.6) in the file (KST.m). As such earlier version of KST works interchangeably with the newer version 1.7. And the user has the freedom of choice to utilize KST-1.7 or KST-1.6 according to his/her own preference.
 
@@ -23,8 +23,16 @@ The newer version of KUKA Sunrise Toolbox (KST-1.7) provides a wrapper class tha
 
 # Video Gallery
 
-Video demos where MATLAB and KST are used to control iiwa manipulator are [available here](https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox/wiki/Videos). 
-The video examples range from pick & place applications where kinect camera is utilized for objects recognition and localization, to realtime collision avoidance with coworker/dynamic-obstacles in practical robotic cell, to controlling the manipulator from 3D simulation software or by using external hardware, and more.
+Video demos where MATLAB and KST are used to control iiwa manipulator are :point_right: [available here](https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox/wiki/Videos)  :point_left: . 
+The video examples range from pick & place applications where kinect camera is utilized for objects recognition and localization, to realtime collision avoidance with coworker/dynamic-obstacles in practical robotic cell. Other examples show how to control the manipulator from 3D simulation software or by using external hardware, and more.
+
+--------------------------------------
+
+# Useful Links
+
+* Controlling KUKA iiwa from Python :point_right: [available here](https://github.com/Modi1987/iiwaPy).
+* Controlling KUKA iiwa from Simulink :point_right: [available here](https://github.com/Modi1987/Simulink-iiwa-interface).
+* Advanced examples on using KST for controlling KUKA iiwa :point_right: [available here](https://github.com/Modi1987/KST-advanced-examples).
 
 --------------------------------------
 
@@ -69,20 +77,23 @@ Path                                 | Content description
 
 # Citations
 
-Please cite the following article in your publications if it helps your research:
+Please cite the following article in your publications if it helps your research :pray: :
 
-@ARTICLE{Safeea2019,
-author={M. {Safeea} and P. {Neto}},
-journal={IEEE Robotics Automation Magazine},
-title={KUKA Sunrise Toolbox: Interfacing Collaborative Robots With MATLAB},
-year={2019},
-volume={26},
-number={1},
-pages={91-96},
-doi={10.1109/MRA.2018.2877776},
-ISSN={1070-9932},
-month={March},}
 
+```javascript
+@ARTICLE{Safeea2019,  
+  Author={M. {Safeea} and P. {Neto}},  
+  Journal={IEEE Robotics Automation Magazine},  
+  Title={KUKA Sunrise Toolbox: Interfacing Collaborative Robots With MATLAB},  
+  Year={2019},  
+  Volume={26},  
+  Number={1},  
+  Pages={91-96},  
+  doi={10.1109/MRA.2018.2877776},  
+  ISSN={1070-9932},  
+  Month={March},  
+}
+```
 
 --------------------------------------
 
@@ -93,6 +104,5 @@ The Portuguese Foundation for Science and Technology
 (FCT) SFRH/BD/131091/2017 and the European Union's Horizon
 2020 research and innovation programme under grant agreement
 No 688807 - ColRobot project.
-
 
 
