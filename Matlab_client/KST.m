@@ -1,7 +1,12 @@
 %% KUKA Sunrise Toolbox class
 % Works with Sunrise application version KST_1.7  and higher
 
-% Copyright Mohammad SAFEEA, updated 9th-August-2018
+% Copyright Mohammad SAFEEA, updated 9th-May-2018
+% Main difference with commet (9th-August-2018) is:
+% Two methods are added that allow force feedback at EEF, while allowing
+% position udpate in soft real-time control (EEF and Joints Positions).
+% The added functions are marked with the following comment in their body
+% "NEW METHOD, ADDED IN THE 9TH OF MAY 2019"
 
 classdef KST < handle
     
@@ -108,6 +113,10 @@ classdef KST < handle
         function [ret]=nonBlocking_isGoalReached(this)
             [ret]=nonBlocking_isGoalReached(this.t_Kuka);
         end
+        
+        function [flag,feedBack]=nonBlockingCheck_WithFeedback(this, param)
+            [flag,feedBack]=nonBlockingCheck_WithFeedback(this.t_Kuka, param);
+        end 
         
         function nonBlocking_movePTPArcXY_AC(this,theta,c,vel)
             nonBlocking_movePTPArcXY_AC(this.t_Kuka,theta,c,vel);
@@ -379,6 +388,11 @@ cStiness,rStifness,nStifness);
             [ EEFpos ] = sendEEfPositionGetActualEEFpos( this.t_Kuka ,EEEFpos);
         end
         
+        function [ EEF_force ] = sendEEfPositionGetEEF_Force_rel_EEF( this ,EEEFpos)
+            % "NEW METHOD, ADDED IN THE 9TH OF MAY 2019"
+            [ EEF_force ] = sendEEfPositionGetEEF_Force_rel_EEF( this.t_Kuka ,EEEFpos);
+        end
+        
         function [ JPOS ] = sendEEfPositionGetActualJpos( this ,EEEFpos)
             [ JPOS ] = sendEEfPositionGetActualJpos( this.t_Kuka ,EEEFpos);
         end
@@ -405,6 +419,11 @@ cStiness,rStifness,nStifness);
         
         function [ EEF_POS ] = sendJointsPositionsGetActualEEFpos( this ,jPos) 
              [ EEF_POS ] = sendJointsPositionsGetActualEEFpos( this.t_Kuka ,jPos);
+        end
+        
+        function [ EEF_force ] = sendJointsPositionsGetEEF_Force_rel_EEF( this ,jPos) 
+            % "NEW METHOD, ADDED IN THE 9TH OF MAY 2019"
+             [ EEF_force ] = sendJointsPositionsGetEEF_Force_rel_EEF( this.t_Kuka ,jPos);
         end
         
         function [ JPOS ] = sendJointsPositionsGetActualJpos( this ,jPos) 
