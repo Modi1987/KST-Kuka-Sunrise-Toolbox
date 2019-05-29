@@ -1,9 +1,9 @@
 function [flag]=nonBlocking_isGoalReached(t_Kuka)
-% this functions is used with nonBlocking motion functions to chekc whether
+% this functions is used with nonBlocking motion functions to check whether
 % the goal is reached.
 
 %% Syntax:
-% [flag]=nonBlocking_isGoalReached()
+% [flag]=nonBlocking_isGoalReached(t_Kuka)
 
 %% Arreguments
 % t_Kuka: is the TCP/IP connection object 
@@ -14,7 +14,8 @@ function [flag]=nonBlocking_isGoalReached(t_Kuka)
 % flag=0: signifies the goal is not reached
 % flag=-1: signifies an error
 
-% Copy right: Mohammad SAFEEA 04th-April-2018
+% Copyright: Mohammad SAFEEA 04th-April-2018
+% updated 09-May-2019
 
 global paramName;
 global paramVal;
@@ -81,7 +82,7 @@ end
 
 function [ EEFpos,flag ] = GetActualEEFpos( t_Kuka )
 EEEFpos={0,0,0,0,0,0};
-theCommand='DcSeCarEEfP_';
+theCommand='DcSeCarEEfFrelEEF_';
 
 for i=1:6
     x=EEEFpos{i};
@@ -91,10 +92,11 @@ end
 fprintf(t_Kuka, theCommand);
 message=fgets(t_Kuka);
 [EEFpos,N]=getDoubleFromString(message);
-if(N==0)
-    flag=false;
+if(N==0) % when motion is finished, server returns "done+stopCharacter", raising this case
+    flag=false; % segnifies motion is done
     message=fgets(t_Kuka);
     [EEFpos,N]=getDoubleFromString(message);
+    pause(0.1); % wait for sometime
 else
     flag=true;
 end
