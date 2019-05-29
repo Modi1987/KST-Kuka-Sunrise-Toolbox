@@ -7,13 +7,15 @@ package lbrExampleApplications;
  * 
  * First upload 07-May-2017
  * 
- * Final update 26th-06-2018 
+ * Second update 26th-06-2018 
+ * 
+ * Last update 12-May-2019, introduced updates are marked with the comment,
+ *  "modified 12th-May-2019" or the comment "newly-added 12th-May-2019"
  * 
  * This is a multi-threaded server program that is meant to be used with both
  *    KUKA iiwa 7 R 800
  * or KUKA iiwa 14 R 820.
- * The robot shall be provided with a pneumatic flange, 
- * the server of this application listens on the port 30001.
+ * The server of this application listens on the port 30001.
  * 
  * */
 
@@ -245,7 +247,7 @@ class BackgroundTask implements Runnable {
 			{
 			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEFforcesToClient();
+			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
 			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("velJDCJP_"))
@@ -308,7 +310,7 @@ class BackgroundTask implements Runnable {
 			{
 			MatlabToolboxServer.directSmart_ServoMotionFlag=false;
 			}
-			MatlabToolboxServer.svr.sendEEFforcesToClient();
+			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
 			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarJP_"))
@@ -322,7 +324,19 @@ class BackgroundTask implements Runnable {
 			MatlabToolboxServer.svr.sendJointsPositionsToClient();
 			MatlabToolboxServer.daCommand="";
 		}
-		
+		else if(MatlabToolboxServer.daCommand.startsWith("DcSeCarEEfFrelEEF_")) 
+		{
+			// "newly-added 12th-May-2019"
+			// Update Cartesian position of EEF and returns force force feedback described in EEF reference frame	
+			boolean tempBool=getThePositions(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendEEFforcesToClient();
+			MatlabToolboxServer.daCommand="";
+		}
 		//////////////////////////////////////////////////
 		//End of Servo joints update functions
 		//////////////////////////////////////////////////////
@@ -398,63 +412,75 @@ class BackgroundTask implements Runnable {
 	{
 		//////////////////////////////////////////////////
 		//Start of server update functions
-		/////////////////////////////////////////////////////						
-		
+		/////////////////////////////////////////////////////								
 		if(MatlabToolboxServer.daCommand.startsWith("jp_"))
 		{
-		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		if(tempBool==false)
-		{
-		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-		}
-		this.sendCommand(ack);
-		MatlabToolboxServer.daCommand="";
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			this.sendCommand(ack);
+			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("jpExT_"))
 		{
-		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		if(tempBool==false)
-		{
-		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-		}
-		MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
-		MatlabToolboxServer.daCommand="";
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendJointsExternalTorquesToClient();
+			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("jpMT_"))
 		{
-		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		if(tempBool==false)
-		{
-		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-		}
-		MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
-		MatlabToolboxServer.daCommand="";
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendJointsMeasuredTorquesToClient();
+			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("jpEEfP_"))
 		{
-		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		if(tempBool==false)
-		{
-		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
-		}
-		MatlabToolboxServer.svr.sendEEFforcesToClient();
-		MatlabToolboxServer.daCommand="";
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendEEfPositionToClient(); // "modified 12th-May-2019"
+			MatlabToolboxServer.daCommand="";
 		}
 		else if(MatlabToolboxServer.daCommand.startsWith("jpJP_"))
 		{
-		boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
-		// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
-		if(tempBool==false)
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendJointsPositionsToClient();
+			MatlabToolboxServer.daCommand="";
+		}
+		else if(MatlabToolboxServer.daCommand.startsWith("jpEEfFrelEEF_"))
 		{
-		MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			// "newly-added 12th-May-2019"
+			boolean tempBool=getTheJoints(MatlabToolboxServer.daCommand);
+			// MatlabToolboxServer.printMessage(MatlabToolboxServer.daCommand);
+			if(tempBool==false)
+			{
+				MatlabToolboxServer.directSmart_ServoMotionFlag=false;
+			}
+			MatlabToolboxServer.svr.sendEEFforcesToClient();
+			MatlabToolboxServer.daCommand="";
 		}
-		MatlabToolboxServer.svr.sendJointsPositionsToClient();
-		MatlabToolboxServer.daCommand="";
-		}
+
 		
 		//////////////////////////////////////////////////
 		//End of Servo joints update functions
