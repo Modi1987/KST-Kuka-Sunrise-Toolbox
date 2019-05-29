@@ -1,1 +1,19 @@
+Copyright: Mohammad Safeea, 2019-May-09
 
+The folder Matlab_client (this folder), contains the scripts (Matlab files) of the Toolbox.
+
+Breakdown of contents (for this folder):
+1- The main file of the Toolbox is the KST.m class, which is a wrapper class that implements 
+   the various functions used to control the robot.
+2- Example scripts (tutorials) showing how to use the KST.m class are also included. 
+   Those example tutorials start with the initials KSTclass_Tutorial_***.m,
+   check those tutorials to test the toolbox and for a rapid hands-on experience.
+
+
+Note: if you are not a fan of using classes you can use the free function calls (supported by KST1.6).
+Tutorial examples on how to use the free function calls are also included in this folder.
+The tutorial examples of the free function calls start with the initials Tutorial_*****.m .
+
+
+CHEERS !!!
+  
