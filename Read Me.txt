@@ -3,7 +3,7 @@
 KUKA Sunrise Toolbox for Matlab
 --------------------------------------------------------------------------
 A Toolbox used to control KUKA iiwa 7/14 R 800/820 robots from an external computer using Matlab.
-Such that no knowledge about programming the industerial manipulator is required.
+Such that no knowledge about programming the industrial manipulator is required.
 A knowledge of using Matlab is required.
 --------------------------------------------------------------------------
 Video tutorials are available:
