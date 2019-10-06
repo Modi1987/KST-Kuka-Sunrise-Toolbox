@@ -32,6 +32,7 @@ The video examples range from pick & place applications where kinect camera is u
 
 * Controlling KUKA iiwa from Python :point_right: [available here](https://github.com/Modi1987/iiwaPy).
 * Controlling KUKA iiwa from Simulink :point_right: [available here](https://github.com/Modi1987/Simulink-iiwa-interface).
+* If you do not have the Sunrise.Servoing library but you still want to use MATLAB for controlling KUKA iiwa you can use the package :point_right: [in here](https://github.com/Modi1987/IIWAContorlToolbox).
 * Advanced examples on using KST for controlling KUKA iiwa :point_right: [available here](https://github.com/Modi1987/KST-advanced-examples).
 
 --------------------------------------
