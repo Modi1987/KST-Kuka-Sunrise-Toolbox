@@ -9,7 +9,7 @@ import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
 
 import java.util.StringTokenizer;
 
-import com.kuka.generated.ioAccess.MediaFlangeIOGroup;
+//import com.kuka.generated.ioAccess.MediaFlangeIOGroup;
 import com.kuka.roboticsAPI.conditionModel.ICondition;
 import com.kuka.roboticsAPI.conditionModel.JointTorqueCondition;
 import com.kuka.roboticsAPI.controllerModel.Controller;
@@ -23,7 +23,7 @@ public class PTPmotionClass {
 	private static LBR _lbr; 
 	private static BackgroundTask daback;
 	private Controller kuka_Sunrise_Cabinet_1;
-	private MediaFlangeIOGroup daIO;
+	//private MediaFlangeIOGroup daIO;
 	
     //private static final String stopCharacter="\n"+Character.toString((char)(10));
     private static final String stopCharacter=Character.toString((char)(10));
@@ -34,7 +34,7 @@ public class PTPmotionClass {
 		this._lbr=_lbr;
 		this.daback=daback;
 		this.kuka_Sunrise_Cabinet_1=kuka_Sunrise_Cabinet_1;
-		daIO=new MediaFlangeIOGroup(kuka_Sunrise_Cabinet_1);
+		//daIO=new MediaFlangeIOGroup(kuka_Sunrise_Cabinet_1);
 	}
 
 	
