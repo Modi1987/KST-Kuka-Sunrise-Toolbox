@@ -23,8 +23,10 @@ function [the_position, the_force] = gen_estimateTouchForcePosition_1(a, d, alfa
         
         % Define cost function for optimization
         fun = @(var_force_x) costFunction(a, d, alfa, TefTool, q, first_frame_index, second_frame_index, taw, var_force_x);
-        lb = -100 * ones(4, 1);
-        ub = 100 * ones(4, 1);
+        % touch force component from -50 N to 50 N
+        lb = -50 * ones(4, 1);
+        ub = 50 * ones(4, 1);
+        lb(4)=0; ub(4)=1; % x from zero to one
         seed = zeros(4, 1);
         
         % Run optimization
