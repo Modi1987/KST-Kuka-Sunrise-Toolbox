@@ -17,6 +17,8 @@ function [J]=gen_partialJacobean_1(a, d, alfa, TefTool, q, linkNum, Pos)
 
 % Mohammad SAFEEA 3rd Nov 2024
 
+% input checks
+q=aux_check_cell_convert2mat(q);
 
 if linkNum>7
     disp('Error linkNum shall be less than 8');

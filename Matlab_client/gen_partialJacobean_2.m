@@ -13,6 +13,9 @@ function [J, p0, p1] = gen_partialJacobean_2(a, d, alfa, TefTool, q, first_frame
 
 % Mohammad SAFEEA 3rd Nov 2024
 
+    % input checks
+    q=aux_check_cell_convert2mat(q);
+
     % Initialize transformation matrices
     T = zeros(4,4,7);
     T(:,:,1) = getDHMatrix(alfa{1}, q(1), d{1}, a{1});
