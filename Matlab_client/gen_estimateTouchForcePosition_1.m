@@ -16,7 +16,10 @@ function [the_position, the_force] = gen_estimateTouchForcePosition_1(a, d, alfa
     minimum_cost = inf;
     the_position = [];
     the_force = [];
-    
+
+    q = aux_ensure_a_column_vector(q);
+    taw = aux_ensure_a_column_vector(taw);
+
     for i = 1:3
         first_frame_index  = array_first_dh_frame_index(i);
         second_frame_index = array_second_dh_frame_index(i);
@@ -31,7 +34,7 @@ function [the_position, the_force] = gen_estimateTouchForcePosition_1(a, d, alfa
         
         % Run optimization
         solution = fmincon(fun, seed, [], [], [], [], lb, ub, []);
-        solution = columnVec(solution);
+        solution = aux_to_column_vector(solution);
         
         % Extract force and position scalar x from the solution
         force = solution(1:3);
@@ -51,11 +54,7 @@ function [the_position, the_force] = gen_estimateTouchForcePosition_1(a, d, alfa
     end
 end
 
-function cost = costFunction(a, d, alfa, TefTool, q, first_frame_index, second_frame_index, taw, var_force_x)
-    % Ensure input is a column vector
-    var_force_x = columnVec(var_force_x);
-    taw = columnVec(taw);
-    
+function cost = costFunction(a, d, alfa, TefTool, q, first_frame_index, second_frame_index, taw, var_force_x)    
     % Extract force and x from optimization variables
     force = var_force_x(1:3);
     x = var_force_x(4);
@@ -68,4 +67,3 @@ function cost = costFunction(a, d, alfa, TefTool, q, first_frame_index, second_f
     e = taw - Jpartial' * force;
     cost = 0.5 * e' * e;
 end
-
