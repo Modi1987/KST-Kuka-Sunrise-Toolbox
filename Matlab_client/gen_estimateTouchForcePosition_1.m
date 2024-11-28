@@ -64,6 +64,7 @@ function cost = costFunction(a, d, alfa, TefTool, q, first_frame_index, second_f
     Jpartial = J(1:3, 1:first_frame_index);
     
     % Compute error and cost
-    e = taw - Jpartial' * force;
+    n = size(Jpartial, 2);
+    e = taw(1:n) - Jpartial' * force;
     cost = 0.5 * e' * e;
 end
