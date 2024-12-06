@@ -639,8 +639,23 @@ cStiness,rStifness,nStifness);
             [eef_transform,J]=this.gen_DirectKinematics(q);
             N=eye(7)-J'*inv(J*J')*J;
         end
-        
-         function [J]=gen_partialJacobean(this,q,linkNum,Pos)
+
+        function [position, force] = gen_estimateTouchForcePosition(this,q,taw)
+            %% About
+            % function to estimate touch force and its position on robot structure
+            %% Args
+            % q: (7x1) vector of joints angles
+            % taw: (7x1) vector of joints external torques
+
+            alfa=this.dh_data.alfa;
+            d=this.dh_data.d; 
+            a=this.dh_data.a;
+            TefTool=this.Teftool;
+
+            [position, force] = gen_estimateTouchForcePosition_1(a, d, alfa, TefTool, q, taw);
+        end
+
+        function [J]=gen_partialJacobean(this,q,linkNum,Pos)
             if linkNum>7
                 disp('Error linkNum shall be less than 8');
                 j=[];
@@ -656,52 +671,33 @@ cStiness,rStifness,nStifness);
             d=this.dh_data.d; 
             a=this.dh_data.a;
 
-            T=zeros(4,4,7);
-            i=1;
-            T(:,:,i)=this.getDHMatrix(alfa{i},q(i),d{i},a{i});
-                for i=2:7
-                    T(:,:,i)=T(:,:,i-1)*this.getDHMatrix(alfa{i},q(i),d{i},a{i});
-                    T(:,:,i)=this.normalizeColumns(T(:,:,i));
-                end
-                    T(:,:,7)=T(:,:,7)*this.Teftool;
-                    T(:,:,7)=this.normalizeColumns(T(:,:,7));
-
-            % parital jacobean
-                J=zeros(6,linkNum);
-                pef=T(1:3,1:3,linkNum)*Pos+T(1:3,4,linkNum);
-                for i=1:linkNum
-                    k=T(1:3,3,i);
-                    pij=pef-T(1:3,4,i);
-                    J(1:3,i)=cross(k,pij);
-                    J(4:6,i)=k;
-                end
-         end
+            J=gen_partialJacobean_1(a, d, alfa, q,linkNum,Pos);
+        end
 
     	function T=getDHMatrix(this,alfa,theta,d,a)
-                T=zeros(4,4);
+            T=zeros(4,4);
 
-                calpha=cos(alfa);
-                sinalpha=sin(alfa);
-                coshteta=cos(theta);
-                sintheta=sin(theta);
+            calpha=cos(alfa);
+            sinalpha=sin(alfa);
+            coshteta=cos(theta);
+            sintheta=sin(theta);
 
-                T(1,1)=coshteta;
-                T(2,1)=sintheta*calpha;
-                T(3,1)=sintheta*sinalpha;				
+            T(1,1)=coshteta;
+            T(2,1)=sintheta*calpha;
+            T(3,1)=sintheta*sinalpha;				
 
-                T(1,2)=-sintheta;
-                T(2,2)=coshteta*calpha;
-                T(3,2)=coshteta*sinalpha;
+            T(1,2)=-sintheta;
+            T(2,2)=coshteta*calpha;
+            T(3,2)=coshteta*sinalpha;
 
-                T(2,3)=-sinalpha;
-                T(3,3)=calpha;
+            T(2,3)=-sinalpha;
+            T(3,3)=calpha;
 
-                T(1,4)=a;
-                T(2,4)=-sinalpha*d;
-                T(3,4)=calpha*d;
-                T(4,4)=1;
-
-            end
+            T(1,4)=a;
+            T(2,4)=-sinalpha*d;
+            T(3,4)=calpha*d;
+            T(4,4)=1;
+        end
 
         function normalizedT=normalizeColumns(this,T)
             r=zeros(4,3); 
