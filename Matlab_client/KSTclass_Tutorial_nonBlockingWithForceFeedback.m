@@ -48,7 +48,6 @@ distPos{3}=distPos{3}-200;
 vel=15; %15 mm/sec
 iiwa.nonBlocking_movePTPLineEEF(distPos, vel);
 flag=true;
-motionFlag=false;
 
 maxIndex=10000;
 forceFeedbackArray=zeros(3,maxIndex);
@@ -56,8 +55,24 @@ timeArray=zeros(1,maxIndex);
 forceVec=zeros(3,1);
 counter=0;
 tic; % performing some timing
-while ~motionFlag
+while true
     [motionFlag,feedBack]=iiwa.nonBlockingCheck_WithFeedback(param);
+    
+    if motionFlag == -1
+        error('Error during motion execution');
+        break;
+    end
+
+    if motionFlag == 0
+        disp('Received feedback is:');
+        disp(feedBack);
+    end
+
+    if motionFlag == 1
+        disp('Goal is reached');
+        break;
+    end
+    
     counter=counter+1;
     for i=1:3
         forceVec(i)=feedBack{i};
