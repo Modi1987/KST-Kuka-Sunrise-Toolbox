@@ -87,7 +87,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
     public void initialize()
     {
         _lbr = getContext().getDeviceFromType(LBR.class);
-        kuka_Sunrise_Cabinet_1 = getController("KUKA_Sunrise_Cabinet_1");
+        kuka_Sunrise_Cabinet_1 = getController("KUKA_Sunrise_Cabinet");
 		// INitialize the variables
         jpos=new double[7];
         jDispMax=new double[7];
@@ -250,7 +250,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
         	}
 
         	else if(daCommand.startsWith(
-        			"startSmartImpedneceJoints"))
+        			"startSmartImpedanceJoints"))
         	{
         		// pre-processing step
         		directSmart_ServoMotionFlag=true;
@@ -542,7 +542,7 @@ public class MatlabToolboxServer extends RoboticsAPIApplication
 	}
 	
 	private void attachTheToolToFlange(String string,double[] x) {
-		// TODO Apêndice de método gerado automaticamente
+		// TODO Ap\EAndice de m\E9todo gerado automaticamente
 		String TOOL_FRAME = string;
 		double[] TRANSFORM_OF_TOOL = x; 
 		double[] CENTER_OF_MASS_IN_MILLIMETER = { 0, 0, 0 }; 
