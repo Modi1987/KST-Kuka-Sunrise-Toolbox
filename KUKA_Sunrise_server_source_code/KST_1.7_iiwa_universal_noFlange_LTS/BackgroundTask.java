@@ -51,7 +51,7 @@ class BackgroundTask implements Runnable {
 	private LBR _lbr;
 	private int _port;
 	private int _timeOut;
-	private ServerSocket ss;
+	private ServerSocket ss = null;
 	private Socket soc;
 	
     //private static final String stopCharacter="\n"+Character.toString((char)(10));
@@ -79,6 +79,7 @@ class BackgroundTask implements Runnable {
 		
 		try {
 			ss= new ServerSocket(_port);
+			ss.setReuseAddress(true);
 			try
 			{
 			ss.setSoTimeout(_timeOut);
